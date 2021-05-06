@@ -1,6 +1,5 @@
 import User from '@/pages/user-module'
-import BasicInfo from '@/pages/user-module/base-info'
-
+import BasicInfo from '@/pages/user-module/basic/base-info'
 export interface RouteConfig {
   path: string
   component: React.ComponentType<any>
