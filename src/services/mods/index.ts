@@ -1,3 +1,4 @@
+import * as apiService from './apiService'
 import * as billCode from './billCode'
 import * as contract from './contract'
 import * as customer from './customer'
@@ -50,6 +51,7 @@ import * as transportation from './transportation'
 import * as upload from './upload'
 
 ;(window as any).API = {
+  apiService,
   billCode,
   contract,
   customer,

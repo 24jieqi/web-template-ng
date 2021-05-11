@@ -4,32 +4,24 @@
      */
 import request from '@/utils/request'
 export class IQueryParams {
-  /** 到港时间-结束（yyyy-MM-dd） */
-  arrivalDateEnd?: string
-  /** 到港时间-开始（yyyy-MM-dd） */
-  arrivalDateStart?: string
-  /** 进口港-精确查询 */
-  arrivePortId?: number
   /** 柜次-模糊查询 */
   cabinetBatchCode?: string
   /** 柜号-模糊查询 */
   cabinetCode?: string
-  /** 进口报关公司-精确查询 */
-  declareCompanyId?: number
   /** 页码 */
   pageNo: number
   /** 每页条数 */
   pageSize: number
   /** 品类id-必传 */
-  pid?: number
-  /** 收货方-精确查询 */
-  receiverId?: number
+  pid: number
   /** 备注-模糊查询 */
   remark?: string
-  /** SPU ID-模糊查询 */
-  spuId?: number
-  /** 状态-精确查询 */
-  status?: string
+  /** 发货结束时间 */
+  shipDateEnd?: string
+  /** 发货开始时间  */
+  shipDateStart?: string
+  /** 可发货状态 全部时不传 0_可发货, 1_不可发货  */
+  shipStatus?: number
 }
 
 export interface IParams {

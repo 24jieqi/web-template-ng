@@ -1,14 +1,14 @@
-import { RouteComponentProps } from '@reach/router'
-import React from 'react'
+import { RouteComponentProps } from '@reach/router';
+import React from 'react';
 
-interface IProps extends RouteComponentProps {}
+type IProps = RouteComponentProps;
 
 const NotFound: React.FC<IProps> = () => {
   return (
     <div>
       <p>默认缺省页</p>
     </div>
-  )
-}
+  );
+};
 
-export default NotFound
+export default NotFound;

@@ -2,6 +2,252 @@
   {
     "mods": [
       {
+        "description": "三方对接接口",
+        "interfaces": [
+          {
+            "consumes": [
+              "application/json"
+            ],
+            "description": "三方-国内报关-提交报关",
+            "name": "thirdCommit",
+            "method": "post",
+            "path": "/api/declare/commit",
+            "response": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "number",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Result",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "parameters": [
+              {
+                "in": "header",
+                "description": "token",
+                "name": "X-Access-Token",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "body",
+                "description": "importDeclare",
+                "name": "importDeclare",
+                "required": true,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "ImportDeclareThirdCommitDTO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              }
+            ]
+          },
+          {
+            "consumes": [
+              "application/json"
+            ],
+            "description": "三方-国内报关-补充资料",
+            "name": "thirdReplenish",
+            "method": "post",
+            "path": "/api/declare/replenish",
+            "response": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Result",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "parameters": [
+              {
+                "in": "header",
+                "description": "token",
+                "name": "X-Access-Token",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "body",
+                "description": "importDeclare",
+                "name": "importDeclare",
+                "required": true,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "ImportDeclareThirdReplenishDTO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              }
+            ]
+          },
+          {
+            "consumes": [
+              "multipart/form-data"
+            ],
+            "description": "三方-上传文件",
+            "name": "upload",
+            "method": "post",
+            "path": "/api/file/upload",
+            "response": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Result",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "parameters": [
+              {
+                "in": "header",
+                "description": "token",
+                "name": "X-Access-Token",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "formData",
+                "description": "file",
+                "name": "file",
+                "required": true,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "File",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              }
+            ]
+          },
+          {
+            "consumes": [
+              "application/json"
+            ],
+            "description": "三方-登录获取token",
+            "name": "getToken",
+            "method": "post",
+            "path": "/api/token",
+            "response": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Result",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "parameters": [
+              {
+                "in": "header",
+                "description": "token",
+                "name": "X-Access-Token",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "body",
+                "description": "loginModel",
+                "name": "loginModel",
+                "required": true,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "ThirdLoginModel",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              }
+            ]
+          }
+        ],
+        "name": "apiService"
+      },
+      {
         "description": "财务管理-销售单号管理",
         "interfaces": [
           {
@@ -7502,51 +7748,6 @@
               },
               {
                 "in": "query",
-                "description": "到港时间-结束（yyyy-MM-dd）",
-                "name": "arrivalDateEnd",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "string",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "到港时间-开始（yyyy-MM-dd）",
-                "name": "arrivalDateStart",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "string",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "进口港-精确查询",
-                "name": "arrivePortId",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
                 "description": "柜次-模糊查询",
                 "name": "cabinetBatchCode",
                 "required": false,
@@ -7568,21 +7769,6 @@
                 "dataType": {
                   "typeArgs": [],
                   "typeName": "string",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "进口报关公司-精确查询",
-                "name": "declareCompanyId",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
                   "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
@@ -7624,22 +7810,7 @@
                 "in": "query",
                 "description": "品类id-必传",
                 "name": "pid",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "收货方-精确查询",
-                "name": "receiverId",
-                "required": false,
+                "required": true,
                 "dataType": {
                   "typeArgs": [],
                   "typeName": "number",
@@ -7667,23 +7838,8 @@
               },
               {
                 "in": "query",
-                "description": "SPU ID-模糊查询",
-                "name": "spuId",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "状态-精确查询",
-                "name": "status",
+                "description": "发货结束时间",
+                "name": "shipDateEnd",
                 "required": false,
                 "dataType": {
                   "typeArgs": [],
@@ -7694,11 +7850,41 @@
                   "enum": [],
                   "typeProperties": []
                 }
+              },
+              {
+                "in": "query",
+                "description": "发货开始时间 ",
+                "name": "shipDateStart",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "string",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "query",
+                "description": "可发货状态 全部时不传 0_可发货, 1_不可发货 ",
+                "name": "shipStatus",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "number",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
               }
             ]
           },
           {
-            "description": "国际在途汇总-分页列表查询",
+            "description": "国际在途汇总",
             "name": "queryList",
             "method": "get",
             "path": "/reportFormsCenter/internationalTraveling/list",
@@ -7716,8 +7902,8 @@
                       "typeProperties": []
                     }
                   ],
-                  "typeName": "Page",
-                  "isDefsType": true,
+                  "typeName": "Array",
+                  "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
                   "enum": [],
@@ -7740,36 +7926,6 @@
                 "dataType": {
                   "typeArgs": [],
                   "typeName": "string",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "页码",
-                "name": "pageNo",
-                "required": true,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
-                  "isDefsType": false,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              },
-              {
-                "in": "query",
-                "description": "每页条数",
-                "name": "pageSize",
-                "required": true,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "number",
                   "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
@@ -13301,12 +13457,12 @@
               },
               {
                 "in": "query",
-                "description": "收货方key，类型_id",
-                "name": "receiverKey",
+                "description": "收货区域Id",
+                "name": "receiveAreaId",
                 "required": false,
                 "dataType": {
                   "typeArgs": [],
-                  "typeName": "string",
+                  "typeName": "number",
                   "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
@@ -14928,12 +15084,12 @@
               },
               {
                 "in": "query",
-                "description": "收货方key，类型_id",
-                "name": "receiverKey",
+                "description": "收货方ID",
+                "name": "receiveAreaId",
                 "required": false,
                 "dataType": {
                   "typeArgs": [],
-                  "typeName": "string",
+                  "typeName": "number",
                   "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
@@ -15304,12 +15460,12 @@
               },
               {
                 "in": "query",
-                "description": "收货方key，类型_id",
-                "name": "receiverKey",
+                "description": "收货方ID",
+                "name": "receiveAreaId",
                 "required": false,
                 "dataType": {
                   "typeArgs": [],
-                  "typeName": "string",
+                  "typeName": "number",
                   "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
@@ -18197,38 +18353,6 @@
                   "typeArgs": [],
                   "typeName": "IFrameInfoQueryVO",
                   "isDefsType": true,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              }
-            ]
-          },
-          {
-            "description": "商品数据迁移代码执行",
-            "name": "initGoods",
-            "method": "get",
-            "path": "/sys/setting/initGoods",
-            "response": {
-              "typeArgs": [],
-              "typeName": "",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "parameters": [
-              {
-                "in": "header",
-                "description": "token",
-                "name": "X-Access-Token",
-                "required": false,
-                "dataType": {
-                  "typeArgs": [],
-                  "typeName": "string",
-                  "isDefsType": false,
                   "templateIndex": -1,
                   "compileTemplateKeyword": "#/definitions/",
                   "enum": [],
@@ -22084,6 +22208,21 @@
                 "in": "query",
                 "description": "品类ID",
                 "name": "productId",
+                "required": false,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "number",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              },
+              {
+                "in": "query",
+                "description": "收货区域ID",
+                "name": "receiveAreaId",
                 "required": false,
                 "dataType": {
                   "typeArgs": [],
@@ -27687,6 +27826,30 @@
           },
           {
             "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "productFile",
+            "description": "标签",
+            "required": false
+          },
+          {
+            "dataType": {
               "typeArgs": [],
               "typeName": "number",
               "isDefsType": false,
@@ -27703,6 +27866,7 @@
         "templateArgs": []
       },
       {
+        "description": "商品信息",
         "name": "DeliveryEditProductVO",
         "properties": [
           {
@@ -27731,6 +27895,30 @@
             },
             "name": "product",
             "description": "品类",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "productFile",
+            "description": "标签",
             "required": false
           },
           {
@@ -30796,8 +30984,22 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiver",
-            "description": "收货人",
+            "name": "receiveArea",
+            "description": "收货区域",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "receiveDepart",
+            "description": "收货组织",
             "required": false
           },
           {
@@ -31125,6 +31327,96 @@
             "name": "planId",
             "description": "计划ID",
             "required": false
+          }
+        ],
+        "templateArgs": []
+      },
+      {
+        "name": "EntryPortDelivery",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "planStartShipTime",
+            "description": "计划国内发货时间",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "senderTypeDesc",
+            "description": "发货地",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "shipmentMethod",
+            "description": "原柜转柜",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "sopEnabled",
+            "description": "是否需要口岸质检 1:启用，99：禁用",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "storageYardName",
+            "description": "堆场(发货地为堆场时展示)",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "tempMonitor",
+            "description": "是否在途温控 1：使用，99：不使用",
+            "required": true
           }
         ],
         "templateArgs": []
@@ -31813,8 +32105,21 @@
               "enum": [],
               "typeProperties": []
             },
+            "name": "state",
+            "description": "状态",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
             "name": "stateName",
-            "description": "状态名称，只展示国内可提柜",
             "required": false
           },
           {
@@ -32410,6 +32715,34 @@
             },
             "name": "logisticsCompanyName",
             "description": "运输公司",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "suggestAirPort",
+            "description": "区域建议风口",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "suggestTemperature",
+            "description": "区域建议温度",
             "required": false
           },
           {
@@ -33580,6 +33913,20 @@
               "enum": [],
               "typeProperties": []
             },
+            "name": "billCode",
+            "description": "船运信息-提单号",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
             "name": "cabinetBatchCode",
             "description": "柜次号",
             "required": false
@@ -33852,6 +34199,20 @@
               "enum": [],
               "typeProperties": []
             },
+            "name": "expectDepartedTime",
+            "description": "船运信息-计划离港时间",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
             "name": "expressCompany",
             "description": "出口报关公司",
             "required": false
@@ -33946,6 +34307,20 @@
               "enum": [],
               "typeProperties": []
             },
+            "name": "planArriveTime",
+            "description": "船运信息-计划到港时间",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
             "name": "product",
             "description": "品类名称",
             "required": false
@@ -34028,6 +34403,48 @@
             },
             "name": "remark",
             "description": "备注",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "shipBatchCode",
+            "description": "船运信息-船次号",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "shipCompany",
+            "description": "船运信息-船公司",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "shipName",
+            "description": "船运信息-船名",
             "required": false
           },
           {
@@ -34216,6 +34633,20 @@
             },
             "name": "transferTime",
             "description": "工厂发柜时间",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "url",
+            "description": "船运信息-地图地址",
             "required": false
           }
         ],
@@ -34730,6 +35161,20 @@
           {
             "dataType": {
               "typeArgs": [],
+              "typeName": "boolean",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "overdue",
+            "description": "是否超期",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
               "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,
@@ -34780,7 +35225,7 @@
               "typeProperties": []
             },
             "name": "releaseDate",
-            "description": "放行时间",
+            "description": "放行时间，即纳税放柜时间",
             "required": false
           },
           {
@@ -35326,6 +35771,232 @@
         "templateArgs": []
       },
       {
+        "description": "三方国内报关提交",
+        "name": "ImportDeclareThirdCommitDTO",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "cabinetCode",
+            "description": "柜号",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "checkQuantity",
+            "description": "抽检数量",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "checkUnit",
+            "description": "抽检单位 1:箱 2：个",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "declareNumber",
+            "description": "报关单号",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "endFreeRentTime",
+            "description": "货柜免租截止日期",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "endFreeStayPortTime",
+            "description": "免费滞港截止日期",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "examine",
+            "description": "是否查验 1：是 0：否",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "fumigationStatus",
+            "description": "熏蒸状态 1:已完成 0：待熏蒸",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "importDeclareFiles",
+            "description": "报关申报资料",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "releaseDate",
+            "description": "放行时间",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "releaseFiles",
+            "description": "进口报关单",
+            "required": true
+          }
+        ],
+        "templateArgs": []
+      },
+      {
+        "description": "国内报关三方提交补充资料",
+        "name": "ImportDeclareThirdReplenishDTO",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "importDeclareId",
+            "description": "报关ID",
+            "required": true
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "releaseFiles",
+            "description": "进口报关单",
+            "required": true
+          }
+        ],
+        "templateArgs": []
+      },
+      {
         "name": "InputStream",
         "properties": [],
         "templateArgs": []
@@ -35604,6 +36275,20 @@
           {
             "dataType": {
               "typeArgs": [],
+              "typeName": "EntryPortDelivery",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "entryPortDelivery",
+            "description": "入境口岸发货信息",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
               "typeName": "ExportDeclareInfoVO",
               "isDefsType": true,
               "templateIndex": -1,
@@ -35725,30 +36410,40 @@
           },
           {
             "dataType": {
-              "typeArgs": [],
-              "typeName": "ReceiveInfoVO",
-              "isDefsType": true,
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "ReceiveInfoVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiveInfoVO",
+            "name": "receiveInfoVOList",
             "description": "收货信息",
             "required": false
           },
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "ReceiverCustomerInfoVO",
+              "typeName": "ReturnInfoVO",
               "isDefsType": true,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiverCustomerInfoVO",
-            "description": "收货方信息",
+            "name": "returnInfoVO",
+            "description": "还箱信息",
             "required": false
           },
           {
@@ -36039,8 +36734,22 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "releaseDate",
-            "description": "放柜时间",
+            "name": "remark",
+            "description": "备注",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "shipStatus",
+            "description": "可发货状态 全部时不传 1_可发货, 0_不可发货 ",
             "required": false
           },
           {
@@ -36053,8 +36762,8 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "remark",
-            "description": "备注",
+            "name": "shipTime",
+            "description": "发货时间",
             "required": false
           },
           {
@@ -36108,6 +36817,20 @@
           {
             "dataType": {
               "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "code",
+            "description": "跳转CODE",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
               "typeName": "number",
               "isDefsType": false,
               "templateIndex": -1,
@@ -36131,20 +36854,6 @@
             },
             "name": "domesticEntryArrivalCount",
             "description": "国内入境-到港",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "number",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "id",
-            "description": "无用id，仅用于前端table渲染",
             "required": false
           },
           {
@@ -43803,20 +44512,6 @@
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "number",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "actualUnloadTime",
-            "description": "收货信息-压车天数",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
               "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,
@@ -43831,81 +44526,29 @@
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "number",
+              "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": [],
               "typeProperties": []
             },
-            "name": "driverChillFee",
-            "description": "收货信息-司机补打冷费",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [
-                {
-                  "typeArgs": [],
-                  "typeName": "FileVO",
-                  "isDefsType": true,
-                  "templateIndex": -1,
-                  "compileTemplateKeyword": "#/definitions/",
-                  "enum": [],
-                  "typeProperties": []
-                }
-              ],
-              "typeName": "Array",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "emptyFile",
-            "description": "收货信息-报空交接文件",
+            "name": "customerCompanyName",
+            "description": "收货信息-服务区域",
             "required": false
           },
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "number",
+              "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": [],
               "typeProperties": []
             },
-            "name": "emptyTotalFee",
-            "description": "收货信息-报空合计费用",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "number",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "pressFee",
-            "description": "收货信息-压车费用",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "FileVO",
-              "isDefsType": true,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "proofFileVO",
-            "description": "还箱证明文件",
+            "name": "customerdePositoryName",
+            "description": "收货信息-服务客户仓库",
             "required": false
           },
           {
@@ -43946,8 +44589,46 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "remark",
-            "description": "收货信息-报空备注",
+            "name": "receiverDepart",
+            "description": "收货方(收货组织-收货方)",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "receiverType",
+            "description": "收货方类型 1_销地分公司  2_客户",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "TableVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "tableVOs",
+            "description": "商品明细",
             "required": false
           }
         ],
@@ -44634,8 +45315,8 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "receivedDate",
-            "description": "销地收货时间",
+            "name": "receiveArea",
+            "description": "收货区域",
             "required": false
           },
           {
@@ -44648,8 +45329,22 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiverName",
-            "description": "收货方名称,如果多个收货方逗号分割",
+            "name": "receiveDepart",
+            "description": "收货组织",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "receivedDate",
+            "description": "销地收货时间",
             "required": false
           },
           {
@@ -44692,68 +45387,6 @@
             },
             "name": "stateName",
             "description": "状态名称",
-            "required": false
-          }
-        ],
-        "templateArgs": []
-      },
-      {
-        "name": "ReceiverCustomerInfoVO",
-        "properties": [
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "number",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "receiverId",
-            "description": "收货方信息-收货方ID",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "receiverName",
-            "description": "收货方信息-收货方名称",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "receiverType",
-            "description": "收货方信息-收货方类型",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "traderName",
-            "description": "发货方信息-贸易方名称",
             "required": false
           }
         ],
@@ -45073,6 +45706,120 @@
         ]
       },
       {
+        "name": "ReturnInfoVO",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "actualUnloadTime",
+            "description": "收货信息-压车天数",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "driverChillFee",
+            "description": "收货信息-司机补打冷费",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [
+                {
+                  "typeArgs": [],
+                  "typeName": "FileVO",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": [],
+                  "typeProperties": []
+                }
+              ],
+              "typeName": "Array",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "emptyFile",
+            "description": "收货信息-报空交接文件",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "emptyTotalFee",
+            "description": "收货信息-报空合计费用",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "pressFee",
+            "description": "收货信息-压车费用",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "FileVO",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "proofFileVO",
+            "description": "还箱证明文件",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "remark",
+            "description": "收货信息-报空备注",
+            "required": false
+          }
+        ],
+        "templateArgs": []
+      },
+      {
         "name": "RolePermissionEditDTO",
         "properties": [
           {
@@ -45326,62 +46073,6 @@
       {
         "name": "ShipmentInfoVO",
         "properties": [
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "actualArriveTime",
-            "description": "船运信息-实际到港时间",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "actualDepartedTime",
-            "description": "船运信息-实际离港时间",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "estimateArriveTime",
-            "description": "船运信息-预计到港时间",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "estimateDepartedTime",
-            "description": "船运信息-预计离港时间",
-            "required": false
-          },
           {
             "dataType": {
               "typeArgs": [],
@@ -47133,20 +47824,6 @@
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "customerName",
-            "description": "客户收货方名称",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
               "typeName": "number",
               "isDefsType": false,
               "templateIndex": -1,
@@ -47170,20 +47847,6 @@
             },
             "name": "deliveryMethodName",
             "description": "运输方式名称",
-            "required": false
-          },
-          {
-            "dataType": {
-              "typeArgs": [],
-              "typeName": "string",
-              "isDefsType": false,
-              "templateIndex": -1,
-              "compileTemplateKeyword": "#/definitions/",
-              "enum": [],
-              "typeProperties": []
-            },
-            "name": "departName",
-            "description": "公司收货方名称",
             "required": false
           },
           {
@@ -47238,22 +47901,22 @@
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiverName",
-            "description": "收货方名称,如果多个收货方逗号分割",
+            "name": "receiveArea",
+            "description": "收货区域",
             "required": false
           },
           {
             "dataType": {
               "typeArgs": [],
-              "typeName": "number",
+              "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": [],
               "typeProperties": []
             },
-            "name": "receiverType",
-            "description": "收货方类型1：销地分公司 2客户",
+            "name": "receiveDepart",
+            "description": "收货组织",
             "required": false
           },
           {
@@ -51939,6 +52602,41 @@
             },
             "name": "temperature",
             "description": "温度",
+            "required": false
+          }
+        ],
+        "templateArgs": []
+      },
+      {
+        "description": "登录对象",
+        "name": "ThirdLoginModel",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "password",
+            "description": "密码",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "username",
+            "description": "账号",
             "required": false
           }
         ],

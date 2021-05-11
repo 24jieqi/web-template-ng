@@ -1125,6 +1125,9 @@ declare namespace defs {
     /** plan表主键 */
     id: number
 
+    /** 标签 */
+    productFile?: Array<defs.FileVO>
+
     /** 商品信息-数量合计 */
     totalPack: number
   }
@@ -1135,6 +1138,9 @@ declare namespace defs {
 
     /** 品类 */
     product?: string
+
+    /** 标签 */
+    productFile?: Array<defs.FileVO>
 
     /** 商品ID */
     productId?: number
@@ -1797,8 +1803,11 @@ declare namespace defs {
     /** 品类名称 */
     product?: string
 
-    /** 收货人 */
-    receiver?: string
+    /** 收货区域 */
+    receiveArea?: string
+
+    /** 收货组织 */
+    receiveDepart?: string
 
     /** 装柜方式1：原柜 2：转柜 3：装柜 */
     shipmentMethod?: number
@@ -1869,6 +1878,26 @@ declare namespace defs {
 
     /** 计划ID */
     planId?: number
+  }
+
+  export class EntryPortDelivery {
+    /** 计划国内发货时间 */
+    planStartShipTime?: string
+
+    /** 发货地 */
+    senderTypeDesc?: string
+
+    /** 原柜转柜 */
+    shipmentMethod?: string
+
+    /** 是否需要口岸质检 1:启用，99：禁用 */
+    sopEnabled: number
+
+    /** 堆场(发货地为堆场时展示) */
+    storageYardName?: string
+
+    /** 是否在途温控 1：使用，99：不使用 */
+    tempMonitor: number
   }
 
   export class EntryPortDeliveryCommitDTO {
@@ -2011,7 +2040,10 @@ declare namespace defs {
     /** 工厂发柜日期 */
     startTime?: string
 
-    /** 状态名称，只展示国内可提柜 */
+    /** 状态 */
+    state?: string
+
+    /** stateName */
     stateName?: string
 
     /** 商品明细表单 */
@@ -2140,6 +2172,12 @@ declare namespace defs {
 
     /** 运输公司 */
     logisticsCompanyName?: string
+
+    /** 区域建议风口 */
+    suggestAirPort?: number
+
+    /** 区域建议温度 */
+    suggestTemperature?: number
 
     /** 设定温度 */
     temperature?: number
@@ -2381,6 +2419,9 @@ declare namespace defs {
     /** 进口港 */
     arrivePortName?: string
 
+    /** 船运信息-提单号 */
+    billCode?: string
+
     /** 柜次号 */
     cabinetBatchCode?: string
 
@@ -2435,6 +2476,9 @@ declare namespace defs {
     /** 是否查验 1：是 0：否 */
     examine?: number
 
+    /** 船运信息-计划离港时间 */
+    expectDepartedTime?: string
+
     /** 出口报关公司 */
     expressCompany?: string
 
@@ -2453,6 +2497,9 @@ declare namespace defs {
     /** 报关申报资料 */
     importDeclareFiles?: Array<defs.FileVO>
 
+    /** 船运信息-计划到港时间 */
+    planArriveTime?: string
+
     /** 品类名称 */
     product?: string
 
@@ -2470,6 +2517,15 @@ declare namespace defs {
 
     /** 备注 */
     remark?: string
+
+    /** 船运信息-船次号 */
+    shipBatchCode?: string
+
+    /** 船运信息-船公司 */
+    shipCompany?: string
+
+    /** 船运信息-船名 */
+    shipName?: string
 
     /** 商品ID */
     spuId?: number
@@ -2506,6 +2562,9 @@ declare namespace defs {
 
     /** 工厂发柜时间 */
     transferTime?: string
+
+    /** 船运信息-地图地址 */
+    url?: string
   }
 
   export class ImportDeclareInfoVO {
@@ -2613,6 +2672,9 @@ declare namespace defs {
     /** 计划ID */
     id?: number
 
+    /** 是否超期 */
+    overdue?: boolean
+
     /** 品类名称 */
     product?: string
 
@@ -2622,7 +2684,7 @@ declare namespace defs {
     /** 产地 */
     productPlaceName?: string
 
-    /** 放行时间 */
+    /** 放行时间，即纳税放柜时间 */
     releaseDate?: string
 
     /** 备注 */
@@ -2733,6 +2795,49 @@ declare namespace defs {
     taxType?: 'SELF_PAY' | 'WITHHOLD'
   }
 
+  export class ImportDeclareThirdCommitDTO {
+    /** 柜号 */
+    cabinetCode: string
+
+    /** 抽检数量 */
+    checkQuantity: number
+
+    /** 抽检单位 1:箱 2：个 */
+    checkUnit: number
+
+    /** 报关单号 */
+    declareNumber: string
+
+    /** 货柜免租截止日期 */
+    endFreeRentTime?: string
+
+    /** 免费滞港截止日期 */
+    endFreeStayPortTime?: string
+
+    /** 是否查验 1：是 0：否 */
+    examine: number
+
+    /** 熏蒸状态 1:已完成 0：待熏蒸 */
+    fumigationStatus: number
+
+    /** 报关申报资料 */
+    importDeclareFiles?: Array<defs.FileVO>
+
+    /** 放行时间 */
+    releaseDate?: string
+
+    /** 进口报关单 */
+    releaseFiles: Array<defs.FileVO>
+  }
+
+  export class ImportDeclareThirdReplenishDTO {
+    /** 报关ID */
+    importDeclareId: number
+
+    /** 进口报关单 */
+    releaseFiles: Array<defs.FileVO>
+  }
+
   export class InputStream {}
 
   export class InternationalShipmentDetailListVO {
@@ -2792,6 +2897,9 @@ declare namespace defs {
     /** 货柜港口状态 */
     declareDtoList?: Array<defs.DeclareDto>
 
+    /** 入境口岸发货信息 */
+    entryPortDelivery?: defs.EntryPortDelivery
+
     /** 出口报关信息 */
     exportDeclareInfoVO?: defs.ExportDeclareInfoVO
 
@@ -2817,10 +2925,10 @@ declare namespace defs {
     productQuotaInfoVO?: defs.ProductQuotaInfoVO
 
     /** 收货信息 */
-    receiveInfoVO?: defs.ReceiveInfoVO
+    receiveInfoVOList?: Array<defs.ReceiveInfoVO>
 
-    /** 收货方信息 */
-    receiverCustomerInfoVO?: defs.ReceiverCustomerInfoVO
+    /** 还箱信息 */
+    returnInfoVO?: defs.ReturnInfoVO
 
     /** 船运信息 */
     shipmentInfoVO?: defs.ShipmentInfoVO
@@ -2883,11 +2991,14 @@ declare namespace defs {
     /** 品类ID */
     productId?: number
 
-    /** 放柜时间 */
-    releaseDate?: string
-
     /** 备注 */
     remark?: string
+
+    /** 可发货状态 全部时不传 1_可发货, 0_不可发货  */
+    shipStatus?: number
+
+    /** 发货时间 */
+    shipTime?: string
 
     /** SPU Names */
     spuNames?: string
@@ -2900,14 +3011,14 @@ declare namespace defs {
   }
 
   export class InternationalTravelingListVO {
+    /** 跳转CODE */
+    code?: string
+
     /** 国内入境-可提 */
     domesticEntryAllowGetCount?: number
 
     /** 国内入境-到港 */
     domesticEntryArrivalCount?: number
-
-    /** 无用id，仅用于前端table渲染 */
-    id?: number
 
     /** 国际在途 */
     internationalTravelingCount?: number
@@ -4435,26 +4546,14 @@ declare namespace defs {
   }
 
   export class ReceiveInfoVO {
-    /** 收货信息-压车天数 */
-    actualUnloadTime?: number
-
     /** 收货信息-到达销地时间 */
     arrivalTime?: string
 
-    /** 收货信息-司机补打冷费 */
-    driverChillFee?: number
+    /** 收货信息-服务区域 */
+    customerCompanyName?: string
 
-    /** 收货信息-报空交接文件 */
-    emptyFile?: Array<defs.FileVO>
-
-    /** 收货信息-报空合计费用 */
-    emptyTotalFee?: number
-
-    /** 收货信息-压车费用 */
-    pressFee?: number
-
-    /** 还箱证明文件 */
-    proofFileVO?: defs.FileVO
+    /** 收货信息-服务客户仓库 */
+    customerdePositoryName?: string
 
     /** 收货信息-销地收货时间 */
     receiveTime?: string
@@ -4462,8 +4561,14 @@ declare namespace defs {
     /** 收货信息-收货人 */
     receiver?: string
 
-    /** 收货信息-报空备注 */
-    remark?: string
+    /** 收货方(收货组织-收货方) */
+    receiverDepart?: string
+
+    /** 收货方类型 1_销地分公司  2_客户 */
+    receiverType?: number
+
+    /** 商品明细 */
+    tableVOs?: Array<defs.TableVO>
   }
 
   export class ReceiveWebDetailVO {
@@ -4604,11 +4709,14 @@ declare namespace defs {
     /** 品类名称 */
     productName?: string
 
+    /** 收货区域 */
+    receiveArea?: string
+
+    /** 收货组织 */
+    receiveDepart?: string
+
     /** 销地收货时间 */
     receivedDate?: string
-
-    /** 收货方名称,如果多个收货方逗号分割 */
-    receiverName?: string
 
     /** 发货方 */
     senderName?: string
@@ -4618,20 +4726,6 @@ declare namespace defs {
 
     /** 状态名称 */
     stateName?: string
-  }
-
-  export class ReceiverCustomerInfoVO {
-    /** 收货方信息-收货方ID */
-    receiverId?: number
-
-    /** 收货方信息-收货方名称 */
-    receiverName?: string
-
-    /** 收货方信息-收货方类型 */
-    receiverType?: string
-
-    /** 发货方信息-贸易方名称 */
-    traderName?: string
   }
 
   export class ReportGroupVO {
@@ -4705,6 +4799,29 @@ declare namespace defs {
     timestamp?: number
   }
 
+  export class ReturnInfoVO {
+    /** 收货信息-压车天数 */
+    actualUnloadTime?: number
+
+    /** 收货信息-司机补打冷费 */
+    driverChillFee?: number
+
+    /** 收货信息-报空交接文件 */
+    emptyFile?: Array<defs.FileVO>
+
+    /** 收货信息-报空合计费用 */
+    emptyTotalFee?: number
+
+    /** 收货信息-压车费用 */
+    pressFee?: number
+
+    /** 还箱证明文件 */
+    proofFileVO?: defs.FileVO
+
+    /** 收货信息-报空备注 */
+    remark?: string
+  }
+
   export class RolePermissionEditDTO {
     /** 数据权限ids */
     dataRuleIds?: string
@@ -4756,18 +4873,6 @@ declare namespace defs {
   }
 
   export class ShipmentInfoVO {
-    /** 船运信息-实际到港时间 */
-    actualArriveTime?: string
-
-    /** 船运信息-实际离港时间 */
-    actualDepartedTime?: string
-
-    /** 船运信息-预计到港时间 */
-    estimateArriveTime?: string
-
-    /** 船运信息-预计离港时间 */
-    estimateDepartedTime?: string
-
     /** 船运信息-计划离港时间 */
     expectDepartedTime?: string
 
@@ -5130,17 +5235,11 @@ declare namespace defs {
     /** 创建时间 */
     createDate?: string
 
-    /** 客户收货方名称 */
-    customerName?: string
-
     /** 运输方式(1, 陆运),(2, 海运),(3, 铁运) */
     deliveryMethod?: number
 
     /** 运输方式名称 */
     deliveryMethodName?: string
-
-    /** 公司收货方名称 */
-    departName?: string
 
     /** 计划ID */
     id?: number
@@ -5151,11 +5250,11 @@ declare namespace defs {
     /** 产地名称 */
     productPlaceName?: string
 
-    /** 收货方名称,如果多个收货方逗号分割 */
-    receiverName?: string
+    /** 收货区域 */
+    receiveArea?: string
 
-    /** 收货方类型1：销地分公司 2客户 */
-    receiverType?: number
+    /** 收货组织 */
+    receiveDepart?: string
 
     /** 发货方 */
     senderName?: string
@@ -6121,6 +6220,14 @@ declare namespace defs {
     temperature?: number
   }
 
+  export class ThirdLoginModel {
+    /** 密码 */
+    password?: string
+
+    /** 账号 */
+    username?: string
+  }
+
   export class URI {
     /** absolute */
     absolute?: boolean
@@ -6442,6 +6549,68 @@ declare namespace defs {
 }
 
 declare namespace API {
+  /**
+   * 三方对接接口
+   */
+  export namespace apiService {
+    /**
+     * 三方-国内报关-提交报关
+     * /api/declare/commit
+     */
+    export namespace thirdCommit {
+      export class Params {}
+
+      export type Response = defs.Result<number>
+      export const init: Response
+      export function request(
+        params: Params,
+        bodyParams: defs.ImportDeclareThirdCommitDTO
+      ): Promise<defs.Result<number>>
+    }
+
+    /**
+     * 三方-国内报关-补充资料
+     * /api/declare/replenish
+     */
+    export namespace thirdReplenish {
+      export class Params {}
+
+      export type Response = defs.Result<string>
+      export const init: Response
+      export function request(
+        params: Params,
+        bodyParams: defs.ImportDeclareThirdReplenishDTO
+      ): Promise<defs.Result<string>>
+    }
+
+    /**
+     * 三方-上传文件
+     * /api/file/upload
+     */
+    export namespace upload {
+      export class Params {}
+
+      export type Response = defs.Result<defs.FileVO>
+      export const init: Response
+      export function request(params: Params): Promise<defs.Result<defs.FileVO>>
+    }
+
+    /**
+     * 三方-登录获取token
+     * /api/token
+     */
+    export namespace getToken {
+      export class Params {}
+
+      export type Response = defs.Result<string>
+      export const init: Response
+      export function request(
+        params: Params,
+        bodyParams: defs.ThirdLoginModel
+      ): Promise<defs.Result<string>>
+    }
+  }
+
   /**
    * 财务管理-销售单号管理
    */
@@ -8276,32 +8445,24 @@ declare namespace API {
         */
     export namespace queryInfoList {
       export class Params {
-        /** 到港时间-结束（yyyy-MM-dd） */
-        arrivalDateEnd?: string
-        /** 到港时间-开始（yyyy-MM-dd） */
-        arrivalDateStart?: string
-        /** 进口港-精确查询 */
-        arrivePortId?: number
         /** 柜次-模糊查询 */
         cabinetBatchCode?: string
         /** 柜号-模糊查询 */
         cabinetCode?: string
-        /** 进口报关公司-精确查询 */
-        declareCompanyId?: number
         /** 页码 */
         pageNo: number
         /** 每页条数 */
         pageSize: number
         /** 品类id-必传 */
-        pid?: number
-        /** 收货方-精确查询 */
-        receiverId?: number
+        pid: number
         /** 备注-模糊查询 */
         remark?: string
-        /** SPU ID-模糊查询 */
-        spuId?: number
-        /** 状态-精确查询 */
-        status?: string
+        /** 发货结束时间 */
+        shipDateEnd?: string
+        /** 发货开始时间  */
+        shipDateStart?: string
+        /** 可发货状态 全部时不传 0_可发货, 1_不可发货  */
+        shipStatus?: number
       }
 
       export type Response = defs.Result<
@@ -8314,26 +8475,22 @@ declare namespace API {
     }
 
     /**
-     * 国际在途汇总-分页列表查询
+     * 国际在途汇总
      * /reportFormsCenter/internationalTraveling/list
      */
     export namespace queryList {
       export class Params {
-        /** 页码 */
-        pageNo: number
-        /** 每页条数 */
-        pageSize: number
         /** 商品pid */
         pid?: number
       }
 
       export type Response = defs.Result<
-        defs.Page<defs.InternationalTravelingListVO>
+        Array<defs.InternationalTravelingListVO>
       >
       export const init: Response
       export function request(
         params: Params
-      ): Promise<defs.Result<defs.Page<defs.InternationalTravelingListVO>>>
+      ): Promise<defs.Result<Array<defs.InternationalTravelingListVO>>>
     }
 
     /**
@@ -9690,8 +9847,8 @@ declare namespace API {
         pageSize: number
         /** 商品品类ID */
         productId?: number
-        /** 收货方key，类型_id */
-        receiverKey?: string
+        /** 收货区域Id */
+        receiveAreaId?: number
         /** 起始时间，格式yyyy-MM-dd */
         startDate?: string
         /** 状态编码 */
@@ -10102,8 +10259,8 @@ declare namespace API {
         productId?: number
         /** 产地ID */
         productPlaceId?: number
-        /** 收货方key，类型_id */
-        receiverKey?: string
+        /** 收货方ID */
+        receiveAreaId?: number
         /** 发货方ID */
         senderId?: number
         /** 商品ID */
@@ -10177,8 +10334,8 @@ declare namespace API {
         productId?: number
         /** 产地ID */
         productPlaceId?: number
-        /** 收货方key，类型_id */
-        receiverKey?: string
+        /** 收货方ID */
+        receiveAreaId?: number
         /** 发货方ID */
         senderId?: number
         /** 商品ID */
@@ -10931,18 +11088,6 @@ declare namespace API {
         params: Params,
         bodyParams: defs.IFrameInfoQueryVO
       ): Promise<defs.Result<string>>
-    }
-
-    /**
-     * 商品数据迁移代码执行
-     * /sys/setting/initGoods
-     */
-    export namespace initGoods {
-      export class Params {}
-
-      export type Response = any
-      export const init: Response
-      export function request(params: Params): Promise<any>
     }
   }
 
@@ -11781,6 +11926,8 @@ declare namespace API {
         pageSize: number
         /** 品类ID */
         productId?: number
+        /** 收货区域ID */
+        receiveAreaId?: number
         /** 装柜方式1：原柜 2：转柜 3：装柜 */
         shipmentMethod?: number
         /** 发车起始时间，格式yyyy-MM-dd */

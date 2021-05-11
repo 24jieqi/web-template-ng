@@ -1,0 +1,41 @@
+p {
+  margin: 0;
+}
+.App {
+  position: relative;
+  max-width: 640px;
+  min-height: 100vh;
+}
+.header {
+  width: 100%;
+  height: auto;
+  margin-top: 80px;
+}
+.bg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  padding: 40px 22px 50px 22px;
+}
+
+.row {
+  font-size: 15px;
+  line-height: 24px;
+  color: #333333;
+}
+
+.label {
+  font-weight: bold;
+}
+.footer {
+  padding: 0 22px;
+}
+.footer-text {
+  color: #5d626b;
+  font-size: 15px;
+  line-height: 24px;
+}

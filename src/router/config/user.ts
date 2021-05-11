@@ -1,9 +1,10 @@
-import User from '@/pages/user-module'
-import BasicInfo from '@/pages/user-module/basic/base-info'
+/* eslint-disable no-undef */
+import User from '@/pages/user-module';
+import BasicInfo from '@/pages/user-module/basic/base-info';
 export interface RouteConfig {
-  path: string
-  component: React.ComponentType<any>
-  children?: RouteConfig[]
+  path: string;
+  component: React.ComponentType<any>;
+  children?: RouteConfig[];
 }
 
 export default [
@@ -17,4 +18,4 @@ export default [
       },
     ],
   },
-] as RouteConfig[]
+];

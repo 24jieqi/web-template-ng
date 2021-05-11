@@ -15,6 +15,8 @@ export class IQueryParams {
   pageSize: number
   /** 品类ID */
   productId?: number
+  /** 收货区域ID */
+  receiveAreaId?: number
   /** 装柜方式1：原柜 2：转柜 3：装柜 */
   shipmentMethod?: number
   /** 发车起始时间，格式yyyy-MM-dd */

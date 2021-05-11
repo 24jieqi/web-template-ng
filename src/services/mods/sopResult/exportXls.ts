@@ -19,8 +19,8 @@ export class IQueryParams {
   productId?: number
   /** 产地ID */
   productPlaceId?: number
-  /** 收货方key，类型_id */
-  receiverKey?: string
+  /** 收货方ID */
+  receiveAreaId?: number
   /** 发货方ID */
   senderId?: number
   /** 商品ID */

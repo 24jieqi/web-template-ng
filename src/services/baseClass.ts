@@ -1120,6 +1120,9 @@ export class DeliveryEditProductDTO {
   /** plan表主键 */
   id = undefined
 
+  /** 标签 */
+  productFile = []
+
   /** 商品信息-数量合计 */
   totalPack = undefined
 }
@@ -1130,6 +1133,9 @@ export class DeliveryEditProductVO {
 
   /** 品类 */
   product = ''
+
+  /** 标签 */
+  productFile = []
 
   /** 商品ID */
   productId = undefined
@@ -1792,8 +1798,11 @@ export class DomesticTransportationListVO {
   /** 品类名称 */
   product = ''
 
-  /** 收货人 */
-  receiver = ''
+  /** 收货区域 */
+  receiveArea = ''
+
+  /** 收货组织 */
+  receiveDepart = ''
 
   /** 装柜方式1：原柜 2：转柜 3：装柜 */
   shipmentMethod = undefined
@@ -1864,6 +1873,26 @@ export class EDIUpdateInfoDTO {
 
   /** 计划ID */
   planId = undefined
+}
+
+export class EntryPortDelivery {
+  /** 计划国内发货时间 */
+  planStartShipTime = ''
+
+  /** 发货地 */
+  senderTypeDesc = ''
+
+  /** 原柜转柜 */
+  shipmentMethod = ''
+
+  /** 是否需要口岸质检 1:启用，99：禁用 */
+  sopEnabled = undefined
+
+  /** 堆场(发货地为堆场时展示) */
+  storageYardName = ''
+
+  /** 是否在途温控 1：使用，99：不使用 */
+  tempMonitor = undefined
 }
 
 export class EntryPortDeliveryCommitDTO {
@@ -2006,7 +2035,10 @@ export class EntryPortDeliveryListVO {
   /** 工厂发柜日期 */
   startTime = ''
 
-  /** 状态名称，只展示国内可提柜 */
+  /** 状态 */
+  state = ''
+
+  /** stateName */
   stateName = ''
 
   /** 商品明细表单 */
@@ -2135,6 +2167,12 @@ export class FinalTransportationInfoVO {
 
   /** 运输公司 */
   logisticsCompanyName = ''
+
+  /** 区域建议风口 */
+  suggestAirPort = undefined
+
+  /** 区域建议温度 */
+  suggestTemperature = undefined
 
   /** 设定温度 */
   temperature = undefined
@@ -2376,6 +2414,9 @@ export class ImportDeclareDetailVO {
   /** 进口港 */
   arrivePortName = ''
 
+  /** 船运信息-提单号 */
+  billCode = ''
+
   /** 柜次号 */
   cabinetBatchCode = ''
 
@@ -2430,6 +2471,9 @@ export class ImportDeclareDetailVO {
   /** 是否查验 1：是 0：否 */
   examine = undefined
 
+  /** 船运信息-计划离港时间 */
+  expectDepartedTime = ''
+
   /** 出口报关公司 */
   expressCompany = ''
 
@@ -2448,6 +2492,9 @@ export class ImportDeclareDetailVO {
   /** 报关申报资料 */
   importDeclareFiles = []
 
+  /** 船运信息-计划到港时间 */
+  planArriveTime = ''
+
   /** 品类名称 */
   product = ''
 
@@ -2465,6 +2512,15 @@ export class ImportDeclareDetailVO {
 
   /** 备注 */
   remark = ''
+
+  /** 船运信息-船次号 */
+  shipBatchCode = ''
+
+  /** 船运信息-船公司 */
+  shipCompany = ''
+
+  /** 船运信息-船名 */
+  shipName = ''
 
   /** 商品ID */
   spuId = undefined
@@ -2501,6 +2557,9 @@ export class ImportDeclareDetailVO {
 
   /** 工厂发柜时间 */
   transferTime = ''
+
+  /** 船运信息-地图地址 */
+  url = ''
 }
 
 export class ImportDeclareInfoVO {
@@ -2608,6 +2667,9 @@ export class ImportDeclareListVO {
   /** 计划ID */
   id = undefined
 
+  /** 是否超期 */
+  overdue = false
+
   /** 品类名称 */
   product = ''
 
@@ -2617,7 +2679,7 @@ export class ImportDeclareListVO {
   /** 产地 */
   productPlaceName = ''
 
-  /** 放行时间 */
+  /** 放行时间，即纳税放柜时间 */
   releaseDate = ''
 
   /** 备注 */
@@ -2728,6 +2790,49 @@ export class ImportDeclareTaxDetailVO {
   taxType = 'SELF_PAY'
 }
 
+export class ImportDeclareThirdCommitDTO {
+  /** 柜号 */
+  cabinetCode = ''
+
+  /** 抽检数量 */
+  checkQuantity = undefined
+
+  /** 抽检单位 1:箱 2：个 */
+  checkUnit = undefined
+
+  /** 报关单号 */
+  declareNumber = ''
+
+  /** 货柜免租截止日期 */
+  endFreeRentTime = ''
+
+  /** 免费滞港截止日期 */
+  endFreeStayPortTime = ''
+
+  /** 是否查验 1：是 0：否 */
+  examine = undefined
+
+  /** 熏蒸状态 1:已完成 0：待熏蒸 */
+  fumigationStatus = undefined
+
+  /** 报关申报资料 */
+  importDeclareFiles = []
+
+  /** 放行时间 */
+  releaseDate = ''
+
+  /** 进口报关单 */
+  releaseFiles = []
+}
+
+export class ImportDeclareThirdReplenishDTO {
+  /** 报关ID */
+  importDeclareId = undefined
+
+  /** 进口报关单 */
+  releaseFiles = []
+}
+
 export class InputStream {}
 
 export class InternationalShipmentDetailListVO {
@@ -2787,6 +2892,9 @@ export class InternationalShipmentDetailVO {
   /** 货柜港口状态 */
   declareDtoList = []
 
+  /** 入境口岸发货信息 */
+  entryPortDelivery = new EntryPortDelivery()
+
   /** 出口报关信息 */
   exportDeclareInfoVO = new ExportDeclareInfoVO()
 
@@ -2812,10 +2920,10 @@ export class InternationalShipmentDetailVO {
   productQuotaInfoVO = new ProductQuotaInfoVO()
 
   /** 收货信息 */
-  receiveInfoVO = new ReceiveInfoVO()
+  receiveInfoVOList = []
 
-  /** 收货方信息 */
-  receiverCustomerInfoVO = new ReceiverCustomerInfoVO()
+  /** 还箱信息 */
+  returnInfoVO = new ReturnInfoVO()
 
   /** 船运信息 */
   shipmentInfoVO = new ShipmentInfoVO()
@@ -2878,11 +2986,14 @@ export class InternationalTravelingInfoListVO {
   /** 品类ID */
   productId = undefined
 
-  /** 放柜时间 */
-  releaseDate = ''
-
   /** 备注 */
   remark = ''
+
+  /** 可发货状态 全部时不传 1_可发货, 0_不可发货  */
+  shipStatus = undefined
+
+  /** 发货时间 */
+  shipTime = ''
 
   /** SPU Names */
   spuNames = ''
@@ -2895,14 +3006,14 @@ export class InternationalTravelingInfoListVO {
 }
 
 export class InternationalTravelingListVO {
+  /** 跳转CODE */
+  code = ''
+
   /** 国内入境-可提 */
   domesticEntryAllowGetCount = undefined
 
   /** 国内入境-到港 */
   domesticEntryArrivalCount = undefined
-
-  /** 无用id，仅用于前端table渲染 */
-  id = undefined
 
   /** 国际在途 */
   internationalTravelingCount = undefined
@@ -4430,26 +4541,14 @@ export class ProductVO {
 }
 
 export class ReceiveInfoVO {
-  /** 收货信息-压车天数 */
-  actualUnloadTime = undefined
-
   /** 收货信息-到达销地时间 */
   arrivalTime = ''
 
-  /** 收货信息-司机补打冷费 */
-  driverChillFee = undefined
+  /** 收货信息-服务区域 */
+  customerCompanyName = ''
 
-  /** 收货信息-报空交接文件 */
-  emptyFile = []
-
-  /** 收货信息-报空合计费用 */
-  emptyTotalFee = undefined
-
-  /** 收货信息-压车费用 */
-  pressFee = undefined
-
-  /** 还箱证明文件 */
-  proofFileVO = new FileVO()
+  /** 收货信息-服务客户仓库 */
+  customerdePositoryName = ''
 
   /** 收货信息-销地收货时间 */
   receiveTime = ''
@@ -4457,8 +4556,14 @@ export class ReceiveInfoVO {
   /** 收货信息-收货人 */
   receiver = ''
 
-  /** 收货信息-报空备注 */
-  remark = ''
+  /** 收货方(收货组织-收货方) */
+  receiverDepart = ''
+
+  /** 收货方类型 1_销地分公司  2_客户 */
+  receiverType = undefined
+
+  /** 商品明细 */
+  tableVOs = []
 }
 
 export class ReceiveWebDetailVO {
@@ -4599,11 +4704,14 @@ export class ReceiveWebListVO {
   /** 品类名称 */
   productName = ''
 
+  /** 收货区域 */
+  receiveArea = ''
+
+  /** 收货组织 */
+  receiveDepart = ''
+
   /** 销地收货时间 */
   receivedDate = ''
-
-  /** 收货方名称,如果多个收货方逗号分割 */
-  receiverName = ''
 
   /** 发货方 */
   senderName = ''
@@ -4613,20 +4721,6 @@ export class ReceiveWebListVO {
 
   /** 状态名称 */
   stateName = ''
-}
-
-export class ReceiverCustomerInfoVO {
-  /** 收货方信息-收货方ID */
-  receiverId = undefined
-
-  /** 收货方信息-收货方名称 */
-  receiverName = ''
-
-  /** 收货方信息-收货方类型 */
-  receiverType = ''
-
-  /** 发货方信息-贸易方名称 */
-  traderName = ''
 }
 
 export class ReportGroupVO {
@@ -4700,6 +4794,29 @@ export class Result {
   timestamp = undefined
 }
 
+export class ReturnInfoVO {
+  /** 收货信息-压车天数 */
+  actualUnloadTime = undefined
+
+  /** 收货信息-司机补打冷费 */
+  driverChillFee = undefined
+
+  /** 收货信息-报空交接文件 */
+  emptyFile = []
+
+  /** 收货信息-报空合计费用 */
+  emptyTotalFee = undefined
+
+  /** 收货信息-压车费用 */
+  pressFee = undefined
+
+  /** 还箱证明文件 */
+  proofFileVO = new FileVO()
+
+  /** 收货信息-报空备注 */
+  remark = ''
+}
+
 export class RolePermissionEditDTO {
   /** 数据权限ids */
   dataRuleIds = ''
@@ -4751,18 +4868,6 @@ export class SelectTextOption {
 }
 
 export class ShipmentInfoVO {
-  /** 船运信息-实际到港时间 */
-  actualArriveTime = ''
-
-  /** 船运信息-实际离港时间 */
-  actualDepartedTime = ''
-
-  /** 船运信息-预计到港时间 */
-  estimateArriveTime = ''
-
-  /** 船运信息-预计离港时间 */
-  estimateDepartedTime = ''
-
   /** 船运信息-计划离港时间 */
   expectDepartedTime = ''
 
@@ -5125,17 +5230,11 @@ export class SopResultListVO {
   /** 创建时间 */
   createDate = ''
 
-  /** 客户收货方名称 */
-  customerName = ''
-
   /** 运输方式(1, 陆运),(2, 海运),(3, 铁运) */
   deliveryMethod = undefined
 
   /** 运输方式名称 */
   deliveryMethodName = ''
-
-  /** 公司收货方名称 */
-  departName = ''
 
   /** 计划ID */
   id = undefined
@@ -5146,11 +5245,11 @@ export class SopResultListVO {
   /** 产地名称 */
   productPlaceName = ''
 
-  /** 收货方名称,如果多个收货方逗号分割 */
-  receiverName = ''
+  /** 收货区域 */
+  receiveArea = ''
 
-  /** 收货方类型1：销地分公司 2客户 */
-  receiverType = undefined
+  /** 收货组织 */
+  receiveDepart = ''
 
   /** 发货方 */
   senderName = ''
@@ -6114,6 +6213,14 @@ export class TempMonitorSettingEditDTO {
 
   /** 温度 */
   temperature = undefined
+}
+
+export class ThirdLoginModel {
+  /** 密码 */
+  password = ''
+
+  /** 账号 */
+  username = ''
 }
 
 export class URI {
