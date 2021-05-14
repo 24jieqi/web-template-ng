@@ -2340,6 +2340,9 @@ export class IFrameInfoQueryVO {
   /** 运输方式 1_陆运  2_海运 3_铁运 */
   deliveryMethod = 1
 
+  /** 发货计划ID */
+  id = undefined
+
   /** 进口港代码(海运必填) */
   portCode = ''
 }

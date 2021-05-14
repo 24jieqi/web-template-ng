@@ -26,7 +26,7 @@ axios.interceptors.response.use(
     // 操作不成功时直接提示
     if (!data.success) {
       message.error(data.message);
-      return Promise.reject(data);
+      return Promise.reject(data.message);
     }
     return data as any;
   },
@@ -35,6 +35,10 @@ axios.interceptors.response.use(
       const { status, data, config } = response;
       const message = data?.message || msg.errorMsg;
       // 全局响应拦截需要重写
+      handleNoCommontError(message, config);
+      return Promise.reject(message);
+    } else {
+      return Promise.reject(msg.networkErrorMsg);
     }
   },
 );

@@ -5,9 +5,9 @@ interface IConfig {
 }
 
 const config: IConfig = {
-  baseUrl: '/api',
+  baseUrl: '/hjgp-boot',
   authKey: 'Authorization',
-  uploadUrl: '/_files/upload'
+  uploadUrl: '/_files/upload',
 };
 
 export default config;

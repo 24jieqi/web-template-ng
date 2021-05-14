@@ -33540,6 +33540,20 @@
           {
             "dataType": {
               "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": [],
+              "typeProperties": []
+            },
+            "name": "id",
+            "description": "发货计划ID",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
               "typeName": "string",
               "isDefsType": false,
               "templateIndex": -1,

@@ -10,16 +10,10 @@ export default defineConfig({
       '/hjgp-boot': {
         target: 'https://durian-dev.hjgpscm.com',
         changeOrigin: true,
-        ws: false,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/hjgp-boot/, ''),
       },
       '/_files': {
         target: 'https://durian-dev.hjgpscm.com',
         changeOrigin: true,
-        ws: false,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/_files/, ''),
       },
     },
   },

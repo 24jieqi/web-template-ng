@@ -22,3 +22,21 @@ export function pageList({ queryParams, bodyParams }: IParams = {} as IParams) {
     params: queryParams
   })
 }
+interface RqParams {
+  queryKey: any
+  pageParam?: any
+}
+// 需要和react-query一起使用
+export async function pageListRq(params?: RqParams) {
+  const [_, ...restParamsData] = params.queryKey
+  const fetchParams: IParams = {
+    queryParams: restParamsData[0],
+    bodyParams: restParamsData[1]
+  }
+  try {
+    const res = await pageList(fetchParams)
+    return res
+  } catch (error) {
+    throw new Error(error)
+  }
+}
