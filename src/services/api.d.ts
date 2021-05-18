@@ -619,11 +619,17 @@ declare namespace defs {
   }
 
   export class DeclareCustomCommitDTO {
+    /** 出口报关单 */
+    declareFile?: Array<defs.FileVO>
+
     /** 进口申报材料 */
     domesticDeclareFile?: Array<defs.FileVO>
 
     /** id */
     id?: number
+
+    /** 提单号 */
+    pickBillCode?: string
 
     /** 计划id */
     planId?: number
@@ -642,6 +648,9 @@ declare namespace defs {
     /** 进口申报材料 */
     domesticDeclareFile?: string
 
+    /** 出口总货值 */
+    exportTotalAmount?: number
+
     /** id */
     id?: number
 
@@ -654,6 +663,9 @@ declare namespace defs {
     /** 计划id */
     planId?: number
 
+    /** 装柜标签 */
+    producd?: string
+
     /** 品类名 */
     productName?: string
 
@@ -665,6 +677,21 @@ declare namespace defs {
 
     /** 商品 */
     spu?: string
+
+    /** 装柜商品信息 */
+    tableVOS?: Array<defs.TableVO>
+
+    /** 进口总货值 */
+    totalAmount?: number
+
+    /** 总毛重 */
+    totalGrossWeight?: number
+
+    /** 总净重 */
+    totalNetWeight?: number
+
+    /** 进口总货值 */
+    totalPack?: number
 
     /** 货物到港时间 */
     transferTime?: string
@@ -1488,6 +1515,9 @@ declare namespace defs {
     /** exportUnitPrice */
     exportUnitPrice?: number
 
+    /** factoryId */
+    factoryId?: number
+
     /** id */
     id?: number
 
@@ -1697,6 +1727,9 @@ declare namespace defs {
     /** 温度单位为℃ */
     temperature: number
 
+    /** 温度风口照片 */
+    temperatureAirPortPicture: Array<defs.FileVO>
+
     /** 挂车号 */
     trailerCarNo: string
   }
@@ -1761,6 +1794,12 @@ declare namespace defs {
 
     /** 温度单位为℃ */
     temperature?: number
+
+    /** 温度风口照片 */
+    temperatureAirPortPicture?: Array<defs.FileVO>
+
+    /** 温度风口照片JSON数据 */
+    temperatureAirPortPictureJson?: string
 
     /** 总件数 */
     totalPack?: number
@@ -2669,6 +2708,9 @@ declare namespace defs {
     /** 计划离港时间 */
     expectDepartedTime?: string
 
+    /** 出口已送港时间 */
+    exportPortTime?: string
+
     /** 头程运输公司 */
     headTransportName?: string
 
@@ -2692,6 +2734,9 @@ declare namespace defs {
 
     /** 备注 */
     remark?: string
+
+    /** 船次号 */
+    shipBatchCode?: string
 
     /** 离港时间 */
     shippingTime?: string
@@ -3221,6 +3266,9 @@ declare namespace defs {
     /** longitude 经度 */
     lng?: string
 
+    /** 国际化 */
+    nameLocale?: ObjectMap<any, string>
+
     /** 组织类型 */
     orgCategories?: Array<number>
 
@@ -3229,6 +3277,9 @@ declare namespace defs {
 
     /** 父组织id */
     parentId?: number
+
+    /** 关联品类ID(组织类型包含海外子公司时必填) */
+    productIds?: Array<number>
 
     /** 备注 */
     remark?: string
@@ -5452,7 +5503,7 @@ declare namespace defs {
     createTime?: string
 
     /** deleted */
-    deleted?: string
+    deleted?: number
 
     /** departName */
     departName?: string
@@ -5569,6 +5620,9 @@ declare namespace defs {
     /** longitude 经度 */
     lng?: string
 
+    /** 国际化 */
+    nameLocale?: ObjectMap<any, string>
+
     /** 组织类型 */
     orgCategories?: Array<number>
 
@@ -5577,6 +5631,9 @@ declare namespace defs {
 
     /** 父组织id */
     parentId?: number
+
+    /** 关联品类ID(组织类型包含海外子公司时必填) */
+    productIds?: Array<number>
 
     /** 备注 */
     remark?: string
@@ -5649,7 +5706,7 @@ declare namespace defs {
     createTime?: string
 
     /** 是否删除 */
-    deleted?: string
+    deleted?: number
 
     /** 组织名称 */
     departName?: string
@@ -7838,6 +7895,20 @@ declare namespace API {
     }
 
     /**
+     * 货币下拉列表
+     * /common/dict/list/currency/option
+     */
+    export namespace shipCompanyOption {
+      export class Params {}
+
+      export type Response = defs.Result<Array<defs.SelectTextOption>>
+      export const init: Response
+      export function request(
+        params: Params
+      ): Promise<defs.Result<Array<defs.SelectTextOption>>>
+    }
+
+    /**
      * 收货方类型接口
      * /common/dict/receiver/type
      */
@@ -8130,12 +8201,18 @@ declare namespace API {
         deliveryOrderCode?: string
         /** 进口报关公司ID（国内） */
         domesticDeclareCompanyId?: number
+        /** 出口已送港截止时间，格式yyyy-MM-dd */
+        exportPortEndDate?: string
+        /** 出口已送港开始时间，格式yyyy-MM-dd */
+        exportPortStartDate?: string
         /** 页码 */
         pageNo: number
         /** 每页条数 */
         pageSize: number
         /** 品类ID */
         productId?: number
+        /** 船次号 */
+        shipBatchCode?: string
         /** 商品ID */
         spuId?: number
         /** 状态编码 */

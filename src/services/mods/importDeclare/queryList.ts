@@ -19,12 +19,18 @@ export class IQueryParams {
   deliveryOrderCode?: string
   /** 进口报关公司ID（国内） */
   domesticDeclareCompanyId?: number
+  /** 出口已送港截止时间，格式yyyy-MM-dd */
+  exportPortEndDate?: string
+  /** 出口已送港开始时间，格式yyyy-MM-dd */
+  exportPortStartDate?: string
   /** 页码 */
   pageNo: number
   /** 每页条数 */
   pageSize: number
   /** 品类ID */
   productId?: number
+  /** 船次号 */
+  shipBatchCode?: string
   /** 商品ID */
   spuId?: number
   /** 状态编码 */

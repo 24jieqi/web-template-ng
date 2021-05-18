@@ -614,11 +614,17 @@ export class DeclareCustomAddDTO {
 }
 
 export class DeclareCustomCommitDTO {
+  /** 出口报关单 */
+  declareFile = []
+
   /** 进口申报材料 */
   domesticDeclareFile = []
 
   /** id */
   id = undefined
+
+  /** 提单号 */
+  pickBillCode = ''
 
   /** 计划id */
   planId = undefined
@@ -637,6 +643,9 @@ export class DeclareCustomEditVO {
   /** 进口申报材料 */
   domesticDeclareFile = ''
 
+  /** 出口总货值 */
+  exportTotalAmount = undefined
+
   /** id */
   id = undefined
 
@@ -649,6 +658,9 @@ export class DeclareCustomEditVO {
   /** 计划id */
   planId = undefined
 
+  /** 装柜标签 */
+  producd = ''
+
   /** 品类名 */
   productName = ''
 
@@ -660,6 +672,21 @@ export class DeclareCustomEditVO {
 
   /** 商品 */
   spu = ''
+
+  /** 装柜商品信息 */
+  tableVOS = []
+
+  /** 进口总货值 */
+  totalAmount = undefined
+
+  /** 总毛重 */
+  totalGrossWeight = undefined
+
+  /** 总净重 */
+  totalNetWeight = undefined
+
+  /** 进口总货值 */
+  totalPack = undefined
 
   /** 货物到港时间 */
   transferTime = ''
@@ -1483,6 +1510,9 @@ export class DeliveryPlanItem {
   /** exportUnitPrice */
   exportUnitPrice = undefined
 
+  /** factoryId */
+  factoryId = undefined
+
   /** id */
   id = undefined
 
@@ -1692,6 +1722,9 @@ export class DomesticTransportStartDTO {
   /** 温度单位为℃ */
   temperature = undefined
 
+  /** 温度风口照片 */
+  temperatureAirPortPicture = []
+
   /** 挂车号 */
   trailerCarNo = ''
 }
@@ -1756,6 +1789,12 @@ export class DomesticTransportationDetailVO {
 
   /** 温度单位为℃ */
   temperature = undefined
+
+  /** 温度风口照片 */
+  temperatureAirPortPicture = []
+
+  /** 温度风口照片JSON数据 */
+  temperatureAirPortPictureJson = ''
 
   /** 总件数 */
   totalPack = undefined
@@ -2664,6 +2703,9 @@ export class ImportDeclareListVO {
   /** 计划离港时间 */
   expectDepartedTime = ''
 
+  /** 出口已送港时间 */
+  exportPortTime = ''
+
   /** 头程运输公司 */
   headTransportName = ''
 
@@ -2687,6 +2729,9 @@ export class ImportDeclareListVO {
 
   /** 备注 */
   remark = ''
+
+  /** 船次号 */
+  shipBatchCode = ''
 
   /** 离港时间 */
   shippingTime = ''
@@ -3216,6 +3261,9 @@ export class OrganizationsCreateEntity {
   /** longitude 经度 */
   lng = ''
 
+  /** 国际化 */
+  nameLocale = undefined
+
   /** 组织类型 */
   orgCategories = []
 
@@ -3224,6 +3272,9 @@ export class OrganizationsCreateEntity {
 
   /** 父组织id */
   parentId = undefined
+
+  /** 关联品类ID(组织类型包含海外子公司时必填) */
+  productIds = []
 
   /** 备注 */
   remark = ''
@@ -5447,7 +5498,7 @@ export class SysDepart {
   createTime = ''
 
   /** deleted */
-  deleted = ''
+  deleted = undefined
 
   /** departName */
   departName = ''
@@ -5564,6 +5615,9 @@ export class SysDepartEditDTO {
   /** longitude 经度 */
   lng = ''
 
+  /** 国际化 */
+  nameLocale = undefined
+
   /** 组织类型 */
   orgCategories = []
 
@@ -5572,6 +5626,9 @@ export class SysDepartEditDTO {
 
   /** 父组织id */
   parentId = undefined
+
+  /** 关联品类ID(组织类型包含海外子公司时必填) */
+  productIds = []
 
   /** 备注 */
   remark = ''
@@ -5644,7 +5701,7 @@ export class SysDepartTreeModel {
   createTime = ''
 
   /** 是否删除 */
-  deleted = ''
+  deleted = undefined
 
   /** 组织名称 */
   departName = ''

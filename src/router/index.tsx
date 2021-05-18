@@ -1,39 +1,14 @@
-import NotFound from '@/pages/404';
-import { Router } from '@reach/router';
 import React from 'react';
-import { RouteConfig } from './config/user';
+import { BrowserRouter } from 'react-router-dom'
+import { renderRoutes } from 'react-router-config'
+import routes from './config';
 
-const modules = import.meta.globEager('./config/*.ts');
-const config: RouteConfig[] = [];
-// eslint-disable-next-line guard-for-in
-for (const path in modules) {
-  config.push(...modules[path].default);
-}
-
-function renderRoute(config: RouteConfig[]) {
-  const result = [];
-  for (const item of config) {
-    const Comp = item.component;
-    if (!item.children || !item.children.length) {
-      result.push(<Comp key={item.path} path={item.path} />);
-    } else {
-      result.push(
-        <Comp key={item.path} path={item.path}>
-          {renderRoute(item.children)}
-        </Comp>,
-      );
-    }
-  }
-  return result;
-}
-
-const RouterPage: React.FC = () => {
+function Router() {
   return (
-    <Router>
-      {renderRoute(config)}
-      <NotFound default />
-    </Router>
+    <BrowserRouter>
+      {renderRoutes(routes)}
+  </BrowserRouter>
   );
-};
+}
 
-export default RouterPage;
+export default Router;

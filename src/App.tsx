@@ -1,7 +1,5 @@
 import React from 'react';
 import './App.css';
-// import logo from './images/logo@2x.png';
-// import bg from './images/bg@2x.png';
 import Router from './router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
