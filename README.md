@@ -3,7 +3,11 @@
 > 使用`vite`构建并基于`@reach/router`,`react-query`,`zustand`的前端初始化模板
 
 ### Check List
-[] React Router替换reach/router
+
+[*] React Router 替换 reach/router
+[] 路由 Demo
+[] 路由权限
+[] zustand Demo
 
 ### Todo List
 

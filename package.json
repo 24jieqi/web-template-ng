@@ -8,6 +8,7 @@
     "lint": "tsc --noEmit && eslint src --ext .ts,.tsx"
   },
   "dependencies": {
+    "@loadable/component": "^5.15.0",
     "@types/react-router-dom": "^5.1.7",
     "antd": "^4.15.3",
     "axios": "^0.21.1",
@@ -22,6 +23,7 @@
     "zustand": "^3.4.2"
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.3",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-config": "^5.0.2",
