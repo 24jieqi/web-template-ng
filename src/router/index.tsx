@@ -3,8 +3,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import routes from './config';
 
-function Router() {
+const Router = () => {
   return <BrowserRouter>{renderRoutes(routes)}</BrowserRouter>;
-}
+};
 
 export default Router;

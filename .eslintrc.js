@@ -16,6 +16,7 @@ module.exports = {
     // myGlobal: false
   },
   rules: {
+    "interface-over-type-literal": 0,
     // 自定义你的规则
   },
   settings: {
