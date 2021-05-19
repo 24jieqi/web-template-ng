@@ -1,10 +1,11 @@
 import React from 'react';
 import loadable from '@loadable/component'
+import Layouts from '@/layouts/index'
 import { BASE1, BASE2, BASE_URL } from './path';
 const routes = [
   {
     path:BASE_URL,
-    component: loadable(() => import('@/layouts/index')),
+    component:Layouts,
     routes: [
       {
         path: BASE1,
