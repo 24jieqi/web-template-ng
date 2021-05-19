@@ -6,6 +6,7 @@ interface State {
   /** menuList */
   menuList: any[];
   setMenuList: () => void;
+  [key: string]: any;
 }
 
 const useGlobalStore = create<State>(
