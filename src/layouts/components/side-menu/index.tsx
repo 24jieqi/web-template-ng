@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Menu } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import useGlobalStore from '@/stores/global';
@@ -9,12 +9,10 @@ const { SubMenu } = Menu;
 
 const SideMenu: React.FC = React.memo(() => {
   const { menuList, setMenuList } = useGlobalStore();
-  console.log(menuList);
   useEffect(() => {
     setMenuList();
   }, []);
   const menuItem = (menu) => {
-    console.log('menu', menu);
     // 是否有子菜单
     const hasChildren = menu?.routes?.length > 0;
     let item = null;
@@ -45,6 +43,7 @@ const SideMenu: React.FC = React.memo(() => {
     }
     return item;
   };
+  console.log('item');
   return (
     <Menu mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} className={styles.sideMenu}>
       {menuList?.map((v, i) => {
@@ -53,4 +52,4 @@ const SideMenu: React.FC = React.memo(() => {
     </Menu>
   );
 });
-export default SideMenu;
+export default memo(SideMenu);

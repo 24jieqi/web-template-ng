@@ -27,7 +27,6 @@ const LayoutComponent: React.FC<RouteConfigComponentProps> = React.memo((props) 
             style={{
               padding: 24,
               margin: 0,
-              minHeight: 280,
             }}>
             <div>{renderRoutes(route?.routes)}</div>
           </Content>

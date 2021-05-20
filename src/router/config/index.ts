@@ -7,6 +7,7 @@ const routes: RouteConfig[] = [
   {
     path: '/',
     title: '首页',
+    exact: true,
     component: Layouts,
     routes: [
       {
