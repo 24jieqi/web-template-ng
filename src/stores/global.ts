@@ -1,5 +1,5 @@
 import create, { SetState, GetState } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import routerConfig from '@/router/config/index';
 import { generateMenus } from '@/utils/tools';
 interface State {
@@ -10,14 +10,23 @@ interface State {
 }
 
 const useGlobalStore = create<State>(
-  devtools((set: SetState<State>, get: GetState<State>) => ({
-    menuList: null,
-    setMenuList: () => {
-      set({
-        menuList: getMenuList(routerConfig),
-      });
-    },
-  })),
+  devtools(
+    // 本地存储，其他store不需要
+    persist(
+      (set: SetState<State>, get: GetState<State>) => ({
+        menuList: null,
+        setMenuList: () => {
+          set({
+            menuList: getMenuList(routerConfig),
+          });
+        },
+      }),
+      {
+        name: 'global-storage',
+        getStorage: () => localStorage,
+      },
+    ),
+  ),
 );
 export default useGlobalStore;
 const getMenuList = (routes) => {
