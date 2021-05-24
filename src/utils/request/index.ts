@@ -1,4 +1,4 @@
-import config from '@/config';
+import { AUTH_KEY, BASE_URL } from '@/config';
 import { message } from 'antd';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import qs from 'querystring';
@@ -17,8 +17,6 @@ interface IErrorData {
   success: boolean;
   timestamp: number;
 }
-
-const { baseUrl, authKey } = config;
 
 axios.interceptors.response.use(
   (response: AxiosResponse<any>) => {
@@ -48,7 +46,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 });
 export default async function request<T = any>(options: requestOptions) {
   const { url } = options;
-  const Authorization = localStorage.getItem(authKey);
+  const Authorization = localStorage.getItem(AUTH_KEY);
   const lang = localStorage.getItem('currentLang');
   let headers = {};
   if (options) {
@@ -68,6 +66,6 @@ export default async function request<T = any>(options: requestOptions) {
     },
   };
   const newOptions: requestOptions = { ...defaultOptions, ...omit(options, ['url', 'headers']) };
-  const newUrl = baseUrl + url;
+  const newUrl = `${BASE_URL}${url}`;
   return axios(newUrl, newOptions) as unknown as T;
 }

@@ -1,7 +1,7 @@
 {
-  "originUrl": "https://durian-dev.hjgpscm.com/hjgp-boot/v2/api-docs",
+  "originUrl": "https://pitaya-dev.hjgpscm.com/api/commodity/v2/api-docs",
   "outDir": "./src/services",
-  "templatePath": "./apiTemplate",
+  "templatePath": "./api-template",
   "prettierConfig": {
     "jsxSingleQuote": true,
     "singleQuote": true,

@@ -1,13 +1,11 @@
-interface IConfig {
-  authKey: string;
-  baseUrl: string;
-  uploadUrl: string;
-}
+/**
+ * 缓存登录信息的 key
+ */
+export const AUTH_KEY = 'Authorization';
 
-const config: IConfig = {
-  baseUrl: '/hjgp-boot',
-  authKey: 'Authorization',
-  uploadUrl: '/_files/upload',
-};
+/**
+ * 接口前缀
+ */
+export const BASE_URL = '/hjgp-boot';
 
-export default config;
+export const UPLOAD_URL = '/_files/upload';
