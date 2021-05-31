@@ -39,3 +39,8 @@ const judgePermission = (menu, permission) => {
   }
   return true;
 };
+
+/** 根据routes生成菜单 */
+export const getMenuList = (routes) => {
+  return generateMenus(routes, []);
+};

@@ -15,6 +15,14 @@ export const mainRoutes: RouteConfig[] = [
 ];
 const routes: RouteConfig[] = [
   {
+    path: '/login',
+    exact: true,
+    meta: {
+      hideInMenu: true,
+    },
+    component: loadable(() => import('@/pages/login')),
+  },
+  {
     path: '/',
     component: Layouts,
     routes: mainRoutes,

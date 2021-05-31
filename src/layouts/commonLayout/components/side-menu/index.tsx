@@ -1,17 +1,15 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Menu } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import useGlobalStore from '@/stores/global';
 import styles from './style.module.less';
 import { Link } from 'react-router-dom';
-import { RouteConfig } from 'react-router-config';
-const { SubMenu } = Menu;
+import { useMount } from 'ahooks';
 
 const SideMenu: React.FC = React.memo(() => {
   const { menuList, setMenuList } = useGlobalStore();
-  useEffect(() => {
+  useMount(() => {
     setMenuList();
-  }, []);
+  });
   const menuItem = (menu) => {
     // 是否有子菜单
     const hasChildren = menu?.routes?.length > 0;
