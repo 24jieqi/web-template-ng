@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 import { RouteConfig } from 'react-router-config';
 import routerModule from './router-module';
-import Layouts from '@/layouts/index';
+import Layouts from '@/layouts/commonLayout/index';
 import baseModule from './base-module';
 const routes: RouteConfig[] = [
   {

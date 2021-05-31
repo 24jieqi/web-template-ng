@@ -19,7 +19,7 @@ const SideMenu: React.FC = React.memo(() => {
     // 没有子菜单显示menu
     if (!hasChildren) {
       item = (
-        <Menu.Item>
+        <Menu.Item key={menu?.title}>
           <Link to={menu?.path}>{menu?.title}</Link>
         </Menu.Item>
       );
@@ -33,7 +33,7 @@ const SideMenu: React.FC = React.memo(() => {
         );
       } else {
         item = (
-          <Menu.SubMenu title={menu?.title}>
+          <Menu.SubMenu title={menu?.title} key={menu?.title}>
             {menu.routes.map((v, i) => {
               return menuItem(v);
             })}

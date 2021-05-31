@@ -1,6 +1,7 @@
 import React from 'react';
 import loadable from '@loadable/component';
-import Layouts from '@/layouts/index';
+import Layouts from '@/layouts/commonLayout/index';
+import BlankLayout from '@/layouts/blankLayout/index';
 import { BASE1, BASE2, BASE_URL, CHILD_ROUTE1, CHILD_ROUTE2, GRANDCHIND_ROUTE1, GRANDCHIND_ROUTE2 } from './path';
 import { RouteConfig } from 'react-router-config';
 const routes: RouteConfig[] = [
@@ -24,7 +25,7 @@ const routes: RouteConfig[] = [
       {
         path: CHILD_ROUTE2,
         title: '深层路由demo',
-        component: loadable(() => import('@/pages/router-module/deep-route/child-route/childRoute2')),
+        component: BlankLayout,
         routes: [
           {
             path: GRANDCHIND_ROUTE1,
