@@ -1,13 +1,13 @@
 import React from 'react';
 import loadable from '@loadable/component';
-import Layouts from '@/layouts/commonLayout/index';
+import BlankLayout from '@/layouts/blankLayout/index';
 import { BASE1, BASE2, BASE_URL } from './path';
 import { RouteConfig } from 'react-router-config';
 const routes: RouteConfig[] = [
   {
     path: BASE_URL,
     title: '基础管理',
-    component: Layouts,
+    component: BlankLayout,
     routes: [
       {
         path: BASE1,

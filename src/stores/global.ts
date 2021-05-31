@@ -1,6 +1,6 @@
 import create, { SetState, GetState } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import routerConfig from '@/router/config/index';
+import { mainRoutes } from '@/router/config/index';
 import { generateMenus } from '@/utils/tools';
 interface State {
   /** menuList */
@@ -17,7 +17,7 @@ const useGlobalStore = create<State>(
         menuList: null,
         setMenuList: () => {
           set({
-            menuList: getMenuList(routerConfig),
+            menuList: getMenuList(mainRoutes),
           });
         },
       }),
