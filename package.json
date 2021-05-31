@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:test": "vite build --mode test",
+    "build:prod": "tsc && vite build --mode production",
     "serve": "vite preview",
     "lint": "tsc --noEmit && eslint src --ext .ts,.tsx"
   },

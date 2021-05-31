@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import { envConfig } from './src/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,11 +9,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/hjgp-boot': {
-        target: 'https://durian-dev.hjgpscm.com',
+        target: envConfig.dev.apiHost,
         changeOrigin: true,
       },
       '/_files': {
-        target: 'https://durian-dev.hjgpscm.com',
+        target: envConfig.dev.uploadHost,
         changeOrigin: true,
       },
     },
