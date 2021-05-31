@@ -5,7 +5,6 @@ import './App.css';
 import Router from './router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import 'antd/dist/antd.css';
 
 const client = new QueryClient({
   defaultOptions: {
