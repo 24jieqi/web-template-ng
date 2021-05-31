@@ -1,4 +1,5 @@
 // 商品明细数据 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -32,9 +33,28 @@ export const getCommodityById = (
 }
 
 /**
- * @description 商品明细数据 hooks
+ * @description 商品明细数据 hooks 默认的 key
  */
-export const useGetCommodityById = (
-  params: GetCommodityByIdParams,
-  headers?: any
-) => {}
+export const USE_GET_COMMODITY_BY_ID_KEY =
+  '/api/commodity/v1/commodity/{commodityId}_GET'
+
+// export const getCommodityByIdQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return getCommodityById(params);
+// }
+
+// /**
+//  * @description 商品明细数据 hooks
+//  */
+// export const useGetCommodityById = (params: GetCommodityByIdParams, headers?:any, key = 'USE_GET_COMMODITY_BY_ID_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => getCommodityById(params, headers),
+//   })
+// }

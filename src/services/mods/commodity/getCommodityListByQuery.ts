@@ -1,4 +1,5 @@
 // 果品/辅料列表查询 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -42,9 +43,28 @@ export const getCommodityListByQuery = (
 }
 
 /**
- * @description 果品/辅料列表查询 hooks
+ * @description 果品/辅料列表查询 hooks 默认的 key
  */
-export const useGetCommodityListByQuery = (
-  params: GetCommodityListByQueryParams,
-  headers?: any
-) => {}
+export const USE_GET_COMMODITY_LIST_BY_QUERY_KEY =
+  '/api/commodity/v1/commodity/list/query_GET'
+
+// export const getCommodityListByQueryQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return getCommodityListByQuery(params);
+// }
+
+// /**
+//  * @description 果品/辅料列表查询 hooks
+//  */
+// export const useGetCommodityListByQuery = (params: GetCommodityListByQueryParams, headers?:any, key = 'USE_GET_COMMODITY_LIST_BY_QUERY_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => getCommodityListByQuery(params, headers),
+//   })
+// }

@@ -1,4 +1,5 @@
 // 根据id获取商品分类 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -28,9 +29,28 @@ export const getCommodityTypeById = (
 }
 
 /**
- * @description 根据id获取商品分类 hooks
+ * @description 根据id获取商品分类 hooks 默认的 key
  */
-export const useGetCommodityTypeById = (
-  params: GetCommodityTypeByIdParams,
-  headers?: any
-) => {}
+export const USE_GET_COMMODITY_TYPE_BY_ID_KEY =
+  '/api/commodity/v1/type/{id}_GET'
+
+// export const getCommodityTypeByIdQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return getCommodityTypeById(params);
+// }
+
+// /**
+//  * @description 根据id获取商品分类 hooks
+//  */
+// export const useGetCommodityTypeById = (params: GetCommodityTypeByIdParams, headers?:any, key = 'USE_GET_COMMODITY_TYPE_BY_ID_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => getCommodityTypeById(params, headers),
+//   })
+// }

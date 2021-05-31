@@ -40,9 +40,11 @@ axios.interceptors.response.use(
       // 全局响应拦截需要重写
       handleNoCommontError(message, config);
 
-      return Promise.reject(message);
+      throw new Error(message);
+      // return Promise.reject(message);
     } else {
-      return Promise.reject(msg.networkErrorMsg);
+      throw new Error(msg.networkErrorMsg);
+      // return Promise.reject(msg.networkErrorMsg);
     }
   },
 );

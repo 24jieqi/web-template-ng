@@ -1,4 +1,5 @@
 // 平台分类列表选项 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -32,9 +33,28 @@ export const getCommodityCategoryOptions = (
 }
 
 /**
- * @description 平台分类列表选项 hooks
+ * @description 平台分类列表选项 hooks 默认的 key
  */
-export const useGetCommodityCategoryOptions = (
-  params: GetCommodityCategoryOptionsParams,
-  headers?: any
-) => {}
+export const USE_GET_COMMODITY_CATEGORY_OPTIONS_KEY =
+  '/api/commodity/v1/category/list/option_GET'
+
+// export const getCommodityCategoryOptionsQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return getCommodityCategoryOptions(params);
+// }
+
+// /**
+//  * @description 平台分类列表选项 hooks
+//  */
+// export const useGetCommodityCategoryOptions = (params: GetCommodityCategoryOptionsParams, headers?:any, key = 'USE_GET_COMMODITY_CATEGORY_OPTIONS_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => getCommodityCategoryOptions(params, headers),
+//   })
+// }

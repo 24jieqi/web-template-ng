@@ -1,4 +1,5 @@
 // 删除商品分类 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -32,9 +33,28 @@ export const deleteCommodityType = (
 }
 
 /**
- * @description 删除商品分类 hooks
+ * @description 删除商品分类 hooks 默认的 key
  */
-export const useDeleteCommodityType = (
-  params: DeleteCommodityTypeParams,
-  headers?: any
-) => {}
+export const USE_DELETE_COMMODITY_TYPE_KEY =
+  '/api/commodity/v1/type/delete/{id}_DELETE'
+
+// export const deleteCommodityTypeQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return deleteCommodityType(params);
+// }
+
+// /**
+//  * @description 删除商品分类 hooks
+//  */
+// export const useDeleteCommodityType = (params: DeleteCommodityTypeParams, headers?:any, key = 'USE_DELETE_COMMODITY_TYPE_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => deleteCommodityType(params, headers),
+//   })
+// }

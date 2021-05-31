@@ -1,4 +1,5 @@
 // 修改商品分类排序 接口文件
+// import { useQuery } from 'react-query'
 import * as request from '@/utils/fetch'
 
 /**
@@ -30,9 +31,28 @@ export const updateCommodityTypeSort = (
 }
 
 /**
- * @description 修改商品分类排序 hooks
+ * @description 修改商品分类排序 hooks 默认的 key
  */
-export const useUpdateCommodityTypeSort = (
-  params: UpdateCommodityTypeSortParams,
-  headers?: any
-) => {}
+export const USE_UPDATE_COMMODITY_TYPE_SORT_KEY =
+  '/api/commodity/v1/type/update/sort_PUT'
+
+// export const updateCommodityTypeSortQuery = ({ queryKey }: {queryKey:any[]}) => {
+//   const [,params] = queryKey;
+//   return updateCommodityTypeSort(params);
+// }
+
+// /**
+//  * @description 修改商品分类排序 hooks
+//  */
+// export const useUpdateCommodityTypeSort = (params: UpdateCommodityTypeSortParams, headers?:any, key = 'USE_UPDATE_COMMODITY_TYPE_SORT_KEY') => {
+//   // 修正数据
+//   if(typeof headers === 'string') {
+//     key = headers;
+//     headers = null;
+//   }
+
+//   return useQuery({
+//     queryKey: [key, params],
+//     queryFn: () => updateCommodityTypeSort(params, headers),
+//   })
+// }
