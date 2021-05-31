@@ -2,6 +2,14 @@
 
 > 使用`vite`构建并基于`@reach/router`,`react-query`,`zustand`的前端初始化模板
 
+### Check List
+
+[*] React Router 替换 reach/router
+[] 路由 Demo
+[] 路由权限
+[] zustand Demo
+[] 配置 antd 主题与多语言
+
 ### Todo List
 
 - 更详细的使用示例

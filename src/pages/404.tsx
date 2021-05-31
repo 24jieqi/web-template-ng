@@ -1,10 +1,7 @@
-import { RouteComponentProps } from '@reach/router';
 import React from 'react';
 import { Button, Input } from 'antd'
 
-type IProps = RouteComponentProps;
-
-const NotFound: React.FC<IProps> = () => {
+const NotFound: React.FC = () => {
   return (
     <div>
       <Button>test</Button>
