@@ -9,6 +9,7 @@
 - [ ] 路由权限
 - [ ] `zustand` Demo
 - [ ] 配置 `antd` 主题与多语言
+- [x] 简化生成接口的参数
 
 ### Todo List
 
