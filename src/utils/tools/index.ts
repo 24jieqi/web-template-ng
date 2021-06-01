@@ -1,7 +1,7 @@
 import intersection from 'lodash/intersection';
 export function generateMenus(routes: any[], permission: string[]) {
   let Menus = routes.filter((v) => {
-    let inMenu = true;
+    let inMenu = false;
     // 过滤掉没有权限的：当前菜单的权限与当前用户所有权限没有交集
     inMenu = judgePermission(v, permission);
     return inMenu;
@@ -19,8 +19,8 @@ export function generateMenus(routes: any[], permission: string[]) {
 
 const judgePermission = (menu, permission) => {
   // 判断是否在菜单中
-  if (menu?.meta?.hideInMenu) {
-    return false;
+  if (menu?.meta?.inMenu) {
+    return true;
   }
   if (menu?.authority?.length > 0) {
     //   // 判断当前节点是否有权限
@@ -37,7 +37,7 @@ const judgePermission = (menu, permission) => {
       return false;
     }
   }
-  return true;
+  return false;
 };
 
 /** 根据routes生成菜单 */
