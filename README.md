@@ -4,11 +4,11 @@
 
 ### Check List
 
-- [x] React Router 替换 reach/router
+- [x] `react-router-dom` 替换 `reach/router`
 - [ ] 路由 Demo
 - [ ] 路由权限
-- [ ] zustand Demo
-- [ ] 配置 antd 主题与多语言
+- [ ] `zustand` Demo
+- [ ] 配置 `antd` 主题与多语言
 
 ### Todo List
 

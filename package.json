@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@loadable/component": "^5.15.0",
-    "@types/react-router-dom": "^5.1.7",
     "ahooks": "^2.10.4",
     "antd": "^4.15.3",
     "axios": "^0.21.1",
@@ -28,6 +27,7 @@
     "@types/loadable__component": "^5.13.3",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
     "@types/react-router-config": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
