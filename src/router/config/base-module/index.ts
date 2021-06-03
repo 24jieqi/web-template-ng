@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 import type { RouteConfig } from 'react-router-config';
 
-import BlankLayout from '@/layouts/blankLayout/index';
+import BlankLayout from '@/layouts/blank-layout/index';
 
 import { BASE1, BASE2, BASE_URL } from './path';
 

@@ -1,7 +1,9 @@
 import create, { SetState, GetState } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+
 import { mainRoutes } from '@/router/config/index';
 import { getMenuList } from '@/utils/tools';
+
 interface State {
   /** menuList */
   menuList: any[];

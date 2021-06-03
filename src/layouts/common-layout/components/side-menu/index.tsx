@@ -1,12 +1,15 @@
 import React, { memo } from 'react';
 import { Menu } from 'antd';
-import useGlobalStore from '@/stores/global';
-import styles from './style.module.less';
 import { Link } from 'react-router-dom';
 import { useMount } from 'ahooks';
 
-const SideMenu: React.FC = React.memo(() => {
+import useGlobalStore from '@/stores/global';
+
+import styles from './style.module.less';
+
+const SideMenu: React.FC = () => {
   const { menuList, setMenuList } = useGlobalStore();
+
   useMount(() => {
     setMenuList();
   });
@@ -41,13 +44,14 @@ const SideMenu: React.FC = React.memo(() => {
     }
     return item;
   };
-  console.log('item');
+
   return (
     <Menu mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} className={styles.sideMenu}>
-      {menuList?.map((v, i) => {
+      {menuList?.map((v) => {
         return menuItem(v);
       })}
     </Menu>
   );
-});
+};
+
 export default memo(SideMenu);

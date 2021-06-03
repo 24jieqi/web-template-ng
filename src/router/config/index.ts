@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 import type { RouteConfig } from 'react-router-config';
 
-import Layouts from '@/layouts/commonLayout/index';
+import Layouts from '@/layouts/common-layout/index';
 
 const modules = import.meta.globEager('./**/index.ts');
 const config: RouteConfig[] = [];
