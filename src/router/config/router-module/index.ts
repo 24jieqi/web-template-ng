@@ -1,8 +1,9 @@
-import React from 'react';
 import loadable from '@loadable/component';
-import BlankLayout from '@/layouts/blankLayout/index';
+import type { RouteConfig } from 'react-router-config';
+
+import BlankLayout from '@/layouts/blank-layout/index';
 import { BASE1, BASE2, BASE_URL, CHILD_ROUTE2, GRANDCHIND_ROUTE1, GRANDCHIND_ROUTE2 } from './path';
-import { RouteConfig } from 'react-router-config';
+
 const routes: RouteConfig[] = [
   {
     path: BASE_URL,

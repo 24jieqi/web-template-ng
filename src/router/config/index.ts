@@ -1,12 +1,16 @@
 import loadable from '@loadable/component';
-import { RouteConfig } from 'react-router-config';
-import Layouts from '@/layouts/commonLayout/index';
+import type { RouteConfig } from 'react-router-config';
+
+import Layouts from '@/layouts/common-layout/index';
+
 const modules = import.meta.globEager('./**/index.ts');
-let config: RouteConfig[] = [];
+const config: RouteConfig[] = [];
+
 // eslint-disable-next-line guard-for-in
 for (const path in modules) {
   config.push(...modules[path].default);
 }
+
 export const mainRoutes: RouteConfig[] = [
   {
     path: '/',
@@ -16,6 +20,7 @@ export const mainRoutes: RouteConfig[] = [
   },
   ...config,
 ];
+
 const routes: RouteConfig[] = [
   {
     path: '/login',

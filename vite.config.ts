@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import styleImport from 'vite-plugin-style-import';
-import { envConfig } from './src/config'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,24 +14,26 @@ export default defineConfig({
   },
   plugins: [
     styleImport({
-      libs: [{
-        libraryName: 'antd',
-        esModule: true,
-        resolveStyle: (name) => {
-          return `antd/es/${name}/style/index`;
+      libs: [
+        {
+          libraryName: 'antd',
+          esModule: true,
+          resolveStyle: (name) => {
+            return `antd/es/${name}/style/index`;
+          },
         },
-      },]
+      ],
     }),
-    reactRefresh()
+    reactRefresh(),
   ],
   server: {
     proxy: {
       '/hjgp-boot': {
-        target: envConfig.dev.apiHost,
+        target: 'https://durian-dev.hjgpscm.com',
         changeOrigin: true,
       },
       '/_files': {
-        target: envConfig.dev.uploadHost,
+        target: 'https://durian-dev.hjgpscm.com',
         changeOrigin: true,
       },
     },
