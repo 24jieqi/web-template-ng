@@ -1,8 +1,16 @@
 import loadable from '@loadable/component';
-import { RouteConfig } from 'react-router-config';
-import routerModule from './router-module';
+import type { RouteConfig } from 'react-router-config';
+
 import Layouts from '@/layouts/commonLayout/index';
-import baseModule from './base-module';
+
+const modules = import.meta.globEager('./**/index.ts');
+const config: RouteConfig[] = [];
+
+// eslint-disable-next-line guard-for-in
+for (const path in modules) {
+  config.push(...modules[path].default);
+}
+
 export const mainRoutes: RouteConfig[] = [
   {
     path: '/',
@@ -10,16 +18,13 @@ export const mainRoutes: RouteConfig[] = [
     title: '首页',
     component: loadable(() => import('@/pages/home')),
   },
-  ...routerModule,
-  ...baseModule,
+  ...config,
 ];
+
 const routes: RouteConfig[] = [
   {
     path: '/login',
     exact: true,
-    meta: {
-      hideInMenu: true,
-    },
     component: loadable(() => import('@/pages/login')),
   },
   {
@@ -29,9 +34,6 @@ const routes: RouteConfig[] = [
   },
   {
     path: '*',
-    meta: {
-      hideInMenu: true,
-    },
     component: loadable(() => import('@/pages/404')),
   },
 ];
