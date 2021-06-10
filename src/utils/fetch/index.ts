@@ -3,7 +3,7 @@ import { message } from 'antd';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import qs from 'querystring';
 
-import { msg, handleNoCommontError } from './error-handle';
+import { msg, handleNoCommonError } from './error-handle';
 
 /**
  * 接口返回的数据基础结构
@@ -38,7 +38,7 @@ axios.interceptors.response.use(
       const message = data?.errMsg || msg.errorMsg;
 
       // 全局响应拦截需要重写
-      handleNoCommontError(message, config);
+      handleNoCommonError(message, config);
 
       throw new Error(message);
       // return Promise.reject(message);

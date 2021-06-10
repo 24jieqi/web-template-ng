@@ -22,10 +22,11 @@ const msg = {
 // }
 
 // 错误提示
-function handleNoCommontError(err: string, config: AxiosRequestConfig & { noErrorTip?: boolean }) {
+function handleNoCommonError(err: string, config: AxiosRequestConfig & { noErrorTip?: boolean }) {
   // 请求配置了不提示时不提示
   if (!config.noErrorTip) {
     singleMessage.error(err);
   }
 }
-export { handleNoCommontError, msg };
+
+export { handleNoCommonError, msg };
