@@ -1,57 +1,41 @@
 import React, { memo } from 'react';
-import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { useMount } from 'ahooks';
-
-import useGlobalStore from '@/stores/global';
-
+import { Menu, MenuProps } from 'antd';
 import styles from './style.module.less';
+import { Link } from 'react-router-dom';
+import * as Icons from '@ant-design/icons';
+import { CustomRouteConfig } from '@/router/config';
 
-const SideMenu: React.FC = () => {
-  const { menuList, setMenuList } = useGlobalStore();
+interface IProps extends MenuProps {
+  menuList: CustomRouteConfig[];
+}
 
-  useMount(() => {
-    setMenuList();
-  });
-  const menuItem = (menu) => {
-    // 是否有子菜单
-    const hasChildren = menu?.routes?.length > 0;
-    let item = null;
-    // 没有子菜单显示menu
-    if (!hasChildren) {
-      item = (
-        <Menu.Item key={menu?.title}>
-          <Link to={menu?.path}>{menu?.title}</Link>
-        </Menu.Item>
-      );
-    } else {
-      // 当菜单下只有一个子菜单时，直接显示子菜单
-      if (menu?.routes?.length === 1) {
-        item = (
-          <Menu.Item key={menu?.routes[0].path}>
-            <Link to={menu?.routes[0].path}>{menu?.routes[0].title}</Link>
-          </Menu.Item>
-        );
-      } else {
-        item = (
-          <Menu.SubMenu title={menu?.title} key={menu?.title}>
-            {menu.routes.map((v, i) => {
-              return menuItem(v);
-            })}
+const SideMenu: React.FC<IProps> = React.memo(({ menuList, ...restProps }) => {
+  const renderMenu = (menuConfig: CustomRouteConfig[]) => {
+    return menuConfig?.map((menu) => {
+      const menuText = menu.meta?.menuText;
+      const subRoutes = menu.routes;
+      const icon = menu?.meta?.menuIcon ? React.createElement(Icons[menu.meta.menuIcon]) : null;
+      if (subRoutes?.length > 0) {
+        return (
+          <Menu.SubMenu icon={icon} title={menuText} key={menuText}>
+            {/* recursive traversal */}
+            {renderMenu(subRoutes)}
           </Menu.SubMenu>
         );
       }
-    }
-    return item;
+      return (
+        <Menu.Item key={menuText}>
+          {/* path maybe an array! */}
+          {icon}
+          <Link to={Array.isArray(menu.path) ? menu.path[0] : menu.path}>{menuText}</Link>
+        </Menu.Item>
+      );
+    });
   };
-
   return (
-    <Menu mode="inline" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} className={styles.sideMenu}>
-      {menuList?.map((v) => {
-        return menuItem(v);
-      })}
+    <Menu theme="dark" mode="inline" {...restProps} className={styles.sideMenu}>
+      {renderMenu(menuList)}
     </Menu>
   );
-};
-
+});
 export default memo(SideMenu);

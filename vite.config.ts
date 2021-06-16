@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import styleImport from 'vite-plugin-style-import';
+import { envConfig } from './src/config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,6 +10,8 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,
+        modifyVars: { '@primary-color': '#0065FE' },
+        additionalData: `@import '@/assets/styles/variables.less';`,
       },
     },
   },
@@ -28,12 +31,15 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/hjgp-boot': {
-        target: 'https://durian-dev.hjgpscm.com',
+      '/pitaya-app/api': {
+        target: envConfig.dev.apiHost,
         changeOrigin: true,
+        rewrite(path) {
+          return path;
+        },
       },
       '/_files': {
-        target: 'https://durian-dev.hjgpscm.com',
+        target: envConfig.dev.uploadHost,
         changeOrigin: true,
       },
     },

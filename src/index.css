@@ -21,7 +21,7 @@ code {
 
 ::-webkit-scrollbar-thumb {
   background: #cdcdcd;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-corner {

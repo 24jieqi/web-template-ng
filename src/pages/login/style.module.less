@@ -1,0 +1,99 @@
+.login {
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+    .bg {
+        flex: 1;
+        position: relative;
+        // TODO:background
+        background: url();
+        background-size: 100% 100%;
+        .text {
+            position: absolute;
+            bottom: 96px;
+            left: 70px;
+            .textCh {
+                font-size: 24px;
+                font-weight: 500;
+                color: #fff;
+                margin-bottom: 5px;
+                font-family: PingFangSC, PingFangSC-Medium;
+            }
+            .textEn {
+                font-size: 12px;
+                color: rgba(255,255,255,0.65);
+                line-height: 14px;
+                font-family: ArialMT;
+            }
+        }
+    }
+    .loginBox {
+        flex: 1.618;
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        // top: 247px;
+        padding-top: 247px;
+        // TODO:background
+        background: url();
+        .logo {
+            width: 84px;
+            height: 72px;
+            margin-bottom: 6px;
+        }
+        .title {
+            font-size: 26px;
+            font-weight: 500;
+            color: rgba(0,0,0,0.85);
+            line-height: 37px;
+            margin-bottom: 70px;
+        }
+        .record {
+            position: absolute;
+            bottom: 29px;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: left;
+            color: rgba(0,0,0,0.45);
+            line-height: 20px; 
+            font-family: PingFangSC, PingFangSC-Regular;
+        }
+        .formBox {
+            max-width: 368px;
+            width: 100%;
+            .formInput {
+                // margin-bottom: 32px;
+                padding-bottom: 8px;
+            }
+            .formInputB {
+                margin-bottom: 46px;
+            }
+            .inputUser {
+                height: 40px;
+               
+            }
+            .inputPassword {
+                width: 241px;
+                height: 40px;
+            }
+            .btn {
+                position: absolute;
+                top: 0;
+                width: 119px;
+                height: 40px;
+                opacity: 1;
+                background: #ffffff;
+                border: 1px solid #d9d9d9;
+                border-radius: 3px;
+                margin-left: 249px;
+            }
+            .btnB {
+                position: absolute;
+                height: 40px;
+                top: -24px;
+                border-radius: 10px;
+            }
+        }
+    }
+}

@@ -1,15 +1,48 @@
 /**
- * 接口 headers 上 token 缓存字段
+ * 配置文件
  */
-export const AUTH_KEY = 'Authorization';
+interface CommonConfig {
+  /** 权限key */
+  authKey: string;
+  /** 系统是否需鉴权 */
+  authorization: boolean;
+}
+interface EnvConfig {
+  /** api host */
+  apiHost: string;
+  /** 上传host */
+  uploadHost: string;
+  /** 项目根路径 */
+  baseUrl: string;
+}
+export interface IConfig extends CommonConfig, EnvConfig {}
 
-/**
- * 接口服务器地址
- */
-export const BASE_HOST = import.meta.env.VITE_APP_HOST;
-
-/**
- * 接口最基础的前缀
- * @description 单域名/入口有多个服务需要通过二级路由区分，配合 Nginx 做好代理就行
- */
-export const BASE_URL = `${BASE_HOST}/hjgp-boot`;
+const env = import.meta.env?.VITE_APP_ENV;
+// 配置(公共)
+const commonConfig: CommonConfig = {
+  authKey: 'Authorization',
+  authorization: false,
+};
+// 配置(根据环境变量区分)
+export const envConfig: Record<typeof env, EnvConfig> = {
+  // 开发环境
+  dev: {
+    apiHost: 'https://pitaya-dev.hjgpscm.com',
+    uploadHost: 'https://pitaya-dev.hjgpscm.com',
+    baseUrl: '/pitaya-app',
+  },
+  // 测试环境
+  test: {
+    apiHost: 'https://pitaya-dev.hjgpscm.com',
+    uploadHost: 'https://pitaya-dev.hjgpscm.com',
+    baseUrl: '/pitaya-app',
+  },
+  // 生产环境
+  prod: {
+    apiHost: 'https://durian.hjgpscm.com',
+    uploadHost: 'https://durian.hjgpscm.com',
+    baseUrl: '/pitaya-app',
+  },
+};
+const config = { ...commonConfig, ...envConfig[env] };
+export default config;

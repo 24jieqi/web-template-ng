@@ -1,5 +1,5 @@
 {
-  "originUrl": "https://pitaya-dev.hjgpscm.com/api/commodity/v2/api-docs",
+  "origins": [],
   "outDir": "./src/services",
   "templatePath": "./api-template",
   "prettierConfig": {

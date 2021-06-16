@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    options {
+        timeout(time: 2, unit: 'HOURS')
+    }
+    stages  {
+        stage('Package') {
+            steps {
+                sh 'yarn install'
+                sh 'yarn build:test'
+            }
+        }
+        stage('Deliver for dev') {
+            when {
+                expression {
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'USER.FRUITS', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh "bash scripts/deploy/deploy.sh dev-001 ${username} ${password} gscm-admin-web_dev"
+                }
+            }
+        }
+    }
+}

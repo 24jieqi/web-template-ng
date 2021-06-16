@@ -1,9 +1,11 @@
-import { AUTH_KEY, BASE_URL } from '@/config';
 import { message } from 'antd';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import qs from 'querystring';
 
-import { msg, handleNoCommonError } from './error-handle';
+import Config from '@/config';
+
+import { msgs, handleNoCommonError } from './error-handle';
+import { name as globalStoreName } from '@/stores/global';
 
 /**
  * 接口返回的数据基础结构
@@ -35,7 +37,7 @@ axios.interceptors.response.use(
   ({ response }: AxiosError<ResponseBase>) => {
     if (response) {
       const { data, config } = response;
-      const message = data?.errMsg || msg.errorMsg;
+      const message = data?.errMsg || msgs.errorMsg;
 
       // 全局响应拦截需要重写
       handleNoCommonError(message, config);
@@ -43,7 +45,7 @@ axios.interceptors.response.use(
       throw new Error(message);
       // return Promise.reject(message);
     } else {
-      throw new Error(msg.networkErrorMsg);
+      throw new Error(msgs.networkErrorMsg);
       // return Promise.reject(msg.networkErrorMsg);
     }
   },
@@ -60,7 +62,7 @@ axios.interceptors.response.use(
  * @description 对请求简单封装，添加默认参数
  */
 export const request = <T = any>(options: AxiosRequestConfig) => {
-  const Authorization = localStorage.getItem(AUTH_KEY);
+  const Authorization = JSON.parse(localStorage.getItem(globalStoreName))?.state?.token || '';
   const newOptions: AxiosRequestConfig = {
     // credentials: 'include',
     timeout: 60000,
@@ -71,12 +73,11 @@ export const request = <T = any>(options: AxiosRequestConfig) => {
     ...options,
     headers: {
       // 自定义 header 的时候应该可以重置 token 字符串
-      'X-Access-Token': Authorization,
+      Authorization,
       ...(options.headers || {}),
     },
-    url: `${BASE_URL}${options.url}`,
+    url: `${Config.baseUrl}${options.url}`,
   };
-
   return axios.request<T>(newOptions).then((data) => data.data);
 };
 
@@ -88,7 +89,7 @@ export const buildOptions = (path: string, queryParams: Record<string, any>, met
     ...(queryParams || {}),
   };
   const isGet = method === 'GET' || method === 'DELETE' || method === 'HEAD' || method === 'OPTIONS';
-  let url = path.replace(/\{([^\\}]*(?:\\.[^\\}]*)*)\}/gm, (match, key) => {
+  let url = path.replace(/\{([^\\}]*(?:\\.[^\\}]*)*)\}/gm, (_, key) => {
     // eslint-disable-next-line no-param-reassign
     key = key.trim();
 

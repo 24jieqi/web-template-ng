@@ -1,10 +1,12 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router';
 import { renderRoutes } from 'react-router-config';
 import routes from './config';
+import { createBrowserHistory } from 'history';
+export const history = createBrowserHistory();
 
-const Router = () => {
-  return <BrowserRouter>{renderRoutes(routes)}</BrowserRouter>;
+const AppRouter = () => {
+  return <Router history={history}>{renderRoutes(routes)}</Router>;
 };
 
-export default Router;
+export default AppRouter;

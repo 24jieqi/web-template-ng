@@ -9,10 +9,17 @@
 - [ ] 路由权限
 - [ ] `zustand` Demo
 - [ ] 配置 `antd` 主题与多语言
-- [x] 简化生成接口的参数
 
 ### Todo List
 
 - [ ] 更详细的使用示例
 - [ ] 适合 `react-query` 的 `axios` 请求封装
 - [ ] build 过程控制，打包分包控制等
+
+
+### Feature
+
+- 多环境构建
+- antd样式按需加载
+- 修改less变量
+- 自动引入assets/styles/variables.less样式，less变量不用引入也可使用
