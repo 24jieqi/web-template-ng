@@ -48,18 +48,14 @@
     "vite": "^2.3.8",
     "vite-plugin-style-import": "^1.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --cache --fix",
+    "*.{yml,yaml,md}": [
+      "prettier --write",
       "git add"
     ],
-    "src/**/*.{js,jsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix",
+      "prettier --write",
       "git add"
     ]
   }
