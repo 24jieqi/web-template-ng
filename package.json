@@ -53,9 +53,14 @@
       "prettier --write",
       "git add"
     ],
-    "*.{js,jsx,ts,tsx}": [
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,tsx}": [
       "tsc --noEmit",
-      "eslint --cache --fix",
+      "eslint --fix",
       "prettier --write",
       "git add"
     ]
