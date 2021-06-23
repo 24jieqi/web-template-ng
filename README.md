@@ -7,6 +7,7 @@
 - [x] `react-router-dom` 替换 `reach/router`
 - [x] 统一 ESLint 配置
 - [x] `zustand` Demo
+- [x] git commit message lint
 - [ ] 路由 Demo
 - [ ] 路由权限
 - [ ] 配置 `antd` 主题与多语言
