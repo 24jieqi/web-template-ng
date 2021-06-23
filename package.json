@@ -54,6 +54,7 @@
       "git add"
     ],
     "*.{js,jsx,ts,tsx}": [
+      "tsc --noEmit",
       "eslint --cache --fix",
       "prettier --write",
       "git add"
