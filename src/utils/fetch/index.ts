@@ -1,11 +1,11 @@
+import qs from 'querystring';
 import { message } from 'antd';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios';
-import qs from 'querystring';
 
 import Config from '@/config';
 
-import { msgs, handleNoCommonError } from './error-handle';
 import { name as globalStoreName } from '@/stores/global';
+import { msgs, handleNoCommonError } from './error-handle';
 
 /**
  * 接口返回的数据基础结构

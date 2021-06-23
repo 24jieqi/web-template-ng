@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import Router from './router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import Router from './router';
 
 const client = new QueryClient({
   defaultOptions: {

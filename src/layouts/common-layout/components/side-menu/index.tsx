@@ -1,20 +1,21 @@
-import React, { memo } from 'react';
+import React, { memo, createElement } from 'react';
 import { Menu, MenuProps } from 'antd';
-import styles from './style.module.less';
 import { Link } from 'react-router-dom';
 import * as Icons from '@ant-design/icons';
 import { CustomRouteConfig } from '@/router/config';
+import styles from './style.module.less';
 
 interface IProps extends MenuProps {
   menuList: CustomRouteConfig[];
 }
 
-const SideMenu: React.FC<IProps> = React.memo(({ menuList, ...restProps }) => {
+const SideMenu: React.FC<IProps> = ({ menuList, ...restProps }) => {
   const renderMenu = (menuConfig: CustomRouteConfig[]) => {
     return menuConfig?.map((menu) => {
       const menuText = menu.meta?.menuText;
       const subRoutes = menu.routes;
-      const icon = menu?.meta?.menuIcon ? React.createElement(Icons[menu.meta.menuIcon]) : null;
+      // eslint-disable-next-line import/namespace
+      const icon = menu?.meta?.menuIcon ? createElement(Icons[menu.meta.menuIcon]) : null;
       if (subRoutes?.length > 0) {
         return (
           <Menu.SubMenu icon={icon} title={menuText} key={menuText}>
@@ -37,5 +38,6 @@ const SideMenu: React.FC<IProps> = React.memo(({ menuList, ...restProps }) => {
       {renderMenu(menuList)}
     </Menu>
   );
-});
+};
+
 export default memo(SideMenu);

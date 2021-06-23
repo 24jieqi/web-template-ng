@@ -1,9 +1,9 @@
-import useGlobalStore from '@/stores/global';
 import { useMount, useCountDown } from 'ahooks';
 import { Button, message, Form, Input } from 'antd';
 import { SafetyOutlined, TabletOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useGlobalStore from '@/stores/global';
 import { BASE_PATH } from '@/router/config/basePath';
 
 import styles from './style.module.less';
@@ -20,7 +20,7 @@ const Index: React.FC = () => {
   // 获取验证码
   const toastVerificationCode = () => {
     // 取手机号码
-    const phoneNum1 = FormInstance.getFieldValue('username');
+    // const phoneNum1 = FormInstance.getFieldValue('username');
     // TODO:接入API
     new Promise<any>((resolve) => {
       resolve({

@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import Loading from '@/components/loading';
-import useGlobalStore, { name as globalStoreName } from '@/stores/global';
 import { Modal } from 'antd';
 import { useHistory } from 'react-router';
+import Loading from '@/components/loading';
+import useGlobalStore, { name as globalStoreName } from '@/stores/global';
 import config from '@/config';
+
+const { authorization } = config;
 
 /**
  * 若系统需要鉴权，这执行鉴权逻辑（组件需要鉴权时使用）
@@ -13,7 +15,7 @@ function auth<T extends object>(Component: React.FC<T>): React.FC<T> {
   return (props) => {
     const { authStatus } = useGlobalStore();
     const history = useHistory();
-    const { authorization } = config;
+
     useEffect(() => {
       const token = JSON.parse(localStorage.getItem(globalStoreName))?.state?.token;
       // 若无token且需要鉴权则提示去登录
@@ -27,7 +29,7 @@ function auth<T extends object>(Component: React.FC<T>): React.FC<T> {
           },
         });
       }
-    }, []);
+    }, [history]);
     // 不需要鉴权或者鉴权数据已就绪则显示页面
     if (!authorization || authStatus === 'ok') {
       return <Component {...props} />;

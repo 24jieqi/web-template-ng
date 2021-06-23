@@ -40,7 +40,7 @@ const useAsyncTable = (props: IProps): any => {
     if (location?.pathname) {
       pathname = location?.pathname;
     }
-  }, [location?.pathname]);
+  }, [location?.pathname, setCacheParams]);
 
   const defaultParamsObj = isCache ? (cacheParams ? { defaultParams: cacheParams } : {}) : {};
 
@@ -57,7 +57,7 @@ const useAsyncTable = (props: IProps): any => {
   // params改变存进缓存
   useEffect(() => {
     setCacheParams(params);
-  }, [params]);
+  }, [params, setCacheParams]);
   const { submit, reset } = search;
   return { tableProps, search, form, submit, reset, refresh };
 };

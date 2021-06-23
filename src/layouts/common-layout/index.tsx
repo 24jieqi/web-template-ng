@@ -1,17 +1,17 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, memo } from 'react';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 import { Layout } from 'antd';
-import styles from './style.module.less';
-import SideMenu from './components/side-menu';
-import AppBreadcrumb from './components/breadcrubm';
-import AppHeader from './components/header';
 import { useLocation } from 'react-router-dom';
 import useGlobalStore from '@/stores/global';
 import authHOC from '@/components/hoc/auth';
 import { getCurrentRouteAndMenuInfo } from '@/utils/route';
+import styles from './style.module.less';
+import SideMenu from './components/side-menu';
+import AppBreadcrumb from './components/breadcrubm';
+import AppHeader from './components/header';
 const { Header, Content, Sider } = Layout;
 
-const LayoutComponent: React.FC<RouteConfigComponentProps> = React.memo((props) => {
+const LayoutComponent: React.FC<RouteConfigComponentProps> = memo((props) => {
   const { route } = props;
   const { menuList, userSetting, setUserSetting, userInfo, logout } = useGlobalStore();
   const location = useLocation();
@@ -24,7 +24,7 @@ const LayoutComponent: React.FC<RouteConfigComponentProps> = React.memo((props) 
     (collapsed) => {
       setUserSetting({ collapsed });
     },
-    [userSetting.collapsed],
+    [setUserSetting],
   );
   // 页面主体padding（默认16px）
   const contentPadding = matchedRouteConfig?.meta?.contentPadding;

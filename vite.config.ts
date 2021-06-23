@@ -30,6 +30,7 @@ export default defineConfig({
     reactRefresh(),
   ],
   server: {
+    host: '0.0.0.0',
     proxy: {
       '/pitaya-app/api': {
         target: envConfig.dev.apiHost,

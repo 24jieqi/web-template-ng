@@ -1,11 +1,11 @@
 import React, { CSSProperties } from 'react';
 import loadable from '@loadable/component';
 import { RouteConfig } from 'react-router-config';
-import Layouts from '@/layouts/common-layout/index';
 import * as Icons from '@ant-design/icons/lib/icons';
 import { Redirect } from 'react-router-dom';
-import { BASE_PATH } from './basePath';
+import Layouts from '@/layouts/common-layout/index';
 import { BreadcrumbItem } from '@/layouts/common-layout/components/breadcrubm';
+import { BASE_PATH } from './basePath';
 
 const modules = import.meta.globEager('./**/index.ts');
 let config: RouteConfig[] = [];

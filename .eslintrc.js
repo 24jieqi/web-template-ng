@@ -1,6 +1,5 @@
 module.exports = {
-  extends: ['alloy', 'alloy/react', 'alloy/typescript', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  extends: ['@fruits-chain/eslint-config-preset'],
   env: {
     // 你的环境变量（包含多个预定义的全局变量）
     //
@@ -22,9 +21,5 @@ module.exports = {
     'no-undef': 0,
     'max-nested-callbacks': 'off',
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
+  settings: {},
 };
