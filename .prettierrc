@@ -7,8 +7,9 @@
   "bracketSpacing": true,
   "trailingComma": "all",
   "printWidth": 120,
-  "semi": true,
+  "semi": false,
   "jsxBracketSameLine": true,
+  "arrowParens": "always",
   "overrides": [
     {
       "files": ".prettierrc",
