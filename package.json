@@ -10,6 +10,7 @@
     "prettier": "prettier --write 'src/**/*.{js,json,yml,yaml,ts,tsx,md}'",
     "ncu": "npx npm-check-updates -u -x zustand,husky",
     "prepare": "husky install",
+    "preinstall": "npx npm-force-resolutions",
     "lint-staged": "lint-staged --allow-empty"
   },
   "dependencies": {
@@ -47,6 +48,9 @@
     "typescript": "^4.3.4",
     "vite": "^2.3.8",
     "vite-plugin-style-import": "^1.0.0"
+  },
+  "resolutions": {
+    "prettier": "^2.3.1"
   },
   "lint-staged": {
     "*.{yml,yaml,md}": [
