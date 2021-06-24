@@ -10,7 +10,7 @@
     "prettier": "prettier --write 'src/**/*.{js,json,yml,yaml,ts,tsx,md}'",
     "ncu": "npx npm-check-updates -u -x zustand,husky",
     "prepare": "husky install",
-    "preinstall": "npx npm-force-resolutions",
+    "resolutions": "npx npm-force-resolutions",
     "lint-staged": "lint-staged --allow-empty"
   },
   "dependencies": {
@@ -27,7 +27,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "wbd-frontend-kit": "^1.0.13",
-    "zustand": "3.5.4"
+    "zustand": "3.4.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -63,7 +63,7 @@
       "git add"
     ],
     "*.{ts,tsx}": [
-      "tsc --noEmit",
+      "bash -c tsc --noEmit",
       "eslint --fix",
       "prettier --write",
       "git add"
