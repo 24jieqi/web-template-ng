@@ -1,31 +1,31 @@
-import React, { FC } from 'react';
-import { Menu, Dropdown } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { State } from '@/stores/global';
-import header_logo from '@/images/header_logo.png';
-import defaultAvatar from '@/images/avatar_default.png';
-import styles from './index.module.less';
+import React, { FC } from 'react'
+import { Menu, Dropdown } from 'antd'
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
+import { State } from '@/stores/global'
+import header_logo from '@/images/header_logo.png'
+import defaultAvatar from '@/images/avatar_default.png'
+import styles from './index.module.less'
 
 type IProps = Pick<State, 'logout' | 'userInfo'> & {
-  collapsed: boolean;
-  setCollapsed: (collapse: boolean) => void;
-};
+  collapsed: boolean
+  setCollapsed: (collapse: boolean) => void
+}
 
 const AppHeader: FC<IProps> = ({ userInfo, logout, collapsed, setCollapsed }) => {
-  const CollapseIcon = collapsed ? MenuUnfoldOutlined : MenuFoldOutlined;
+  const CollapseIcon = collapsed ? MenuUnfoldOutlined : MenuFoldOutlined
   const routeToLogin = () => {
-    location.href = '/login';
-  };
+    location.href = '/login'
+  }
   const menu = (
     <Menu>
       <Menu.Item
         onClick={() => {
-          logout(routeToLogin);
+          logout(routeToLogin)
         }}>
         退出登录
       </Menu.Item>
     </Menu>
-  );
+  )
   return (
     <div className={styles.wrap}>
       <div className={styles.left}>
@@ -33,7 +33,7 @@ const AppHeader: FC<IProps> = ({ userInfo, logout, collapsed, setCollapsed }) =>
         <div className={styles.name}>星桥分拣管理系统</div>
         <CollapseIcon
           onClick={() => {
-            setCollapsed(!collapsed);
+            setCollapsed(!collapsed)
           }}
           className={styles.collapseIcon}
         />
@@ -48,7 +48,7 @@ const AppHeader: FC<IProps> = ({ userInfo, logout, collapsed, setCollapsed }) =>
         </Dropdown>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AppHeader;
+export default AppHeader

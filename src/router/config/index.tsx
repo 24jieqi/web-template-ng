@@ -1,34 +1,34 @@
-import React, { CSSProperties } from 'react';
-import loadable from '@loadable/component';
-import { RouteConfig } from 'react-router-config';
-import * as Icons from '@ant-design/icons/lib/icons';
-import { Redirect } from 'react-router-dom';
-import Layouts from '@/layouts/common-layout/index';
-import { BreadcrumbItem } from '@/layouts/common-layout/components/breadcrubm';
-import { BASE_PATH } from './basePath';
+import React, { CSSProperties } from 'react'
+import loadable from '@loadable/component'
+import { RouteConfig } from 'react-router-config'
+import * as Icons from '@ant-design/icons/lib/icons'
+import { Redirect } from 'react-router-dom'
+import Layouts from '@/layouts/common-layout/index'
+import { BreadcrumbItem } from '@/layouts/common-layout/components/breadcrubm'
+import { BASE_PATH } from './basePath'
 
-const modules = import.meta.globEager('./**/index.ts');
-let config: RouteConfig[] = [];
+const modules = import.meta.globEager('./**/index.ts')
+let config: RouteConfig[] = []
 // eslint-disable-next-line guard-for-in
 for (const path in modules) {
-  config.push(...modules[path].default);
+  config.push(...modules[path].default)
 }
 export interface CustomRouteConfig extends RouteConfig {
   /** 面包屑配置 */
-  breadcrumb?: BreadcrumbItem[];
+  breadcrumb?: BreadcrumbItem[]
   /** 权限 */
-  authKey?: string;
+  authKey?: string
   /** 页面信息配置 */
   meta?: {
     /** 系统左侧菜单栏文案（为空或未配置则不会出现在菜单栏） */
-    menuText?: string;
+    menuText?: string
     /** 菜单按钮 */
-    menuIcon?: keyof typeof Icons;
+    menuIcon?: keyof typeof Icons
     /** 主内容区域padding（默认16px） */
-    contentPadding?: CSSProperties['padding'];
-  };
+    contentPadding?: CSSProperties['padding']
+  }
   /** 子路由 */
-  routes?: CustomRouteConfig[];
+  routes?: CustomRouteConfig[]
 }
 export const mainRoutes: CustomRouteConfig[] = [
   {
@@ -37,7 +37,7 @@ export const mainRoutes: CustomRouteConfig[] = [
     component: loadable(() => import('@/pages/home')),
   },
   ...config,
-];
+]
 const routes: CustomRouteConfig[] = [
   {
     path: BASE_PATH,
@@ -58,5 +58,5 @@ const routes: CustomRouteConfig[] = [
     path: '*',
     component: loadable(() => import('@/pages/404/index')),
   },
-];
-export default routes;
+]
+export default routes

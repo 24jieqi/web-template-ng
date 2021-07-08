@@ -3,26 +3,26 @@
  */
 interface CommonConfig {
   /** 权限key */
-  authKey: string;
+  authKey: string
   /** 系统是否需鉴权 */
-  authorization: boolean;
+  authorization: boolean
 }
 interface EnvConfig {
   /** api host */
-  apiHost: string;
+  apiHost: string
   /** 上传host */
-  uploadHost: string;
+  uploadHost: string
   /** 项目根路径 */
-  baseUrl: string;
+  baseUrl: string
 }
 export interface IConfig extends CommonConfig, EnvConfig {}
 
-const env = import.meta.env?.VITE_APP_ENV;
+const env = import.meta.env?.VITE_APP_ENV
 // 配置(公共)
 const commonConfig: CommonConfig = {
   authKey: 'Authorization',
   authorization: false,
-};
+}
 // 配置(根据环境变量区分)
 export const envConfig: Record<typeof env, EnvConfig> = {
   // 开发环境
@@ -43,6 +43,6 @@ export const envConfig: Record<typeof env, EnvConfig> = {
     uploadHost: 'https://durian.hjgpscm.com',
     baseUrl: '/pitaya-app',
   },
-};
-const config = { ...commonConfig, ...envConfig[env] };
-export default config;
+}
+const config = { ...commonConfig, ...envConfig[env] }
+export default config

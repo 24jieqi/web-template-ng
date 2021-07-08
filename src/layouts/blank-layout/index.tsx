@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
-import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
+import React, { memo } from 'react'
+import { RouteConfigComponentProps, renderRoutes } from 'react-router-config'
 
 const BlankLayout: React.FC<RouteConfigComponentProps> = (props) => {
-  const { route } = props;
-  return renderRoutes(route?.routes);
-};
+  const { route } = props
+  return renderRoutes(route?.routes)
+}
 
-export default memo(BlankLayout);
+export default memo(BlankLayout)

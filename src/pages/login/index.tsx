@@ -1,21 +1,21 @@
-import { useMount, useCountDown } from 'ahooks';
-import { Button, message, Form, Input } from 'antd';
-import { SafetyOutlined, TabletOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import useGlobalStore from '@/stores/global';
-import { BASE_PATH } from '@/router/config/basePath';
+import { useMount, useCountDown } from 'ahooks'
+import { Button, message, Form, Input } from 'antd'
+import { SafetyOutlined, TabletOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import useGlobalStore from '@/stores/global'
+import { BASE_PATH } from '@/router/config/basePath'
 
-import styles from './style.module.less';
+import styles from './style.module.less'
 
 const Index: React.FC = () => {
   // 创建loading
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   // 创建倒计时ahook
-  const [countdown, setTargetDate] = useCountDown();
+  const [countdown, setTargetDate] = useCountDown()
 
   // Form实例化
-  const [FormInstance]: any = Form.useForm();
+  const [FormInstance]: any = Form.useForm()
 
   // 获取验证码
   const toastVerificationCode = () => {
@@ -25,36 +25,36 @@ const Index: React.FC = () => {
     new Promise<any>((resolve) => {
       resolve({
         data: {},
-      });
+      })
     })
       .then((res) => {
         if (res.data === true) {
-          message.success('获取验证码成功！');
-          setTargetDate(Date.now() + 60000);
+          message.success('获取验证码成功！')
+          setTargetDate(Date.now() + 60000)
         } else {
-          message.error(res.errMsg);
+          message.error(res.errMsg)
         }
       })
-      .catch((err) => {});
-  };
+      .catch((err) => {})
+  }
 
-  const history = useHistory();
-  const { logout } = useGlobalStore();
+  const history = useHistory()
+  const { logout } = useGlobalStore()
   useMount(() => {
-    logout();
-  });
+    logout()
+  })
 
   // 登录按钮提交
   const onFinish = (values: any) => {
-    setLoading(true);
+    setLoading(true)
     // TODO:接入API
     new Promise<any>((resolve) => {
       resolve({
         data: {},
-      });
+      })
     })
       .then((res) => {
-        setLoading(false);
+        setLoading(false)
         // 存入globalState
         useGlobalStore.setState({
           isLogin: true,
@@ -66,13 +66,13 @@ const Index: React.FC = () => {
             /** 公司名 */
             companyName: res.data.organizationName,
           },
-        });
-        history.replace(BASE_PATH);
+        })
+        history.replace(BASE_PATH)
       })
       .catch((err) => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   return (
     <div className={styles.login}>
@@ -114,12 +114,12 @@ const Index: React.FC = () => {
             {/* 验证码、按钮 */}
             <Form.Item shouldUpdate>
               {({ getFieldValue, getFieldError }) => {
-                let codeFlag = true;
-                let userError = getFieldError('username')[0];
+                let codeFlag = true
+                let userError = getFieldError('username')[0]
                 if (userError || !getFieldValue('username')) {
-                  codeFlag = true;
+                  codeFlag = true
                 } else {
-                  codeFlag = false;
+                  codeFlag = false
                 }
                 return (
                   <Form.Item className={styles.formInputB}>
@@ -138,31 +138,31 @@ const Index: React.FC = () => {
                     </Form.Item>
                     <Button
                       onClick={() => {
-                        toastVerificationCode();
+                        toastVerificationCode()
                       }}
                       disabled={codeFlag || countdown !== 0}
                       className={styles.btn}>
                       {countdown === 0 ? '获取验证码' : `${Math.round(countdown / 1000)}s`}
                     </Button>
                   </Form.Item>
-                );
+                )
               }}
             </Form.Item>
 
             {/* 登录 */}
             <Form.Item shouldUpdate>
               {({ getFieldError, getFieldValue }) => {
-                let disabled = true;
-                const userErr = getFieldError('username');
-                const userValue = getFieldValue('username');
-                const codeErr = getFieldError('text');
-                const codeValue = getFieldValue('text');
+                let disabled = true
+                const userErr = getFieldError('username')
+                const userValue = getFieldValue('username')
+                const codeErr = getFieldError('text')
+                const codeValue = getFieldValue('text')
                 if (userErr[0] || codeErr[0]) {
-                  disabled = true;
+                  disabled = true
                 } else if (!userValue || !codeValue) {
-                  disabled = true;
+                  disabled = true
                 } else {
-                  disabled = false;
+                  disabled = false
                 }
                 return (
                   <Form.Item>
@@ -176,7 +176,7 @@ const Index: React.FC = () => {
                       登录
                     </Button>
                   </Form.Item>
-                );
+                )
               }}
             </Form.Item>
           </Form>
@@ -184,7 +184,7 @@ const Index: React.FC = () => {
         <div className={styles.record}>© 169 1987-2021 重庆洪九果品股份有限公司 渝ICP备19002690号-7</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
