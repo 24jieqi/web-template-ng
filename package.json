@@ -2,10 +2,10 @@
   "name": "next-web-template",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --host --mode dev",
-    "build:dev": "vite build --mode dev",
+    "dev": "vite --host --mode development",
+    "build:dev": "vite build --mode development",
     "build:test": "vite build --mode test",
-    "build:prod": "tsc && vite build --mode prod",
+    "build:prod": "tsc && vite build --mode production",
     "serve": "vite preview --host",
     "lint": "tsc --noEmit && eslint src --ext .ts,.tsx",
     "prettier": "prettier --write 'src/**/*.{js,json,yml,yaml,ts,tsx,md}'",
@@ -61,11 +61,6 @@
   },
   "lint-staged": {
     "*.{yml,yaml,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{js,jsx}": [
-      "eslint --fix",
       "prettier --write",
       "git add"
     ],

@@ -98,6 +98,7 @@ export const buildOptions = (path: string, queryParams: Record<string, any>, met
       delete params[key]
       return value
     }
+    // eslint-disable-next-line no-console
     console.warn('Please set value for template key: ', key)
     return ''
   })

@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 0,
     'no-undef': 0,
     'max-nested-callbacks': 'off',
+    'no-console': 'warn',
   },
   settings: {},
-};
+}
