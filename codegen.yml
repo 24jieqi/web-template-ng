@@ -11,8 +11,8 @@ generates:
       - typescript
   ./src/graphql/:
     documents:
-      - 'src/graphql/operations/**/!(*.typing).{gql,ts}'
-      - '!src/graphql/operations/**/*.generated.{ts,tsx}'
+      - 'src/graphql/gqls/**/!(*.typing).{gql,ts}'
+      - '!src/graphql/gqls/**/*.generated.{ts,tsx}'
     preset: near-operation-file
     presetConfig:
       extension: '.generated.ts'

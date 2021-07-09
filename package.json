@@ -12,7 +12,8 @@
     "ncu": "npx npm-check-updates -u -x zustand,husky",
     "prepare": "husky install",
     "resolutions": "npx npm-force-resolutions",
-    "lint-staged": "lint-staged --allow-empty"
+    "lint-staged": "lint-staged --allow-empty",
+    "generate": "graphql-codegen"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",

@@ -1,0 +1,8 @@
+# 登录
+mutation login($loginInput: LoginInput) {
+  login(loginInput: $loginInput) {
+    userName
+    token
+    organizationName
+  }
+}
