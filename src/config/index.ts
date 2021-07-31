@@ -29,19 +29,19 @@ export const envConfig: Record<typeof env, EnvConfig> = {
   dev: {
     apiHost: 'https://pitaya-dev.hjgpscm.com',
     uploadHost: 'https://pitaya-dev.hjgpscm.com',
-    baseUrl: '/pitaya-app',
+    baseUrl: '/',
   },
   // 测试环境
   test: {
-    apiHost: 'https://pitaya-dev.hjgpscm.com',
-    uploadHost: 'https://pitaya-dev.hjgpscm.com',
-    baseUrl: '/pitaya-app',
+    apiHost: '',
+    uploadHost: '',
+    baseUrl: '/',
   },
   // 生产环境
   prod: {
-    apiHost: 'https://durian.hjgpscm.com',
-    uploadHost: 'https://durian.hjgpscm.com',
-    baseUrl: '/pitaya-app',
+    apiHost: '',
+    uploadHost: '',
+    baseUrl: '/',
   },
 }
 const config = { ...commonConfig, ...envConfig[env] }
