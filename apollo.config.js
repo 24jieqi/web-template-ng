@@ -1,8 +1,8 @@
 module.exports = {
   client: {
     service: {
-      url: 'https://pitaya-dev.hjgpscm.com/graphql',
+      url: 'http://192.168.10.233:9406/graphql',
     },
-    includes: ['./src/**/*.{js,ts,jsx,tsx}'],
+    includes: ['./src/graphql/operations/**/*.{gql,graphql}'],
   },
 }

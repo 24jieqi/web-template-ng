@@ -1,414 +1,3252 @@
-directive @extends on OBJECT | INTERFACE
+directive @defer(if: Boolean! = true, label: String) on FRAGMENT_SPREAD | INLINE_FRAGMENT
 
-directive @external on FIELD_DEFINITION
+"""上传文件可访问类型"""
+enum AccessType {
+  """并行文件系统"""
+  PARALLEL_FILE_SYSTEM
 
-directive @key(fields: _FieldSet!) on OBJECT | INTERFACE
+  """私有访问"""
+  PRIVATE
 
-directive @provides(fields: _FieldSet!) on FIELD_DEFINITION
-
-directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
-
-"""
-开始任务请求参数
-"""
-input BeginTask {
-  """
-  任务id
-  """
-  taskId: Int!
-
-  """
-  实际生产人数
-  """
-  numberActual: Int!
+  """公开访问"""
+  PUBLIC
+  UN_SPECIFIED
 }
 
-input CancelInOrderInput {
-  inOrderId: Int!
-  inOrderDescription: String!
+input AccountCreateInput {
+  """员工名称"""
+  accountName: String!
+
+  """手机号"""
+  phone: String!
+
+  """应用类型"""
+  type: AppTypeEnum!
 }
 
-input CancelOutOrderInput {
-  outOrderId: Int!
-  outOrderDescription: String!
+type AccountCustomerPayload implements AccountLastChooseInterface & AccountNameInterface & AccountPhoneInterface & AccountRoleInterface & UserCustomerInterface {
+  """员工账号名称"""
+  accountName: String
+
+  """客户ID"""
+  customerId: ID
+
+  """客户信息"""
+  customerInfo: UserCustomerPayload
+
+  """账号id"""
+  id: ID
+
+  """是否为上次选择的账号"""
+  lastChoose: Boolean
+
+  """手机号"""
+  phone: String
+
+  """角色id数组"""
+  roleIdList: [ID]
+
+  """角色数组"""
+  roleList: [RolePayload]
+}
+
+input AccountEditInput {
+  """员工id"""
+  accountId: ID!
+
+  """员工名称"""
+  accountName: String!
+
+  """手机号"""
+  phone: String!
+}
+
+input AccountEnableInput {
+  """员工id"""
+  accountId: ID!
+
+  """目标状态"""
+  targetStatus: EnableEnum!
+}
+
+interface AccountLastChooseInterface {
+  """账号id"""
+  id: ID
+
+  """是否为上次选择的账号"""
+  lastChoose: Boolean
+}
+
+interface AccountNameInterface {
+  """员工账号名称"""
+  accountName: String
+
+  """账号ID"""
+  id: ID
+}
+
+input AccountPageInput {
+  pageCurrent: Int
+  pageSize: Int
+
+  """应用类型"""
+  type: AppTypeEnum!
+}
+
+type AccountPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """结果"""
+  records: [AccountPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type AccountPayload implements AccountPhoneInterface & AccountRoleInterface {
+  """员工账号名称"""
+  accountName: String
+
+  """账号id"""
+  id: ID
+
+  """手机号"""
+  phone: String
+
+  """角色id数组"""
+  roleIdList: [ID]
+
+  """角色数组"""
+  roleList: [RolePayload]
+
+  """状态"""
+  status: EnableEnum
+}
+
+interface AccountPhoneInterface {
+  """账号ID"""
+  id: ID
+
+  """手机号"""
+  phone: String
+}
+
+input AccountRoleEditInput {
+  """员工id"""
+  accountId: ID!
+
+  """角色id"""
+  roleIdList: [ID]
+}
+
+interface AccountRoleInterface {
+  """账号ID"""
+  id: ID
+
+  """角色id数组"""
+  roleIdList: [ID]
+
+  """角色数组"""
+  roleList: [RolePayload]
+}
+
+enum AccountTypeEnum {
+  """渠道"""
+  CHANNEL
+
+  """商家"""
+  MERCHANT
+
+  """平台"""
+  PLATFORM
+
+  """仅用于返回值。表示此版本中未知的值"""
+  UNKNOWN
+
+  """未知"""
+  UNRECOGNIZED
+
+  """未指定"""
+  UNSPECIFIED
+}
+
+input AddChannelDeliveryMethodInput {
+  """渠道ID"""
+  channelId: ID!
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+input AddChannelSaleMethodInput {
+  """渠道ID"""
+  channelId: ID!
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]!
+}
+
+input AddDeliveryMethodInput {
+  """子配送方式枚举"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+input AddFrontEndCategoryInput {
+  """前端类目名称"""
+  frontEndCategoryName: String!
+
+  """类目图标"""
+  icon: [FileInput]!
+}
+
+input AddIndexMetaInput {
+  """索引重建每批次的个数"""
+  batch: Int
+
+  """索引名称"""
+  indexType: String
+
+  """索引mapping结构"""
+  mapping: String
+
+  """副本分片数"""
+  numberOfReplicas: Int
+
+  """主分片数"""
+  numberOfShards: Int
+
+  """索引主键名"""
+  pkFieldName: String
+
+  """索引重建时间"""
+  rebuildTime: String
+
+  """服务提供名，注意一定要grpc+serviceName"""
+  serverName: String
+}
+
+input AddSecondLayerFrontEndCategoryInput {
+  """关联的后台类目ID列表"""
+  categoryIds: [ID]!
+
+  """二级类目名称"""
+  frontEndCategoryName: String!
+
+  """父前端类目类目ID"""
+  parentFrontEndCategoryId: ID!
+}
+
+input AddSkuInput {
+  """商品ID"""
+  commodityId: ID!
+
+  """一件代发价格"""
+  dropShippingPrice: Float
+
+  """单位"""
+  marketingUnit: MarketingUnitEnum
+
+  """商家商品编码"""
+  merchantSkuCode: String
+
+  """净重"""
+  netWeight: Float
+
+  """毛重"""
+  roughWeight: Float
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """规格名称"""
+  skuName: String!
+
+  """阶梯价格"""
+  skuPrices: [AddSkuPriceInput]
+
+  """规格属性"""
+  specProperty: [SkuCategoryPropertyInput]
+
+  """销售库存"""
+  stock: Long!
+}
+
+input AddSkuPriceInput {
+  """起批量"""
+  bulk: Int
+
+  """价格"""
+  price: Float
+}
+
+enum AddressTypeEnum {
+  """发货仓地址"""
+  DELIVERY_WAREHOUSE
+
+  """快递地址"""
+  EXPRESS_DELIVERY
+
+  """自提地址"""
+  PICK_UP_IN_STORE
+}
+
+type AddressTypePayload {
+  """地址类型"""
+  addressType: AddressTypeEnum
+
+  """自提地址ID"""
+  pickUpAddressId: ID
+}
+
+type AfterSaleBoolPayload {
+  """是否有售后"""
+  hasAfterSale: Boolean
+
+  """是否有待处理售后"""
+  hasProcessingAfterSale: Boolean
+}
+
+type AfterSaleMaxBatchPayload {
+  maxList: [AfterSaleSkuMaxPayload]
+}
+
+input AfterSaleMaxInput {
+  """商品订单id"""
+  commodityOrderId: ID!
+
+  """skuId"""
+  skuIdList: [ID]!
+}
+
+type AfterSaleMaxPayload {
+  maxAmount: BigDecimal
+  maxQuantity: Int
+}
+
+type AfterSalePageListPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [AfterSalePayload]
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+type AfterSalePayload implements CommodityOrderMerchantInterface & CommodityOrderSkuUnitPrice & CustomerInterface & SkuInterface {
+  """售后单号"""
+  afterSaleNo: String!
+
+  """售后状态"""
+  afterSaleStatus: AfterSalesStatusEnum!
+
+  """售后类型"""
+  afterSaleType: AfterSalesTypeEnum
+
+  """售后单id"""
+  afterSalesId: ID
+
+  """申请凭证"""
+  applyFileResources: [FilePayload]
+
+  """申请时间"""
+  applyTime: Long!
+
+  """订单ID"""
+  commodityOrderId: ID
+  customerId: ID
+
+  """订单客户信息"""
+  customerInfo: OrderCustomerPayload
+
+  """售后说明"""
+  description: String
+
+  """商品订单商家信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """退款金额"""
+  money: BigDecimal
+
+  """订单该sku对应数量"""
+  originalQuantity: Int
+
+  """实际支付单价"""
+  payUnitPrice: BigDecimal
+
+  """sku单价"""
+  price: OrderSkuUnitPricePayload
+
+  """申请数量"""
+  quantity: Int
+
+  """售后-申请原因"""
+  reason: String!
+
+  """商家拒绝原因"""
+  refuseReason: String
+
+  """skuID"""
+  skuId: ID!
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+
+  """商家拒绝时：补充凭证"""
+  supplementaryFileResources: [FilePayload]
+
+  """商家拒绝时：补充说明"""
+  supplementaryInstructions: String
+}
+
+type AfterSaleResultDetailPayload {
+  """售后程度"""
+  afterSaleDegree: SkuAfterSaleStatusEnum
+
+  """售后总金额"""
+  afterSaleTotalAmount: BigDecimal
+
+  """是否有售后同意"""
+  hasAgreed: Boolean
+}
+
+type AfterSaleShowPayload {
+  """售后id"""
+  afterSaleId: ID
+
+  """售后状态"""
+  afterSaleStatus: SkuAfterSaleStatusEnum
+}
+
+type AfterSaleSkuMaxPayload {
+  """是否部分发货"""
+  isSectionDelivery: Boolean
+
+  """最大退款申请金额"""
+  maxAmount: BigDecimal
+
+  """最大退款申请数量"""
+  maxQuantity: Int
+
+  """部分发货可售后信息"""
+  sectionMax: AfterSaleMaxPayload
+
+  """skuId"""
+  skuId: ID
+
+  """sku单位"""
+  skuUnit: OrderMarketingUnitEnum
 }
 
 """
-取消生产计划入参
+interface AfterSalesSkuInterface {
+    \"""售后单id\"""
+    afterSalesId: ID!
+    \"""skuID\"""
+    skuId: ID!
+    \"""sku信息\"""
+    skuInfo: AfterSalesSkuInfoPayload
+}
 """
-input CancelPlanInput {
-  """
-  计划id
-  """
-  planId: Int!
+interface AfterSalesApplyInterface {
+  """售后单id"""
+  afterSalesId: ID
 
-  """
-  计划文字描述
-  """
-  planLogDescription: String!
+  """售后单基础信息"""
+  baseAfterSales: BaseAfterSalesPayload
+}
+
+enum AfterSalesHandleTypeEnum {
+  """同意"""
+  AGREE
+
+  """拒绝"""
+  REFUSE
+}
+
+input AfterSalesOrderHandleInput {
+  """售后单id"""
+  afterSalesOrderId: ID!
+
+  """拒绝凭证"""
+  handleFileList: [FileInput]
+
+  """拒绝说明"""
+  handleRemark: String
+
+  """处理类型"""
+  handleType: AfterSalesHandleTypeEnum!
+
+  """拒绝原因"""
+  reason: String
+}
+
+input AfterSalesOrderPageInput {
+  """售后单id"""
+  afterSaleId: ID
+
+  """售后单号"""
+  afterSaleNo: String
+
+  """商品订单iD"""
+  commodityOrderId: ID
+
+  """售后单状态"""
+  handlerStatus: AfterSalesStatusEnum
+
+  """当前页"""
+  pageCurrent: Int!
+
+  """每页数量"""
+  pageSize: Int!
+}
+
+type AfterSalesOrderPagePayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [AfterSalesOrderPayload]
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+type AfterSalesOrderPayload implements AfterSalesApplyInterface & SkuInterface {
+  """售后单id"""
+  afterSalesId: ID
+
+  """售后单信息"""
+  baseAfterSales: BaseAfterSalesPayload
+
+  """售后数量"""
+  quantity: Int!
+
+  """skuID"""
+  skuId: ID
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+}
+
+input AfterSalesOrderRecordInput {
+  """订单id"""
+  commodityOrderId: ID!
+
+  """skuId"""
+  skuId: ID
+}
+
+input AfterSalesPageInput {
+  """售后单号"""
+  afterSaleNo: String
+
+  """售后状态"""
+  afterSaleStatus: AfterSalesStatusEnum
+
+  """售后类型"""
+  afterSalesType: AfterSalesTypeEnum
+
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """订单ID"""
+  subOrderId: ID
+}
+
+enum AfterSalesStatusEnum {
+  """售后已同意"""
+  AGREE
+
+  """售后中"""
+  PROCESSING
+
+  """售后已拒绝"""
+  REFUSE
+}
+
+enum AfterSalesTypeEnum {
+  """仅退款"""
+  JUST_REFUND_MONEY
+
+  """退款退货"""
+  REFUND_MONEY_AND_GOODS
+}
+
+type AmountCalculationGroupCostInfoPayload {
+  """运费"""
+  freight: BigDecimal
+
+  """前端对应唯一key，返回按key给数据"""
+  key: String
+
+  """小计"""
+  subTotal: BigDecimal
+}
+
+input AmountCalculationGroupInput {
+  """如果是快递，地址用于计算运费【暂忽略】"""
+  addressInfo: ID
+
+  """配送方式：快递、自提"""
+  deliveryMethod: String
+
+  """前端对应唯一key，返回按key给数据"""
+  key: String
+
+  """营销活动【暂忽略】"""
+  merchantActivity: [ID]
+
+  """商户id"""
+  merchantId: ID!
+
+  """skuIDs"""
+  skuIds: [ID]!
+}
+
+input AmountCalculationInput {
+  """group 计算条件"""
+  amountCalculationGroup: [AmountCalculationGroupInput]
+
+  """平台 or 渠道 级别营销"""
+  platformActivity: [ID]
+}
+
+type AmountCalculationPayload {
+  """groupCostInfo"""
+  groupCostInfo: [AmountCalculationGroupCostInfoPayload]
+
+  """总计"""
+  totalAmount: BigDecimal
+}
+
+enum AmountChangeMethodEnum {
+  """快速改价"""
+  FAST
+
+  """精细改价"""
+  PRECISE
+}
+
+enum AmountChangeTypeEnum {
+  DECREASE
+  INCREASE
+}
+
+type AppPermissionPayload {
+  """渠道ID"""
+  channelId: ID
+
+  """权限ID"""
+  permissionId: ID
+
+  """权限名称"""
+  permissionName: String
+
+  """状态"""
+  status: EnableEnum
+}
+
+enum AppTypeEnum {
+  """渠道运营管理系统WEB"""
+  CHANNEL_WEB
+
+  """商家运营管理系统APP"""
+  MERCHANT_APP
+
+  """商家运营管理系统WEB"""
+  MERCHANT_WEB
+
+  """平台运营管理系统WEB"""
+  PLATFORM_WEB
+
+  """商城端APP"""
+  SHOPPING_APP
+}
+
+input AuditCommodityInput {
+  """商品ID"""
+  commodityId: ID!
+
+  """审核的目标状态(从审核通过/审核拒绝两个枚举选择值)"""
+  targetAuditStatusEnum: CommodityAuditStatusEnum!
+}
+
+type BaseAccountPayload {
+  """账号ID"""
+  id: ID
+
+  """账号名称"""
+  name: String
+}
+
+"""}"""
+type BaseAfterSalesPayload implements CustomerInterface & MerchantInfoInterface {
+  """售后单id"""
+  afterSalesId: ID!
+
+  """售后单号"""
+  afterSalesNo: String!
+
+  """售后类型"""
+  afterSalesType: AfterSalesTypeEnum!
+
+  """退款金额"""
+  applyAmount: BigDecimal
+
+  """售后申请凭证"""
+  applyFileResources: [FilePayload]
+
+  """售后原因"""
+  applyReason: String!
+
+  """提交时间"""
+  applyTime: Long!
+
+  """订单id"""
+  commodityOrderId: ID!
+
+  """申请客户id"""
+  customerId: ID!
+
+  """申请用户信息"""
+  customerInfo: OrderCustomerPayload!
+
+  """sku发货状态"""
+  deliveryMoment: DeliveryMomentEnum!
+
+  """售后说明"""
+  description: String
+
+  """售后自动同意截止时间"""
+  expireTime: Long!
+
+  """商家处理时间"""
+  handleTime: Long
+
+  """售后单状态"""
+  handlerStatus: AfterSalesStatusEnum!
+
+  """商户信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """申请商户id"""
+  merchantId: ID!
+
+  """拒绝凭证"""
+  refuseFileList: [FilePayload]
+
+  """拒绝原因"""
+  refuseReason: String
+
+  """拒绝补充说明"""
+  refuseRemark: String
+}
+
+"""基本返回参数，用于没有具体数据返回的服务，统一区分成功失败，与grpc的BasicResp对应，免得每次都转成bool"""
+type BasicPayload {
+  """返回码"""
+  code: Int
+
+  """信息"""
+  msg: String
+
+  """执行结果"""
+  result: Boolean
+}
+
+input BatchShoppingCartInput {
+  """批量添加到购物车的 多个sku"""
+  skus: [ShoppingCartInput]
+}
+
+"""An arbitrary precision signed decimal"""
+scalar BigDecimal
+
+"""布尔值请求参数"""
+input BoolValueInput {
+  """布尔值"""
+  boolValue: Boolean!
+
+  """id"""
+  id: ID!
+}
+
+enum Bucket {
+  BUCKET_UNSPECIFIED
+  FILE_001
+  FILE_006
+  FILE_007
+  FRUITS_PUBLIC
+}
+
+type BusinessHomePageStatisticsPayload {
+  """待处理售后数量"""
+  afterSalesCnt: Int
+
+  """待改价数量"""
+  changePriceCnt: Int
+
+  """待发货数量"""
+  deliveryCnt: Int
+
+  """待提货数量"""
+  receiptBySelfCnt: Int
+}
+
+type BusinessOrderDetailPayLoad implements CommodityOrderChangeAmountInterface & CommodityOrderCustomerInterface & CommodityOrderDeliveryInterface & CommodityOrderHasAfterSaleInterface & CommodityOrderInterface & CommodityOrderPaymentInterface & CommodityOrderPriceInterface & CommodityOrderReceiptInterface & CommodityOrderSkuInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """售后布尔统计"""
+  afterSaleBool: AfterSaleBoolPayload
+
+  """上一次改价信息【商家改过价才有】"""
+  changeAmount: ChangeAmountPayload
+
+  """订单信息"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品客户信息"""
+  customer: CommodityOrderCustomerPayload
+
+  """发货详情集合"""
+  deliveryInfoList: [CommodityOrderDeliveryPayload]
+
+  """商品支付信息【下单后，支付后才有】"""
+  payment: CommodityOrderPaymentPayload
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+type BusinessOrderInfoPayload implements CommodityOrderInterface & CommodityOrderSkuInterface {
+  """订单商品信息"""
+  commodity: OrderCommodityPayload
+
+  """商品订单"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """订单客户信息"""
+  customer: OrderCustomerPayload
+
+  """实付金额明细"""
+  realAmount: OrderRealPaymentPayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+
+  """订单状态"""
+  status: CommodityOrderStatusEnum
+}
+
+type CascadingCommodityTypeCategoryListPayload {
+  """商品品类ID"""
+  categoryId: ID!
+
+  """商品品类名称"""
+  categoryName: String!
+
+  """商品品种"""
+  commodityTypeVariety: [CascadingCommodityTypeVarietyListPayload]
+}
+
+type CascadingCommodityTypeListPayload {
+  """商品品类"""
+  commodityTypeCategory: [CascadingCommodityTypeCategoryListPayload]
+
+  """商品类型ID"""
+  typeId: ID!
+
+  """商品类型名称"""
+  typeName: String!
+}
+
+type CascadingCommodityTypeVarietyListPayload {
+  """商品品种ID"""
+  varietyId: ID!
+
+  """商品品种名称"""
+  varietyName: String!
+}
+
+type CategoryPayload {
+  """类目Id"""
+  categoryId: ID
+
+  """类目名称"""
+  categoryName: String
+
+  """商品规格属性"""
+  categoryProperties: [CommodityCategoryProperty]
+
+  """产地"""
+  placeOrigins: [CommodityPlaceOriginPayload]
+}
+
+type CategoryPropertyPayload {
+  """类目属性ID"""
+  categoryPropertyId: ID
+
+  """类目属性名称"""
+  categoryPropertyName: String
+
+  """类目属性值列表"""
+  values: [CategoryPropertyValue]
+}
+
+type CategoryPropertyValue {
+  """商品属性值ID"""
+  categoryPropertyValueId: ID
+
+  """商品规格名称"""
+  categoryPropertyValueName: String
+}
+
+type CategoryTreePayload {
+  """类目ID"""
+  frontEndCategoryId: ID!
+
+  """前端类目名称"""
+  frontEndCategoryName: String!
+
+  """类目图标"""
+  icon: [FilePayload]
+
+  """二级类目"""
+  secondLayers: [CategoryTreeSecondLayerPayload]!
+}
+
+type CategoryTreeSecondLayerPayload {
+  """后端类目列表"""
+  categories: [CategoryPayload]
+
+  """类目ID"""
+  frontEndCategoryId: ID!
+
+  """前端类目名称"""
+  frontEndCategoryName: String
+
+  """类目图标"""
+  icon: [FilePayload]
 }
 
 """
-商品品类实体
+ 必须包含  改价模式：快速 or 精细
+修改金额类型: TOTAL_AMOUNT-整单优惠金额，ADDITIONAL_COST_AMOUNT-附加费用金额，TRANSPORT_AMOUNT-运费金额，INCIDENTAL_AMOUNT-杂费金额
 """
+type ChangeAmountPayload {
+  """附加服务"""
+  additionalCostAmount: BigDecimal
+
+  """改价类型[加 or 减]"""
+  amountChangeType: AmountChangeTypeEnum
+
+  """改价模式【快速 or 精细】"""
+  changeMethod: AmountChangeMethodEnum
+
+  """精细sku改价列表"""
+  changeUnitPrice: [ChangeUnitPricePayload]
+
+  """杂费金额[后续]"""
+  incidentalAmount: BigDecimal
+
+  """原订单总额"""
+  originalTotalAmount: BigDecimal
+
+  """原订单运杂费"""
+  originalTransportAmount: BigDecimal
+
+  """备注【该次改价是填入的备注】"""
+  remark: String
+
+  """商品变更金额【fast mode ：整单优惠，precise：商品变更金额】"""
+  totalAmount: BigDecimal
+
+  """运费金额"""
+  transportAmount: BigDecimal
+}
+
+input ChangeUnitPriceInput {
+  """商品ID"""
+  commodityId: ID
+
+  """商品SKU ID"""
+  commoditySkuId: ID
+
+  """商品变更后单价"""
+  unitPrice: BigDecimal
+}
+
+type ChangeUnitPricePayload {
+  """商品SKU ID"""
+  commoditySkuId: ID
+
+  """商品变更后单价"""
+  unitPrice: BigDecimal
+}
+
+type Channel {
+  """经营范围"""
+  businessScope: String
+
+  """渠道ID"""
+  id: ID!
+
+  """小程序号"""
+  miniProgramNo: String
+
+  """渠道名称"""
+  name: String!
+
+  """开户行账号"""
+  openAccount: String
+
+  """开户银行"""
+  openBank: String
+
+  """渠道主体"""
+  subject: String
+}
+
+input ChannelCreateInput {
+  """经营范围"""
+  businessScope: String
+
+  """小程序号"""
+  miniProgramNo: String!
+
+  """渠道名称"""
+  name: String!
+
+  """开户行账号"""
+  openAccount: String!
+
+  """开户银行"""
+  openBank: String!
+
+  """渠道主体"""
+  subject: String!
+}
+
+type ChannelDeliveryMethodPayload {
+  """渠道ID"""
+  channelId: ID!
+
+  """渠道名称"""
+  channelName: String!
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]
+}
+
+input ChannelEditInput {
+  """经营范围"""
+  businessScope: String
+
+  """渠道ID"""
+  id: ID!
+
+  """小程序号"""
+  miniProgramNo: String!
+
+  """渠道名称"""
+  name: String!
+
+  """开户行账号"""
+  openAccount: String!
+
+  """开户银行"""
+  openBank: String!
+
+  """渠道主体"""
+  subject: String!
+}
+
+type ChannelInfoPayload {
+  """渠道ID"""
+  id: ID!
+
+  """渠道名称"""
+  name: String!
+}
+
+type ChannelSaleMethodPayload {
+  """渠道ID"""
+  channelId: ID!
+
+  """渠道名称"""
+  channelName: String!
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+}
+
+input ChooseCurrentUseInput {
+  """来源端"""
+  appType: AppTypeEnum!
+
+  """选择类型对应的业务ID"""
+  busId: ID!
+
+  """当前选择类型"""
+  chooseType: CurrentUseTypeEnum!
+}
+
+type CityPayLoad {
+  id: ID!
+
+  """维度"""
+  lat: Float!
+
+  """经度"""
+  lng: Float!
+  name: String!
+  provinceId: ID!
+}
+
+input CityQueryInput {
+  """城市名称"""
+  cityName: String
+
+  """是否热门"""
+  isHot: Boolean
+
+  """省份id"""
+  provinceId: ID
+}
+
+type ColumnNamePayload {
+  """对应的业务ID，可能是内容ID或页面配置详情ID"""
+  busId: ID!
+
+  """栏目ID"""
+  id: ID!
+
+  """栏目名称"""
+  name: String!
+
+  """展现形式"""
+  revealShape: RevealShapeEnum!
+
+  """规则"""
+  ruleType: ColumnRuleTypeEnum
+}
+
+"""分页获取内容列表响应对象"""
+type ColumnPagePayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [ColumnPayload]!
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+type ColumnPayload {
+  """创建人"""
+  accountInfo: BaseAccountPayload!
+
+  """渠道ID"""
+  channelId: ID
+
+  """创建时间"""
+  createTime: Long!
+
+  """状态： false=未启用  true=启用"""
+  enabled: Boolean!
+
+  """栏目ID"""
+  id: ID!
+
+  """栏目名称"""
+  name: String!
+
+  """父ID"""
+  parentId: ID
+
+  """展现形式"""
+  revealShape: RevealShapeEnum!
+
+  """规则"""
+  ruleType: ColumnRuleTypeEnum
+}
+
+"""栏目规则枚举"""
+enum ColumnRuleTypeEnum {
+  """关联品类"""
+  ASSOCIATED_CATEGORY
+}
+
+enum CommodityAuditStatusEnum {
+  """审核通过"""
+  APPROVE
+
+  """被驳回"""
+  REFUSE
+
+  """未提交（暂存）"""
+  UNCOMMITTED
+
+  """待审核"""
+  UNDER_REVIEW
+}
+
+type CommodityBrandListPayload {
+  """中文名"""
+  cnName: String!
+
+  """英文名"""
+  enName: String
+
+  """品牌ID"""
+  id: ID!
+
+  """品牌logo"""
+  logo: [FilePayload]
+
+  """产地id"""
+  placeOriginId: ID
+
+  """备注"""
+  remark: String
+}
+
 type CommodityCategoryPayload {
-  """
-  品类id
-  """
-  categoryId: Int
+  """类目ID(后端类目ID)"""
+  categoryId: ID
 
-  """
-  品类名称
-  """
+  """后端类目名称"""
   categoryName: String
 }
 
-"""
-商品详情实体
-"""
+type CommodityCategoryProperty {
+  """属性Id"""
+  categoryPropertyId: ID
+
+  """商品规格名称"""
+  categoryPropertyName: String
+
+  """规格属性值"""
+  categoryPropertyValues: [CategoryPropertyValue]
+}
+
+type CommodityCategoryPropertyListPayload {
+  """属性编码"""
+  code: String!
+
+  """属性ID"""
+  id: ID!
+
+  """属性名称"""
+  name: String!
+
+  """属性类型"""
+  propertyType: propertyTypeEnum!
+
+  """属性值列表"""
+  propertyValues: [CommodityCategoryPropertyValueListPayload]
+
+  """是否必填商品属性"""
+  requiredField: Boolean!
+}
+
+type CommodityCategoryPropertyValueListPayload {
+  """属性值ID"""
+  id: ID!
+
+  """属性值名称"""
+  name: String!
+}
+
 type CommodityDetailPayload {
-  """
-  商品名称
-  """
+  """售后标准"""
+  afterSalesStandard: [FilePayload]
+
+  """商品相册"""
+  albumResources: [FilePayload]
+
+  """审核状态"""
+  auditStatus: CommodityAuditStatusEnum
+
+  """商品品类ID"""
+  categoryId: ID
+
+  """商品品类名称"""
+  categoryName: String
+
+  """商品品牌Id"""
+  commodityBrandId: ID
+
+  """商品品牌名称"""
+  commodityBrandName: String
+
+  """商品编码"""
+  commodityCode: String
+
+  """商品ID"""
+  commodityId: ID
+
+  """商品名称"""
   commodityName: String
 
-  """
-  商品规格选项
-  """
-  commoditySpecOption: [CommoditySpecOptionPayload]
+  """类型"""
+  commodityTypeId: ID
 
-  """
-  期望数量
-  """
-  expectNum: Int
+  """发货仓ID"""
+  deliveryWarehouseId: ID
+
+  """商品描述"""
+  descResources: [FilePayload]
+
+  """产地Id"""
+  placeOriginId: ID
+
+  """产地名称"""
+  placeOriginName: String
+
+  """发布标识"""
+  publishIdentify: Boolean
+
+  """品种ID"""
+  varietyId: ID
+
+  """品种名称"""
+  varietyName: String
 }
 
-"""
-商品入参
-"""
-input CommodityInput {
-  """
-  商品id
-  """
-  commodityId: Int!
+type CommodityOnlineDetailPayload {
+  """售后标准"""
+  afterSalesStandard: [FilePayload]
 
-  """
-  商品sku id
-  """
-  commoditySkuId: Int!
+  """商品相册"""
+  albumResources: [FilePayload]
 
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]!
+  """商品品类Id"""
+  categoryId: ID
 
-  """
-  期望数量
-  """
-  expectNum: String!
-}
+  """商品品类名称"""
+  categoryName: String
 
-"""
-商品返回实体
-"""
-type CommodityPayload {
-  """
-  商品id
-  """
-  commodityId: Int
+  """商品类目属性"""
+  categoryProperties: [CategoryPropertyPayload]
 
-  """
-  商品名称
-  """
+  """商品编码"""
+  commodityCode: String
+
+  """商品描述"""
+  commodityDesc: [FilePayload]
+
+  """商品ID"""
+  commodityId: Long
+
+  """商品名称"""
   commodityName: String
 
-  """
-  期望数量
-  """
-  expectNum: Int
+  """发货仓信息"""
+  deliveryInfo: DeliveryInfo
 
-  """
-  已生产数量
-  """
-  completedNum: Int
+  """最高价"""
+  maxPrice: Float
 
-  """
-  规格选项id
-  """
-  commoditySpecOptionId: [Int]
+  """最低价"""
+  minPrice: Float
 
-  """
-  sku文字描述,规格选项文字数组
-  """
-  skuTextDescription: [String]
+  """产地Id"""
+  placeOriginId: ID
 
-  """
-  总计类型
-  """
-  totalType: Int
+  """产地名称"""
+  placeOriginName: String
 
-  """
-  总计类型名称
-  """
-  totalTypeName: String
+  """商家店铺信息"""
+  storeInfo: StoreInfoPayload
 }
 
-input CommoditySkuAndUnitInput {
-  commoditySkuId: Int
-  commoditySpecOptionIds: [Int]
+input CommodityOnlinePageInput {
+  """后端类目ID集合"""
+  categoryIds: [ID!]
+
+  """商品属性"""
+  categoryPropertyValueIds: [[ID!]!]
+  channelId: ID
+
+  """纬度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """最高价"""
+  maxPrice: Float
+
+  """商家ID"""
+  merchantId: ID
+
+  """最低价"""
+  minPrice: Float
+
+  """orderBy"""
+  orderByEnums: [CommodityOrderByEnum!]
+
+  """分页信息"""
+  pageCurrent: Int!
+  pageSize: Int!
+
+  """产地ID"""
+  placeOriginId: [ID!]
+
+  """商品搜索关键词"""
+  searchKeyword: String
 }
 
-type CommoditySkuAndUnitPayload {
-  commoditySkuId: Int
-  commoditySpecOptionId: [Int]
-  skuTextDescription: [String]
-  unitQuantity: String
-  unitType: Int
-  unitTypeName: String
-  totalType: Int
-  totalTypeName: String
-  commodityBomId: Int
+type CommodityOnlinePagePayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+  records: [CommoditySearchPayload]
+
+  """总记录数"""
+  totalRecords: Int!
 }
 
-"""
-商品规格选项实体
-"""
-type CommoditySpecOptionPayload {
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: Int
+input CommodityOrderApplyCostInput {
+  """商品价值"""
+  commodityCost: BigDecimal
 
-  """
-  商品规格选项名称
-  """
-  commoditySpecOptionName: String
+  """运费"""
+  freight: BigDecimal
+
+  """合计"""
+  total: BigDecimal
 }
 
-"""
-商品规格实体
-"""
-type CommoditySpecPayload {
-  """
-  商品规格id
-  """
-  commoditySpecId: Int
+input CommodityOrderApplyItemInput {
+  """费用"""
+  cost: CommodityOrderApplyCostInput
 
-  """
-  商品规格名称
-  """
-  commoditySpecName: String
+  """商品发货仓id"""
+  deliveryWarehouseId: ID!
 
-  """
-  商品规格选项列表
-  """
-  commoditySpecOption: [CommoditySpecOptionPayload]
+  """商家id"""
+  merchantId: ID!
+
+  """商家名称"""
+  merchantName: String
+
+  """收货信息"""
+  receipt: CommodityOrderApplyReceiptInput!
+
+  """备注"""
+  remark: String
+
+  """sku集合"""
+  skuList: [CommodityOrderApplySkuInput]
 }
 
-type CountOrderPayload {
-  """
-  生产入库数量
-  """
-  inApply: Int
+input CommodityOrderApplyReceiptInput {
+  """市名"""
+  cityName: String
 
-  """
-  原料领料数量
-  """
-  raw: Int
+  """联系人姓名"""
+  contactName: String!
 
-  """
-  辅料领料数量
-  """
-  sub: Int
+  """联系人电话"""
+  contactPhone: String!
+
+  """详细地址"""
+  detailAddress: String!
+
+  """区域名"""
+  districtName: String
+
+  """维度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """省份名"""
+  provinceName: String
+
+  """收货地址id-拆单条件"""
+  receiptAddressId: ID!
+
+  """收货方式"""
+  receiptType: ReceiptTypeEnum
 }
 
-input CustomerDistributionInput {
-  """
-   配送ID
-  """
-  distributionId: Int
+input CommodityOrderApplySkuInput {
+  """商品id"""
+  commodityId: ID
 
-  """
-   客户ID
-  """
-  customerId: Int
+  """商品名称"""
+  commodityName: String
 
-  """
-   配送名称
-  """
-  distributionName: String
+  """商品缩略图"""
+  commodityPic: FileInput
 
-  """
-   联系人
-  """
-  contacts: String
+  """sku数量"""
+  quantity: Int!
 
-  """
-   联系电话
-  """
-  phoneNum: String
+  """skuId"""
+  skuId: ID!
 
-  """
-   配送地址
-  """
-  distributionAddr: String
+  """sku名称"""
+  skuName: String
+
+  """规格描述"""
+  spec: [String]
+
+  """sku单价"""
+  unitPrice: BigDecimal!
 }
 
-type CustomerDistributionVO {
-  """
-   配送ID
-  """
-  distributionId: Int
+enum CommodityOrderByEnum {
+  """价格排序"""
+  PRICE_ASC
+  PRICE_DESC
 
-  """
-   客户ID
-  """
-  customerId: Int
-
-  """
-   配送名称
-  """
-  distributionName: String
-
-  """
-   联系人
-  """
-  contacts: String
-
-  """
-   联系电话
-  """
-  phoneNum: String
-
-  """
-   配送地址
-  """
-  distributionAddr: String
+  """销量排序"""
+  SALE_ASC
+  SALE_DESC
 }
 
-"""
-客户分组实体
-"""
-type CustomerGroupResponse {
-  customerGroupId: Int
-  customerGroupName: String
+"""# TODO 商品订单改价信息"""
+interface CommodityOrderChangeAmountInterface {
+  """改价信息"""
+  changeAmount: ChangeAmountPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
 }
 
-input CustomerInput {
-  """
-   客户ID
-  """
-  customerId: Int
+"""# TODO 商品订单客户信息"""
+interface CommodityOrderCustomerInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
 
-  """
-   客户分组ID
-  """
-  customerGroupId: Int
+  """商品客户信息"""
+  customer: CommodityOrderCustomerPayload
+}
 
-  """
-   客户分组名称
-  """
-  customerGroupName: String
+type CommodityOrderCustomerPayload {
+  """客户id"""
+  customerId: ID
 
-  """
-   客户名称
-  """
+  """客户名称"""
   customerName: String
 
-  """
-   客户简称
-  """
-  customerShortName: String
+  """客户联系电话"""
+  customerPhone: String
 
-  """
-   备注信息
-  """
-  remark: String
-  customerDistributions: [CustomerDistributionInput]
+  """客户类型"""
+  customerType: CustomerTypeEnum
+
+  """客户所属企业名称"""
+  enterpriseName: String
 }
 
-"""
-客户分页实体
-"""
-type CustomerPageResult {
-  records: [CustomerVO]
+input CommodityOrderDeliveryEditInput {
+  """车牌号"""
+  carNo: String!
+
+  """联系电话"""
+  contactPhone: String!
+
+  """发货id"""
+  deliveryId: ID!
+
+  """司机名称"""
+  driverName: String!
+
+  """备注"""
+  remark: String
+}
+
+input CommodityOrderDeliveryInput {
+  """车牌号"""
+  carNo: String!
+
+  """商品订单ID"""
+  commodityOrderId: ID!
+
+  """联系电话"""
+  contactPhone: String!
+
+  """司机名称"""
+  driverName: String!
+
+  """质检信息"""
+  inspectInfoList: [FileInput]!
+
+  """备注"""
+  remark: String
+
+  """SKU列表"""
+  skuList: [CommodityOrderSkuInput]!
+}
+
+interface CommodityOrderDeliveryInterface {
+  """商品订单详情ID"""
+  commodityOrderId: ID
+
+  """发货详情集合"""
+  deliveryInfoList: [CommodityOrderDeliveryPayload]
+}
+
+type CommodityOrderDeliveryPayload {
+  """发货唯一标识"""
+  deliveryId: ID
+
+  """发货时间"""
+  deliveryTime: Long
+
+  """质检信息"""
+  inspectInfoList: [FilePayload]
+
+  """物流信息"""
+  logisticsInfo: CommodityOrderLogisticsPayload
+}
+
+interface CommodityOrderHasAfterSaleInterface {
+  """售后布尔统计"""
+  afterSaleBool: AfterSaleBoolPayload
+
+  """商品订单详情ID"""
+  commodityOrderId: ID
+}
+
+"""# TODO 商品订单基础信息"""
+interface CommodityOrderInterface {
+  """商品订单"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+}
+
+type CommodityOrderLogisticsPayload {
+  """车牌号"""
+  carNo: String
+
+  """联系电话"""
+  contactPhone: String
+
+  """司机名称"""
+  driverName: String
+
+  """物流id"""
+  logisticsId: ID
+
+  """备注信息"""
+  remark: String
+}
+
+"""# TODO 商品订单商家信息"""
+interface CommodityOrderMerchantInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品订单商家信息"""
+  merchant: CommodityOrderMerchantPayload
+}
+
+type CommodityOrderMerchantPayload {
+  """商户id"""
+  merchantId: ID
+
+  """商户名称"""
+  merchantName: String
+
+  """店铺名称"""
+  storeName: String
+}
+
+enum CommodityOrderMoneyChangeTypeEnum {
+  """优惠"""
+  DISCOUNT
+
+  """加价"""
+  RAISE
+}
+
+type CommodityOrderPayload {
+  """售后过期时间"""
+  afterSaleExpireTime: Long
+
+  """订单提交时间"""
+  applyTime: Long
+
+  """商品订单编号"""
+  commodityOrderCode: String
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """支付时间"""
+  paidTime: Long
+
+  """支付过期时间"""
+  payExpireTime: Long
+
+  """支付类型"""
+  payType: PayTypeEnum
+
+  """提货时间"""
+  receiptTime: Long
+
+  """备注"""
+  remark: String
+
+  """状态"""
+  status: CommodityOrderStatusEnum
+}
+
+"""# TODO 商品订单支付信息"""
+interface CommodityOrderPaymentInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品支付信息"""
+  payment: CommodityOrderPaymentPayload
+}
+
+type CommodityOrderPaymentPayload {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """支付时间"""
+  payTime: Long
+
+  """支付方式"""
+  payType: PayTypeEnum
+}
+
+type CommodityOrderPickUpAddressPayload {
+  """联系人"""
+  contact: String
+
+  """联系人电话"""
+  contactPhone: String
+
+  """纬度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """收货/提货地址"""
+  receiptAddress: String
+}
+
+"""# TODO 商品订单金额"""
+interface CommodityOrderPriceInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+}
+
+type CommodityOrderPricePayload {
+  """实付金额"""
+  actualPaidAmount: BigDecimal
+
+  """附加服务金额-最终"""
+  additionalCostAmount: BigDecimal
+
+  """商家修改金额-最终"""
+  changeAmount: BigDecimal
+
+  """改价模式【快速 or 精细】"""
+  changeMethod: AmountChangeMethodEnum
+
+  """商品金额-初始"""
+  commodityAmount: BigDecimal
+
+  """商品改价类型"""
+  commodityAmountChangeType: AmountChangeTypeEnum
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """是否存在支付单"""
+  isPayOrderExist: Boolean
+
+  """总金额-应付金额"""
+  totalAmount: BigDecimal
+
+  """运费金额-最终"""
+  transportAmount: BigDecimal
+}
+
+"""# TODO 商品订单收货信息"""
+interface CommodityOrderReceiptInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+}
+
+interface CommodityOrderSkuAfterSaleInterface {
+  """售后展示"""
+  afterSaleShow: AfterSaleShowPayload
+
+  """商品订单详情ID"""
+  commodityOrderDetailId: ID
+}
+
+type CommodityOrderSkuDetailPayload {
+  """商品名称"""
+  commodityName: String
+
+  """商品订单id"""
+  commodityOrderId: ID
+
+  """数量"""
+  quantity: Int
+
+  """skuId"""
+  skuId: ID
+
+  """sku名称"""
+  skuName: String
+
+  """规格"""
+  spec: [String]
+
+  """缩略图"""
+  thumbnailImage: [FilePayload]
+
+  """单位"""
+  unit: OrderMarketingUnitEnum
+
+  """单价"""
+  unitPrice: BigDecimal
+
+  """精细改价后单价"""
+  unitPriceChange: BigDecimal
+}
+
+input CommodityOrderSkuInput {
+  """发货数量"""
+  quantity: Int!
+
+  """skuId"""
+  skuId: ID!
+}
+
+"""# TODO 商品订单商品sku详情"""
+interface CommodityOrderSkuInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+type CommodityOrderSkuPayload implements CommodityOrderSkuAfterSaleInterface {
+  """售后展示"""
+  afterSaleShow: AfterSaleShowPayload
+
+  """商品id"""
+  commodityId: ID
+
+  """商品名称"""
+  commodityName: String
+
+  """商品订单详情ID"""
+  commodityOrderDetailId: ID
+
+  """商品图片"""
+  commodityPic: [FilePayload]
+
+  """可发货数量"""
+  needDeliveryQuantity: Int
+
+  """数量"""
+  quantity: BigDecimal
+
+  """商品skuId"""
+  skuId: ID
+
+  """商品sku名称"""
+  skuName: String
+
+  """最终单价"""
+  skuPreciseChangePrice: BigDecimal
+
+  """商品sku展示文件"""
+  skuShowFileList: [FilePayload]
+
+  """商品规格"""
+  specList: [String]
+
+  """单位"""
+  unit: OrderMarketingUnitEnum
+
+  """原始单价"""
+  unitPrice: BigDecimal
+
+  """精细改价Sku信息"""
+  unitPriceChange: OrderSkuChangeUnitPricePayload
+}
+
+"""}"""
+interface CommodityOrderSkuUnitPrice {
+  commodityOrderId: ID
+
+  """sku单价"""
+  price: OrderSkuUnitPricePayload
+  skuId: ID
+}
+
+enum CommodityOrderStatusEnum {
+  """全部-仅供前端分页使用"""
+  ALL
+
+  """已取消"""
+  CANCELED
+
+  """已关闭"""
+  CLOSED
+
+  """部分发货"""
+  DELIVERY_SECTION
+
+  """已完成"""
+  FINISHED
+
+  """待发货"""
+  WAIT_DELIVERY
+
+  """待支付"""
+  WAIT_PAY
+
+  """待收(提)货"""
+  WAIT_RECEIPT
+}
+
+input CommodityPageInput {
+  """审核状态"""
+  auditStatus: CommodityAuditStatusEnum
+
+  """商品名称keyword"""
+  keyword: String
+
+  """分页信息"""
   pageCurrent: Int
   pageSize: Int
-  totalRecords: Long
 }
 
-"""
-extend type Query {
-    listCustomerPayload: CustomerPayload
-}
-客户返回实体
-"""
-type CustomerVO {
-  """
-   客户ID
-  """
-  customerId: Int
+type CommodityPagePayload {
+  """当前页码"""
+  pageCurrent: Int
 
-  """
-   客户分组ID
-  """
-  customerGroupId: Int
+  """条数"""
+  pageSize: Int
 
-  """
-   客户分组名称
-  """
-  customerGroupName: String
+  """角色列表"""
+  records: [CommodityPayload]
 
-  """
-   客户名称
-  """
-  customerName: String
-
-  """
-   客户简称
-  """
-  customerShortName: String
-
-  """
-   备注信息
-  """
-  remark: String
-
-  """
-   创建时间
-  """
-  createTime: String
-
-  """
-   配送信息
-  """
-  customerDistribution: [CustomerDistributionVO]
+  """总记录数"""
+  totalRecords: Int
 }
 
-"""
-An RFC-3339 compliant Full Date Scalar
-"""
+type CommodityPayload {
+  """审核状态"""
+  auditStatus: CommodityAuditStatusEnum
+
+  """商品ID"""
+  commodityId: ID!
+
+  """商品名称"""
+  commodityName: String!
+
+  """是否存在有效的sku"""
+  hasEnabledSku: Boolean
+
+  """最高价"""
+  maxPrice: Float
+
+  """最低价"""
+  minPrice: Float
+
+  """发布标识"""
+  publishIdentify: Boolean
+
+  """销量"""
+  sales: Long
+
+  """缩略图"""
+  thumbnailImage: [FilePayload]
+}
+
+type CommodityPickUpAddressPayload {
+  """市名称"""
+  cityName: String
+
+  """联系人"""
+  contactName: String
+
+  """详细地址"""
+  detailedAddress: String
+
+  """区名称"""
+  districtName: String
+
+  """联系电话"""
+  mobileNo: String
+
+  """地址Id"""
+  pickUpAddressId: ID!
+
+  """省份名称"""
+  provinceName: String
+}
+
+type CommodityPlaceOriginListPayload {
+  """商品产地ID"""
+  id: ID!
+
+  """商品产地名称"""
+  name: String!
+}
+
+type CommodityPlaceOriginPayload {
+  """产地Id"""
+  placeOriginId: ID
+
+  """产地名称"""
+  placeOriginName: String
+}
+
+"""商品属性显示类型枚举"""
+enum CommodityPropertyDisplayTypeEnum {
+  UNKNOWN
+  UNRECOGNIZED
+  UNSPECIFIED
+}
+
+"""商品属性枚举"""
+enum CommodityPropertyTypeEnum {
+  UNKNOWN
+  UNRECOGNIZED
+  UNSPECIFIED
+}
+
+enum CommodityPublishStatusEnum {
+  """下架"""
+  CANCEL_PUBLISH
+
+  """上架"""
+  PUBLISH
+  UNKNOWN
+  UNRECOGNIZED
+  UNSPECIFIED
+}
+
+type CommodityReceiptPayload {
+  """发货方式"""
+  deliveryMethod: DeliveryMethodEnum
+
+  """提货码"""
+  pickUpCode: String
+
+  """收货方式"""
+  receiptType: ReceiptTypeEnum
+}
+
+type CommoditySearchPayload {
+  """商品品类ID"""
+  categoryId: ID!
+
+  """商品ID"""
+  commodityId: ID!
+
+  """商品名称"""
+  commodityName: String!
+
+  """最高价"""
+  maxPrice: Float
+
+  """最低价"""
+  minPrice: Float
+
+  """商家店铺信息"""
+  storeInfo: StoreInfoPayload
+
+  """缩略图"""
+  thumbnailImage: [FilePayload]
+}
+
+input CommodityToOnlineInput {
+  """商品ID"""
+  commodityId: ID!
+}
+
+type CommodityToOnlinePayload {
+  """操作结果消息"""
+  msg: String
+
+  """商品上架操作结果"""
+  result: CommodityToOnlineResultEnum
+}
+
+"""商品上架结果"""
+enum CommodityToOnlineResultEnum {
+  """操作失败"""
+  FAILURE
+
+  """部分成功"""
+  PART_SUCCESS
+
+  """全部成功"""
+  SUCCESS
+}
+
+type CommodityTypeCategoryListPayload {
+  """商品类型ID"""
+  commodityTypeId: ID!
+
+  """商品品类ID"""
+  id: ID!
+
+  """商品品类名称"""
+  name: String!
+}
+
+type CommodityTypeListPayload {
+  """商品类型ID"""
+  id: ID!
+
+  """商品类型名称"""
+  name: String!
+}
+
+type CommodityTypeVarietyListPayload {
+  """商品类型ID"""
+  commodityTypeCategoryId: ID!
+
+  """商品品种ID"""
+  id: ID!
+
+  """商品品种名称"""
+  name: String!
+}
+
+input ConfirmOrderDetailInput {
+  """skuId列表"""
+  skuIds: [ID!]!
+}
+
+""" 商家 - 发货仓库 - 配送方式"""
+type ConfirmOrderDetailPayload implements MerchantInfoInterface & SkuInterface {
+  """商品发货仓id"""
+  deliveryWarehouseId: ID
+
+  """商户信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """商户ID"""
+  merchantId: ID!
+
+  """数量"""
+  quantity: Int
+
+  """收货信息"""
+  receipt: ConfirmOrderReceiptPayload
+
+  """购物车明细id"""
+  shoppingCartDetailId: ID
+
+  """skuID"""
+  skuId: ID!
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+}
+
+type ConfirmOrderReceiptPayload {
+  """市名"""
+  cityName: String
+
+  """联系人姓名"""
+  contactName: String
+
+  """联系人电话"""
+  contactPhone: String
+
+  """详细地址"""
+  detailAddress: String
+
+  """区域名"""
+  districtName: String
+
+  """维度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """省份名"""
+  provinceName: String
+
+  """收货地址id"""
+  receiptAddressId: ID
+
+  """收货方式"""
+  receiptType: ReceiptTypeEnum!
+}
+
+input ConfirmPaymentInput {
+  """订单ID"""
+  orderId: [ID!]!
+
+  """支付方式"""
+  paymentMethod: PaymentMethodEnum!
+
+  """订单总金额"""
+  totalAmount: BigDecimal!
+}
+
+"""内容审核状态"""
+enum ContentAuditStatusEnum {
+  """已授权认证（审核通过）"""
+  APPROVE
+
+  """拒绝（已驳回）"""
+  REFUSE
+
+  """未提交（暂存）"""
+  UNCOMMITTED
+
+  """认证中（待审核）"""
+  UNDER_REVIEW
+}
+
+type ContentByTypePayload {
+  """品类ID"""
+  commodityCategoryId: ID
+
+  """内容详情"""
+  details: String
+
+  """图片与视频文件资源"""
+  fileResources: [FilePayload]
+
+  """简介"""
+  introduction: String
+
+  """关键字"""
+  keyWord: [String]
+
+  """对应类型"""
+  pageSetupType: PageTypeEnum!
+
+  """副标题"""
+  subhead: String
+
+  """系统内置类型（模块）"""
+  systemContentType: String!
+
+  """内容标题"""
+  title: String!
+}
+
+type ContentPayload {
+  """创建人"""
+  accountInfo: BaseAccountPayload!
+
+  """审核状态"""
+  auditStatus: ContentAuditStatusEnum!
+
+  """渠道ID"""
+  channelId: ID
+
+  """所属栏目列表"""
+  columnList: [ColumnNamePayload!]!
+
+  """商品品类ID（MDM）"""
+  commodityCategoryId: ID
+
+  """创建时间"""
+  createTime: Long!
+
+  """内容详情"""
+  details: String
+
+  """图片与视频文件资源"""
+  fileResources: [FilePayload]
+
+  """内容ID"""
+  id: ID!
+
+  """简介"""
+  introduction: String
+
+  """关键字"""
+  keyWord: [String]
+
+  """发布状态： false=未发布 true=已发布"""
+  releaseStatus: Boolean!
+
+  """副标题"""
+  subhead: String
+
+  """内容标题"""
+  title: String!
+
+  """更新时间"""
+  updateTime: Long!
+}
+
+type CountryPayLoad {
+  id: ID!
+  name: String!
+}
+
+input CreateAfterSaleInput {
+  """售后类型"""
+  afterSalesType: AfterSalesTypeEnum!
+
+  """sku发货状态"""
+  deliveryMoment: DeliveryMomentEnum!
+
+  """售后说明"""
+  description: String
+
+  """售后凭证"""
+  images: [FileInput]
+
+  """退款金额"""
+  money: BigDecimal
+
+  """申请数量"""
+  quantity: Int
+
+  """售后原因"""
+  reason: String!
+
+  """发起售后的skuID"""
+  skuId: ID!
+
+  """订单ID"""
+  subOrderId: ID!
+}
+
+input CreateCommodityInput {
+  """售后标准"""
+  afterSalesStandard: [FileInput]
+
+  """商品相册"""
+  albumResources: [FileInput]!
+
+  """商品品类ID"""
+  categoryId: ID!
+
+  """商品品牌Id"""
+  commodityBrandId: ID
+
+  """商品描述"""
+  commodityDesc: [FileInput]
+
+  """商品名称"""
+  commodityName: String!
+
+  """类型"""
+  commodityTypeId: ID!
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID!
+
+  """产地Id"""
+  placeOriginId: ID
+
+  """品种ID"""
+  varietyId: ID!
+}
+
+input CreateDeliveryWarehouseInput {
+  """区域编码"""
+  adCode: String!
+
+  """联系人"""
+  contact: String!
+
+  """发货仓名称"""
+  deliveryWarehouseName: String!
+
+  """详细地址"""
+  detailedAddress: String
+
+  """纬度"""
+  latitude: Float!
+
+  """经度"""
+  longitude: Float!
+
+  """联系电话"""
+  mobileNo: String!
+
+  """发货仓发货地址数组"""
+  pickUpAddressIds: [ID]
+
+  """配送方式列表"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+"""创建角色Input"""
+input CreateRoleInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """角色名"""
+  roleName: String!
+}
+
+input CreateUpAddressInput {
+  """区域编码"""
+  adCode: String!
+
+  """发货地址类型"""
+  addressType: AddressTypeEnum!
+
+  """联系人"""
+  contact: String!
+
+  """详细地址"""
+  detailedAddress: String!
+
+  """纬度"""
+  latitude: Float!
+
+  """经度"""
+  longitude: Float!
+
+  """联系电话"""
+  mobileNo: String!
+}
+
+input CreateWalletInput {
+  """商家或者客户ID"""
+  businessId: ID!
+
+  """渠道ID"""
+  channelId: ID!
+
+  """账户类型"""
+  walletType: WalletTypeEnum!
+}
+
+enum CurrentUseTypeEnum {
+  """渠道"""
+  CHANNEL
+
+  """客户"""
+  CUSTOMER
+
+  """商家"""
+  MERCHANT
+}
+
+type CustomerApplyCommodityOrderResultPayload {
+  """金额"""
+  amount: BigDecimal
+
+  """拆分后所有订单id-支付接口使用"""
+  commodityOrderIdList: [ID]
+}
+
+input CustomerCancelCommodityOrderInput {
+  """商品订单id"""
+  commodityOrderId: ID!
+
+  """取消原因"""
+  reason: String!
+}
+
+input CustomerCommodityDeliveryQuantityInput {
+  """订单id"""
+  commodityOrderId: ID!
+
+  """skuId"""
+  skuIds: [ID!]!
+}
+
+type CustomerCommodityDeliveryQuantityPayload {
+  """已发货数量"""
+  deliveryQuantity: Int
+
+  """skuId"""
+  skuId: ID!
+
+  """待发货数量"""
+  waitDeliveryQuantity: Int
+}
+
+input CustomerCommodityOrderApplyInput {
+  """申请id"""
+  applyId: ID!
+
+  """订单项"""
+  itemList: [CommodityOrderApplyItemInput]
+
+  """购物车明细id"""
+  shoppingCartDetailIdList: [ID]
+
+  """合计费用"""
+  totalCost: BigDecimal
+}
+
+type CustomerCommodityOrderDetailPayload implements CommodityOrderCustomerInterface & CommodityOrderDeliveryInterface & CommodityOrderHasAfterSaleInterface & CommodityOrderInterface & CommodityOrderMerchantInterface & CommodityOrderPaymentInterface & CommodityOrderPriceInterface & CommodityOrderReceiptInterface & CommodityOrderSkuInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """售后布尔统计"""
+  afterSaleBool: AfterSaleBoolPayload
+
+  """商品订单"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID!
+
+  """商品客户信息"""
+  customer: CommodityOrderCustomerPayload
+
+  """发货详情集合"""
+  deliveryInfoList: [CommodityOrderDeliveryPayload]
+
+  """商品订单商家信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """商品支付信息"""
+  payment: CommodityOrderPaymentPayload
+
+  """商品实付金额明细"""
+  price: CommodityOrderPricePayload
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+input CustomerCommodityOrderPageInput {
+  """关键字"""
+  key: String
+
+  """当前页"""
+  pageCurrent: Int
+
+  """每页数量"""
+  pageSize: Int
+
+  """状态"""
+  status: CommodityOrderStatusEnum
+}
+
+type CustomerCommodityOrderPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """结果"""
+  records: [CustomerCommodityOrderPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type CustomerCommodityOrderPayload implements CommodityOrderInterface & CommodityOrderMerchantInterface & CommodityOrderPriceInterface & CommodityOrderReceiptInterface & CommodityOrderSkuInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """商品订单"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品订单商家信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+type CustomerCommodityOrderPricePayload implements CommodityOrderPriceInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+}
+
+type CustomerCommodityOrderReceiptCodePayload implements CommodityOrderReceiptInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID!
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+}
+
+interface CustomerInterface {
+  customerId: ID
+  customerInfo: OrderCustomerPayload
+}
+
+interface CustomerIsJoinedInterface {
+  """客户ID"""
+  id: ID!
+
+  """是否已经加入该企业"""
+  joined: Boolean!
+}
+
+type CustomerOrderQuantityPayload {
+  """售后"""
+  afterSales: Int
+
+  """全部"""
+  all: Int
+
+  """待发货"""
+  waitDelivery: Int
+
+  """待支付"""
+  waitPay: Int
+
+  """待收货"""
+  waitReceipt: Int
+}
+
+type CustomerRolePayload {
+  """角色ID"""
+  roleId: ID
+
+  """角色名称"""
+  roleName: String
+}
+
+enum CustomerTypeEnum {
+  """企业用户"""
+  ENTERPRISE
+
+  """个人用户"""
+  INDIVIDUAL
+  UNRECOGNIZED
+}
+
+"""An RFC-3339 compliant Full Date Scalar"""
 scalar Date
 
-"""
-An RFC-3339 compliant DateTime Scalar
-"""
+"""An RFC-3339 compliant DateTime Scalar"""
 scalar DateTime
+
+input DeleteRoleInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """角色ID"""
+  roleId: ID!
+}
+
+type DeliveryDetailPayload implements DeliverySkuInfoInterface & InspectInfoInterface & LogisticsInfoInterface {
+  """发货唯一标识"""
+  deliveryId: ID
+
+  """发货时间"""
+  deliveryTime: Long
+
+  """质检信息"""
+  inspectInfoList: [FilePayload]
+
+  """物流信息"""
+  logisticsInfo: CommodityOrderLogisticsPayload
+
+  """发货单商品项"""
+  skuList: [DeliverySkuPayload]
+}
+
+type DeliveryInfo {
+  """地址(省市区拼接的地址)"""
+  address: String
+
+  """市名称"""
+  cityName: String
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID
+
+  """详细地址"""
+  detailedAddress: String
+
+  """区名称"""
+  districtName: String
+
+  """状态"""
+  enabled: EnableEnum
+
+  """自提地址(只有receiptTypes当中包含BY_SELF的时候,这个字段才会有值,当不含有BY_SELF的时候,这个字段为空值)"""
+  pickUpAddress: CommodityPickUpAddressPayload
+
+  """省份名称"""
+  provinceName: String
+
+  """配送方式列表"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+"""一级的配送方式"""
+enum DeliveryMethodEnum {
+  """物流"""
+  BY_LOGISTICS
+
+  """自提"""
+  BY_SELF
+}
+
+type DeliveryMethodPayload {
+  """子配送方式"""
+  childList: [ReceiptTypePayload]
+
+  """配送方式名称"""
+  deliveryMethodName: String!
+
+  """配送方式类型枚举值"""
+  deliveryType: DeliveryMethodEnum!
+}
+
+"""售后单商品发货状态枚举"""
+enum DeliveryMomentEnum {
+  """发货后"""
+  AFTER_DELIVERY
+
+  """发货前"""
+  BEFORE_DELIVERY
+}
+
+interface DeliverySkuInfoInterface {
+  """发货唯一标识"""
+  deliveryId: ID
+
+  """发货单商品项"""
+  skuList: [DeliverySkuPayload]
+}
+
+"""发货单商品项"""
+type DeliverySkuPayload implements SkuInterface {
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """发货单唯一标识"""
+  deliveryId: ID
+
+  """发货数量"""
+  quantity: Int
+
+  """skuId"""
+  skuId: ID
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+
+  """sku发货时的单价"""
+  unitPrice: BigDecimal
+}
+
+type DeliveryWarehouseDetailPayload {
+  """区域编码"""
+  adCode: String
+
+  """配送方式/地址类型"""
+  addressTypePayloads: [AddressTypePayload]
+
+  """市ID"""
+  cityId: ID
+
+  """市名称"""
+  cityName: String
+
+  """联系人"""
+  contact: String
+
+  """国家ID"""
+  countryId: ID
+
+  """国家名称"""
+  countryName: String
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID!
+
+  """发货仓名称"""
+  deliveryWarehouseName: String!
+
+  """发货仓地址ID"""
+  deliveryWarehousePickUpAddressId: ID
+
+  """详细地址"""
+  detailedAddress: String
+
+  """区ID"""
+  districtId: ID
+
+  """区名称"""
+  districtName: String
+
+  """状态"""
+  enabled: EnableEnum
+
+  """纬度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """商家ID"""
+  merchantId: Long!
+
+  """联系电话"""
+  mobileNo: String
+
+  """省份"""
+  provinceId: ID
+
+  """省份名称"""
+  provinceName: String
+
+  """二级配送方式枚举"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+input DeliveryWarehousePageInput {
+  """关键词"""
+  keywords: String
+
+  """分页信息"""
+  pageCurrent: Int
+  pageSize: Int
+}
+
+type DeliveryWarehousePagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """发货仓列表"""
+  records: [DeliveryWarehousePayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type DeliveryWarehousePayload {
+  """创建时间"""
+  createTime: Long
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID
+
+  """发货仓名称"""
+  deliveryWarehouseName: String
+
+  """状态"""
+  enabled: EnableEnum
+
+  """二级配送方式枚举"""
+  receiptTypes: [ReceiptTypeEnum]
+}
+
+"""字典项公共响应"""
+type DictKeyValuePayload {
+  """类型"""
+  dictType: String!
+
+  """中文描述"""
+  label: String!
+
+  """值"""
+  value: String!
+}
+
+type DistrictPayLoad {
+  cityId: ID!
+  id: ID!
+
+  """维度"""
+  lat: Float!
+
+  """经度"""
+  lng: Float!
+  name: String!
+}
+
+input EditCommodityInput {
+  """售后标准"""
+  afterSalesStandard: [FileInput]
+
+  """商品相册"""
+  albumResources: [FileInput]!
+
+  """商品品类ID"""
+  categoryId: ID!
+
+  """商品品牌Id"""
+  commodityBrandId: ID
+
+  """商品描述"""
+  commodityDesc: [FileInput]
+
+  """商品ID"""
+  commodityId: ID!
+
+  """商品名称"""
+  commodityName: String!
+
+  """类型"""
+  commodityTypeId: ID!
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID!
+
+  """产地Id"""
+  placeOriginId: ID
+
+  """品种ID"""
+  varietyId: ID!
+}
+
+input EditDeliveryWarehouseInput {
+  """区域编码"""
+  adCode: String!
+
+  """联系人"""
+  contact: String!
+
+  """发货仓ID"""
+  deliveryWarehouseId: ID!
+
+  """发货仓名称"""
+  deliveryWarehouseName: String!
+
+  """发货仓地址ID"""
+  deliveryWarehousePickUpAddressId: ID!
+
+  """详细地址"""
+  detailedAddress: String
+
+  """纬度"""
+  latitude: Float!
+
+  """经度"""
+  longitude: Float!
+
+  """联系电话"""
+  mobileNo: String!
+
+  """发货仓发货地址"""
+  pickUpAddressIds: [ID]
+
+  """配送方式列表"""
+  receiptTypes: [ReceiptTypeEnum]!
+}
+
+input EditFrontEndCategoryInput {
+  """类目ID"""
+  frontEndCategoryId: ID!
+
+  """前端类目名称"""
+  frontEndCategoryName: String!
+
+  """类目图标"""
+  icon: [FileInput]!
+}
+
+input EditIndexMetaInput {
+  """索引重建每批次的个数"""
+  batch: Int
+
+  """主键ID"""
+  id: ID
+
+  """索引名称"""
+  indexType: String
+
+  """索引mapping结构"""
+  mapping: String
+
+  """副本分片数"""
+  numberOfReplicas: Int
+
+  """主分片数"""
+  numberOfShards: Int
+
+  """索引主键名"""
+  pkFieldName: String
+
+  """索引重建时间"""
+  rebuildTime: String
+
+  """服务提供名，注意一定要grpc+serviceName"""
+  serverName: String
+}
+
+input EditPickUpAddressInput {
+  """区域编码"""
+  adCode: String!
+
+  """发货地址类型"""
+  addressType: AddressTypeEnum
+
+  """联系人"""
+  contact: String!
+
+  """详细地址"""
+  detailedAddress: String
+
+  """纬度"""
+  latitude: Float!
+
+  """经度"""
+  longitude: Float!
+
+  """联系电话"""
+  mobileNo: String!
+
+  """发货地址ID"""
+  pickUpAddressId: ID!
+}
+
+input EditRoleNameInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """角色ID"""
+  roleId: ID!
+
+  """角色名称"""
+  roleName: String!
+}
+
+input EditRolePermissionInput {
+  """权限"""
+  permissionIdList: [ID]!
+
+  """角色ID"""
+  roleID: ID!
+}
+
+input EditSecondLayerFrontEndCategoryInput {
+  """后台类目排序(前端确保关联的后端类目里面的内容和排序的后端类目一样即可，关联后台类目和后台类目排序传一个给后端即可)"""
+  categoryIds: [ID]!
+
+  """类目ID"""
+  frontEndCategoryId: ID!
+
+  """类目名称"""
+  frontEndCategoryName: String!
+}
+
+input EditSkuInput {
+  """商品ID"""
+  commodityId: ID!
+
+  """一件代发价格"""
+  dropShippingPrice: Float
+
+  """单位"""
+  marketingUnit: MarketingUnitEnum
+
+  """商家商品编码"""
+  merchantSkuCode: String
+
+  """净重"""
+  netWeight: Float
+
+  """毛重"""
+  roughWeight: Float
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """规格ID"""
+  skuId: ID!
+
+  """规格名称"""
+  skuName: String!
+
+  """阶梯价格"""
+  skuPrices: [EditSkuPriceInput]
+
+  """规格属性"""
+  specProperty: [SkuCategoryPropertyInput]
+}
+
+input EditSkuPriceInput {
+  """起批量"""
+  bulk: Int
+
+  """价格"""
+  price: Float
+
+  """sku_price_id(新增的传0或者的不传，编辑的传Id)"""
+  skuPriceId: ID
+}
+
+input EnableDeliveryWarehouseInput {
+  """发货仓ID"""
+  deliveryWarehouseId: ID!
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+enum EnableEnum {
+  """禁用"""
+  DISABLE
+
+  """启用"""
+  ENABLE
+  UNKNOWN
+  UNRECOGNIZED
+  UNSPECIFIED
+}
+
+input EnableFrontEndCategoryInput {
+  """类目ID"""
+  frontEndCategoryId: ID!
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+input EnableSkuInput {
+  """规格ID"""
+  skuId: ID!
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+type EnterpriseAuthInfoPayload {
+  """企业代码"""
+  enterpriseCode: String!
+
+  """法人姓名"""
+  legalPersonName: String!
+
+  """企业名称"""
+  name: String!
+}
+
+input EnterpriseAuthInput {
+  """企业代码"""
+  enterpriseCode: String!
+
+  """法人姓名"""
+  legalPersonName: String!
+
+  """企业名称"""
+  name: String!
+}
+
+type EnterpriseInfoPayload implements CustomerIsJoinedInterface {
+  """企业代码"""
+  enterpriseCode: String!
+
+  """客户ID"""
+  id: ID!
+
+  """是否已经加入该企业"""
+  joined: Boolean!
+
+  """法人姓名"""
+  legalPersonName: String!
+
+  """企业名称"""
+  name: String!
+}
 
 enum ErrorDetail {
   """
-  Unknown error.
-
-  This error should only be returned when no other error detail applies.
-  If a client sees an unknown errorDetail, it will be interpreted as UNKNOWN.
-
-  HTTP Mapping: 500 Internal Server Error
+  The deadline expired before the operation could complete.
+  
+  For operations that change the state of the system, this error
+  may be returned even if the operation has completed successfully.
+  For example, a successful response from a server could have been
+  delayed long enough for the deadline to expire.
+  
+  HTTP Mapping: 504 Gateway Timeout
+  Error Type: UNAVAILABLE
   """
-  UNKNOWN
+  DEADLINE_EXCEEDED
+
+  """
+  The server detected that the client is exhibiting a behavior that
+  might be generating excessive load.
+  
+  HTTP Mapping: 429 Too Many Requests or 420 Enhance Your Calm
+  Error Type: UNAVAILABLE
+  """
+  ENHANCE_YOUR_CALM
 
   """
   The requested field is not found in the schema.
-
+  
   This differs from `NOT_FOUND` in that `NOT_FOUND` should be used when a
   query is valid, but is unable to return a result (if, for example, a
   specific video id doesn't exist). `FIELD_NOT_FOUND` is intended to be
@@ -416,2946 +3254,3017 @@ enum ErrorDetail {
   This may be returned in lieu of failing the entire query.
   See also `PERMISSION_DENIED` for cases where the
   requested field is invalid only for the given user or class of users.
-
+  
   HTTP Mapping: 404 Not Found
   Error Type: BAD_REQUEST
   """
   FIELD_NOT_FOUND
 
   """
-  The provided cursor is not valid.
-
-  The most common usage for this error is when a client is paginating
-  through a list that uses stateful cursors. In that case, the provided
-  cursor may be expired.
-
-  HTTP Mapping: 404 Not Found
-  Error Type: NOT_FOUND
-  """
-  INVALID_CURSOR
-
-  """
-  The operation is not implemented or is not currently supported/enabled.
-
-  HTTP Mapping: 501 Not Implemented
-  Error Type: BAD_REQUEST
-  """
-  UNIMPLEMENTED
-
-  """
   The client specified an invalid argument.
-
+  
   Note that this differs from `FAILED_PRECONDITION`.
   `INVALID_ARGUMENT` indicates arguments that are problematic
   regardless of the state of the system (e.g., a malformed file name).
-
+  
   HTTP Mapping: 400 Bad Request
   Error Type: BAD_REQUEST
   """
   INVALID_ARGUMENT
 
   """
-  The deadline expired before the operation could complete.
-
-  For operations that change the state of the system, this error
-  may be returned even if the operation has completed successfully.
-  For example, a successful response from a server could have been
-  delayed long enough for the deadline to expire.
-
-  HTTP Mapping: 504 Gateway Timeout
-  Error Type: UNAVAILABLE
+  The provided cursor is not valid.
+  
+  The most common usage for this error is when a client is paginating
+  through a list that uses stateful cursors. In that case, the provided
+  cursor may be expired.
+  
+  HTTP Mapping: 404 Not Found
+  Error Type: NOT_FOUND
   """
-  DEADLINE_EXCEEDED
+  INVALID_CURSOR
+
+  """
+  Unable to perform operation because a required resource is missing.
+  
+  Example: Client is attempting to refresh a list, but the specified
+  list is expired. This requires an action by the client to get a new list.
+  
+  If the user is simply trying GET a resource that is not found,
+  use the NOT_FOUND error type. FAILED_PRECONDITION.MISSING_RESOURCE
+  is to be used particularly when the user is performing an operation
+  that requires a particular resource to exist.
+  
+  HTTP Mapping: 400 Bad Request or 500 Internal Server Error
+  Error Type: FAILED_PRECONDITION
+  """
+  MISSING_RESOURCE
 
   """
   Service Error.
-
+  
   There is a problem with an upstream service.
-
+  
   This may be returned if a gateway receives an unknown error from a service
   or if a service is unreachable.
   If a request times out which waiting on a response from a service,
   `DEADLINE_EXCEEDED` may be returned instead.
   If a service returns a more specific error Type, the specific error Type may
   be returned instead.
-
+  
   HTTP Mapping: 502 Bad Gateway
   Error Type: UNAVAILABLE
   """
   SERVICE_ERROR
 
   """
-  Request throttled based on server CPU limits
-
-  HTTP Mapping: 503 Unavailable.
-  Error Type: UNAVAILABLE
-  """
-  THROTTLED_CPU
-
-  """
-  Request throttled based on server concurrency limits.
-
-  HTTP Mapping: 503 Unavailable
-  Error Type: UNAVAILABLE
-  """
-  THROTTLED_CONCURRENCY
-
-  """
-  The server detected that the client is exhibiting a behavior that
-  might be generating excessive load.
-
-  HTTP Mapping: 429 Too Many Requests or 420 Enhance Your Calm
-  Error Type: UNAVAILABLE
-  """
-  ENHANCE_YOUR_CALM
-
-  """
   Request failed due to network errors.
-
+  
   HTTP Mapping: 503 Unavailable
   Error Type: UNAVAILABLE
   """
   TCP_FAILURE
 
   """
-  Unable to perform operation because a required resource is missing.
-
-  Example: Client is attempting to refresh a list, but the specified
-  list is expired. This requires an action by the client to get a new list.
-
-  If the user is simply trying GET a resource that is not found,
-  use the NOT_FOUND error type. FAILED_PRECONDITION.MISSING_RESOURCE
-  is to be used particularly when the user is performing an operation
-  that requires a particular resource to exist.
-
-  HTTP Mapping: 400 Bad Request or 500 Internal Server Error
-  Error Type: FAILED_PRECONDITION
+  Request throttled based on server concurrency limits.
+  
+  HTTP Mapping: 503 Unavailable
+  Error Type: UNAVAILABLE
   """
-  MISSING_RESOURCE
+  THROTTLED_CONCURRENCY
+
+  """
+  Request throttled based on server CPU limits
+  
+  HTTP Mapping: 503 Unavailable.
+  Error Type: UNAVAILABLE
+  """
+  THROTTLED_CPU
+
+  """
+  The operation is not implemented or is not currently supported/enabled.
+  
+  HTTP Mapping: 501 Not Implemented
+  Error Type: BAD_REQUEST
+  """
+  UNIMPLEMENTED
+
+  """
+  Unknown error.
+  
+  This error should only be returned when no other error detail applies.
+  If a client sees an unknown errorDetail, it will be interpreted as UNKNOWN.
+  
+  HTTP Mapping: 500 Internal Server Error
+  """
+  UNKNOWN
 }
 
 enum ErrorType {
   """
-  Unknown error.
-
-  For example, this error may be returned when
-  an error code received from another address space belongs to
-  an error space that is not known in this address space.  Also
-  errors raised by APIs that do not return enough error information
-  may be converted to this error.
-
-  If a client sees an unknown errorType, it will be interpreted as UNKNOWN.
-  Unknown errors MUST NOT trigger any special behavior. These MAY be treated
-  by an implementation as being equivalent to INTERNAL.
-
-  When possible, a more specific error should be provided.
-
-  HTTP Mapping: 520 Unknown Error
-  """
-  UNKNOWN
-
-  """
-  Internal error.
-
-  An unexpected internal error was encountered. This means that some
-  invariants expected by the underlying system have been broken.
-  This error code is reserved for serious errors.
-
-  HTTP Mapping: 500 Internal Server Error
-  """
-  INTERNAL
-
-  """
-  The requested entity was not found.
-
-  This could apply to a resource that has never existed (e.g. bad resource id),
-  or a resource that no longer exists (e.g. cache expired.)
-
-  Note to server developers: if a request is denied for an entire class
-  of users, such as gradual feature rollout or undocumented whitelist,
-  `NOT_FOUND` may be used. If a request is denied for some users within
-  a class of users, such as user-based access control, `PERMISSION_DENIED`
-  must be used.
-
-  HTTP Mapping: 404 Not Found
-  """
-  NOT_FOUND
-
-  """
-  The request does not have valid authentication credentials.
-
-  This is intended to be returned only for routes that require
-  authentication.
-
-  HTTP Mapping: 401 Unauthorized
-  """
-  UNAUTHENTICATED
-
-  """
-  The caller does not have permission to execute the specified
-  operation.
-
-  `PERMISSION_DENIED` must not be used for rejections
-  caused by exhausting some resource or quota.
-  `PERMISSION_DENIED` must not be used if the caller
-  cannot be identified (use `UNAUTHENTICATED`
-  instead for those errors).
-
-  This error Type does not imply the
-  request is valid or the requested entity exists or satisfies
-  other pre-conditions.
-
-  HTTP Mapping: 403 Forbidden
-  """
-  PERMISSION_DENIED
-
-  """
   Bad Request.
-
+  
   There is a problem with the request.
   Retrying the same request is not likely to succeed.
   An example would be a query or argument that cannot be deserialized.
-
+  
   HTTP Mapping: 400 Bad Request
   """
   BAD_REQUEST
-
-  """
-  Currently Unavailable.
-
-  The service is currently unavailable.  This is most likely a
-  transient condition, which can be corrected by retrying with
-  a backoff.
-
-  HTTP Mapping: 503 Unavailable
-  """
-  UNAVAILABLE
 
   """
   The operation was rejected because the system is not in a state
   required for the operation's execution.  For example, the directory
   to be deleted is non-empty, an rmdir operation is applied to
   a non-directory, etc.
-
+  
   Service implementers can use the following guidelines to decide
   between `FAILED_PRECONDITION` and `UNAVAILABLE`:
-
+  
   - Use `UNAVAILABLE` if the client can retry just the failing call.
   - Use `FAILED_PRECONDITION` if the client should not retry until
   the system state has been explicitly fixed.  E.g., if an "rmdir"
        fails because the directory is non-empty, `FAILED_PRECONDITION`
   should be returned since the client should not retry unless
   the files are deleted from the directory.
-
+  
   HTTP Mapping: 400 Bad Request or 500 Internal Server Error
   """
   FAILED_PRECONDITION
+
+  """
+  Internal error.
+  
+  An unexpected internal error was encountered. This means that some
+  invariants expected by the underlying system have been broken.
+  This error code is reserved for serious errors.
+  
+  HTTP Mapping: 500 Internal Server Error
+  """
+  INTERNAL
+
+  """
+  The requested entity was not found.
+  
+  This could apply to a resource that has never existed (e.g. bad resource id),
+  or a resource that no longer exists (e.g. cache expired.)
+  
+  Note to server developers: if a request is denied for an entire class
+  of users, such as gradual feature rollout or undocumented allowlist,
+  `NOT_FOUND` may be used. If a request is denied for some users within
+  a class of users, such as user-based access control, `PERMISSION_DENIED`
+  must be used.
+  
+  HTTP Mapping: 404 Not Found
+  """
+  NOT_FOUND
+
+  """
+  The caller does not have permission to execute the specified
+  operation.
+  
+  `PERMISSION_DENIED` must not be used for rejections
+  caused by exhausting some resource or quota.
+  `PERMISSION_DENIED` must not be used if the caller
+  cannot be identified (use `UNAUTHENTICATED`
+  instead for those errors).
+  
+  This error Type does not imply the
+  request is valid or the requested entity exists or satisfies
+  other pre-conditions.
+  
+  HTTP Mapping: 403 Forbidden
+  """
+  PERMISSION_DENIED
+
+  """
+  The request does not have valid authentication credentials.
+  
+  This is intended to be returned only for routes that require
+  authentication.
+  
+  HTTP Mapping: 401 Unauthorized
+  """
+  UNAUTHENTICATED
+
+  """
+  Currently Unavailable.
+  
+  The service is currently unavailable.  This is most likely a
+  transient condition, which can be corrected by retrying with
+  a backoff.
+  
+  HTTP Mapping: 503 Unavailable
+  """
+  UNAVAILABLE
+
+  """
+  Unknown error.
+  
+  For example, this error may be returned when
+  an error code received from another address space belongs to
+  an error space that is not known in this address space.  Also
+  errors raised by APIs that do not return enough error information
+  may be converted to this error.
+  
+  If a client sees an unknown errorType, it will be interpreted as UNKNOWN.
+  Unknown errors MUST NOT trigger any special behavior. These MAY be treated
+  by an implementation as being equivalent to INTERNAL.
+  
+  When possible, a more specific error should be provided.
+  
+  HTTP Mapping: 520 Unknown Error
+  """
+  UNKNOWN
 }
 
-input InOrder {
-  """
-  生产任务id
-  """
-  taskId: Int!
+"""通用文件请求"""
+input FileInput {
+  """文件 MIME 类型"""
+  contentType: String!
 
-  """
-  出库订单类型，10：成品入库
-  """
-  inOrderType: Int!
+  """文件ID"""
+  fileId: String!
 
-  """
-  商品类型id 3：辅料，6原料
-  """
-  commodityTypeId: Int!
+  """文件名称"""
+  fileName: String!
 
-  """
-  商品类型名称
-  """
-  commodityTypeName: String!
+  """文件上传时间 GMT+8 yyyy-MM-dd HH:mm:ss"""
+  fileUploadTime: Long!
 
-  """
-  客户id
-  """
-  customerId: Int!
-
-  """
-  客户名称
-  """
-  customerName: String!
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int!
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String!
-
-  """
-  客户配送地址id
-  """
-  customerDistributionId: Int!
-
-  """
-  客户配送地址名称
-  """
-  customerDistributionName: String!
-
-  """
-  仓库id
-  """
-  warehouseId: Int!
-
-  """
-  仓库名称
-  """
-  warehouseName: String!
-
-  """
-  备注信息
-  """
-  inOrderDescription: String
-  inOrderItem: [InOrderItem]!
+  """文件地址"""
+  fileUrl: String!
 }
 
-"""
-入库明细
-"""
-input InOrderItem {
-  """
-  商品id
-  """
-  commodityId: Int!
+"""通用文件响应"""
+type FilePayload {
+  """文件 MIME 类型"""
+  contentType: String!
 
-  """
-  商品名称
-  """
-  commodityName: String!
+  """文件ID"""
+  fileId: String!
 
-  """
-  商品sku id
-  """
-  commoditySkuId: Int!
+  """文件名称"""
+  fileName: String!
 
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]!
+  """文件上传时间 GMT+8 yyyy-MM-dd HH:mm:ss"""
+  fileUploadTime: Long!
 
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]!
-
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitQuantity: String!
-
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int!
-
-  """
-  单位类型名称
-  """
-  unitTypeName: String!
-
-  """
-  总计类型数量（例：件）
-  """
-  totalQuantity: String!
-
-  """
-  总计类型（例：件）
-  """
-  totalType: Int!
-
-  """
-  总计类型名称
-  """
-  totalTypeName: String!
+  """文件地址"""
+  fileUrl: String!
 }
 
-"""
-入库明细
-"""
-input InOrderItemUpdate {
-  """
-  商品id
-  """
-  commodityId: Int!
+type FrontEndCategoryPayload {
+  """状态"""
+  enable: EnableEnum
 
-  """
-  商品名称
-  """
-  commodityName: String!
+  """前端类目ID"""
+  frontEndCategoryId: ID
 
-  """
-  商品sku id
-  """
-  commoditySkuId: Int!
+  """前端类目名称"""
+  frontEndCategoryName: String
 
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]!
+  """类目图标"""
+  icon: [FilePayload]
 
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]!
-
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitQuantity: String!
-
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int!
-
-  """
-  单位类型名称
-  """
-  unitTypeName: String!
-
-  """
-  总计类型数量（例：件）
-  """
-  totalQuantity: String
-
-  """
-  总计类型（例：件）
-  """
-  totalType: Int
-
-  """
-  总计类型名称
-  """
-  totalTypeName: String
+  """二级类目名称列表"""
+  secondLayerCategoryName: [String]
 }
 
-input InOrderUpdate {
-  """
-  生产订单id
-  """
-  inOrderId: Int!
+type FrontEndSecondLayerPayload {
+  """关联的后端类目"""
+  backendCategories: [CommodityCategoryPayload]
 
-  """
-  客户id
-  """
-  customerId: Int!
+  """状态"""
+  enable: EnableEnum
 
-  """
-  客户名称
-  """
-  customerName: String!
+  """前端类目ID"""
+  frontEndCategoryId: ID
 
-  """
-  仓库id
-  """
-  warehouseId: Int!
-
-  """
-  仓库名称
-  """
-  warehouseName: String!
-
-  """
-  备注信息
-  """
-  inOrderDescription: String
-
-  """
-  商品item信息
-  """
-  inOrderItem: [InOrderItemUpdate]!
+  """前端类目名称"""
+  frontEndCategoryName: String
 }
 
-input LoginInput {
-  username: String
-
-  """
-      password:String
-  """
-  checkCode: String
+input GetAppPermissionListInput {
+  """应用类型"""
+  appType: AppTypeEnum!
 }
 
-type LoginPayload {
-  token: String
-  organizationName: String
-  organizationId: Int
-  userName: String
-  userId: Int
+input GetChannelCanAddDeliveryMethodInput {
+  """渠道ID"""
+  channelId: ID!
 }
 
-"""
-Long type
-"""
+input GetChannelCanAddSaleMethodInput {
+  """渠道ID"""
+  channelId: ID!
+}
+
+input GetPickupAddressListInput {
+  """发货地址类型(不要填DELIVERY_WAREHOUSE)"""
+  addressType: AddressTypeEnum!
+}
+
+input GetSkuOnlineListInput {
+  """渠道ID"""
+  channelId: ID!
+
+  """商品ID"""
+  commodityId: ID!
+}
+
+input GetWalletInfoInput {
+  """商家或者客户ID"""
+  businessId: ID!
+
+  """渠道ID"""
+  channelId: ID!
+
+  """账户类型"""
+  walletType: WalletTypeEnum!
+}
+
+type GoodsOrderSimplePayload {
+  """创建时间"""
+  createTime: Long
+
+  """订单号"""
+  goodsOrderCode: String
+
+  """支付时间"""
+  paidTime: Long
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+input IndexEnableInput {
+  """主键ID"""
+  id: ID
+
+  """索引名称"""
+  indexType: String
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+input IndexMetaPageInput {
+  pageCurrent: Int
+  pageSize: Int
+}
+
+type IndexMetaPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """角色列表"""
+  records: [IndexMetaPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type IndexMetaPayload {
+  """索引重建每批次的个数"""
+  batch: Int
+
+  """主键ID"""
+  id: ID
+
+  """索引名称"""
+  indexType: String
+
+  """索引mapping结构"""
+  mapping: String
+
+  """副本分片数"""
+  numberOfReplicas: Int
+
+  """主分片数"""
+  numberOfShards: Int
+
+  """索引主键名"""
+  pkFieldName: String
+
+  """索引重建时间"""
+  rebuildTime: String
+
+  """服务提供名，注意一定要grpc+serviceName"""
+  serverName: String
+
+  """索引状态"""
+  status: Boolean
+}
+
+type InitialGroupPayLoad {
+  cities: [CityPayLoad]
+
+  """首字母"""
+  initial: String!
+}
+
+interface InspectInfoInterface {
+  """发货唯一标识"""
+  deliveryId: ID
+
+  """质检信息"""
+  inspectInfoList: [FilePayload]
+}
+
+input IsExitSameRoleNameInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """角色名称"""
+  roleName: String!
+}
+
+type KingKongCategoryPayload {
+  """类目ID"""
+  frontEndCategoryId: ID
+
+  """前端类目名称"""
+  frontEndCategoryName: String
+
+  """类目图标"""
+  icon: [FilePayload]
+
+  """跳转链接（需要制定跳转到哪个二级目录还有其他的参数，和前端商量，待定）"""
+  jumpUrl: String
+}
+
+type LocationPayLoad {
+  """ 市id【根据此id获取区县】"""
+  cityId: ID!
+
+  """城市名称"""
+  cityName: String!
+
+  """区县名称"""
+  districtName: String!
+
+  """维度"""
+  lat: Float!
+
+  """经度"""
+  lng: Float!
+
+  """省份名称"""
+  provinceName: String!
+
+  """位置名称"""
+  regionName: String
+}
+
+input LocationQueryInput {
+  """维度"""
+  lat: Float!
+
+  """经度"""
+  lng: Float!
+
+  """位置名称"""
+  regionName: String
+}
+
+input LoginByMiniAccountInput {
+  """来源端"""
+  appType: AppTypeEnum!
+
+  """渠道ID"""
+  channelId: ID!
+
+  """微信手机号获取凭证"""
+  code: String!
+}
+
+type LoginByMiniAccountPayload {
+  """用户Token"""
+  token: String!
+}
+
+input LoginByPhoneInput {
+  """来源端"""
+  appType: AppTypeEnum!
+
+  """密码"""
+  password: String!
+
+  """手机号"""
+  phone: String!
+}
+
+type LoginByPhonePayload {
+  """用户Token"""
+  token: String!
+}
+
+interface LogisticsInfoInterface {
+  """发货唯一标识"""
+  deliveryId: ID
+
+  """物流信息"""
+  logisticsInfo: CommodityOrderLogisticsPayload
+}
+
+"""A 64-bit signed integer"""
 scalar Long
 
-input MobileRepeatPayload {
-  """
-  用户id
-  """
-  userId: Int
+enum MarketingUnitEnum {
+  """箱"""
+  BIG_BOX
 
-  """
-  用户名称
-  """
-  mobile: String
+  """盒"""
+  BOX
+
+  """千克"""
+  KG
+
+  """件"""
+  PIECE
+}
+
+input MerchantCreateInput {
+  """营业执照"""
+  businessLicense: [FileInput]!
+
+  """商家名称"""
+  merchantName: String!
+
+  """手机号码"""
+  phone: String!
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """主体名称"""
+  subject: String!
+}
+
+input MerchantDeliveryMethodPageInput {
+  """分页信息"""
+  pageCurrent: Int
+  pageSize: Int
+}
+
+type MerchantDeliveryMethodPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """配送方式列表"""
+  records: [MerchantDeliveryMethodPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type MerchantDeliveryMethodPayload {
+  """商家Id"""
+  merchantId: ID!
+
+  """商家名称"""
+  merchantName: String!
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]
+}
+
+input MerchantEditInput {
+  """营业执照"""
+  businessLicense: [FileInput]!
+
+  """商家id"""
+  merchantId: ID!
+
+  """商家名称"""
+  merchantName: String!
+
+  """手机号码"""
+  phone: String!
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """主体名称"""
+  subject: String!
+}
+
+interface MerchantInfoInterface {
+  """商户信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """商户id"""
+  merchantId: ID
+}
+
+type MerchantPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """结果"""
+  records: [MerchantPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type MerchantPayload {
+  """营业执照"""
+  businessLicense: [FilePayload]
+
+  """责任人姓名"""
+  legalPersonName: String
+
+  """责任人电话"""
+  legalPersonPhone: String
+
+  """商户ID"""
+  merchantId: ID
+
+  """商户名称"""
+  name: String
+
+  """配送方式"""
+  receiptTypes: [ReceiptTypeEnum]
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """主体信息"""
+  subject: String
+}
+
+input MerchantSaleMethodPageInput {
+  """分页信息"""
+  pageCurrent: Int
+  pageSize: Int
+}
+
+type MerchantSaleMethodPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """销售方式列表"""
+  records: [MerchantSaleMethodPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type MerchantSaleMethodPayload {
+  """商家Id"""
+  merchantId: ID
+
+  """商家名称"""
+  merchantName: String
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+}
+
+type MerchantStorePayload {
+  """地址"""
+  address: String
+
+  """公告"""
+  announcement: String
+
+  """商家logo"""
+  logo: [FilePayload]
+
+  """证件文件"""
+  merchantCertificate: [FilePayload]
+
+  """商家名称"""
+  merchantName: String
+
+  """店铺名称"""
+  storeName: String
 }
 
 type Mutation {
-  """
-  开始任务
-  """
-  beginTask(beginTask: BeginTask): Boolean
+  """配送方式:渠道添加配送方式"""
+  addChannelDeliveryMethod(input: [AddChannelDeliveryMethodInput]): Boolean
 
-  """
-      完成任务
-  """
-  completeTask(taskId: Int!): Boolean
+  """销售方式:新增渠道销售方式"""
+  addChannelSaleMethod(input: [AddChannelSaleMethodInput]): Boolean
 
-  """
-      领料申请保存，返回新增id
-  """
-  addOutOrder(outOrder: OutOrder): Int
+  """商品规格相关:新增规格"""
+  addCommoditySku(input: AddSkuInput): ID
 
-  """
-      生产入库保存，返回新增id
-  """
-  addInOrder(inOrder: InOrder): Int
+  """配送方式:(已删除)渠道/商家WEB添加配送方式"""
+  addDeliveryMethod(input: AddDeliveryMethodInput): Boolean
 
-  """
-  修改出库订单
-  """
-  modifyOutOrder(outOrderUpdate: OutOrderUpdate!): Boolean
+  """前台类目管理:新增一级前台类目"""
+  addFrontEndCategory(input: AddFrontEndCategoryInput): Long
 
-  """
-  取消出库订单
-  """
-  cancelOutOrder(cancelOutOrderInput: CancelOutOrderInput!): Boolean
+  """索引相关接口:添加索引"""
+  addIndexMeta(input: AddIndexMetaInput): Boolean
 
-  """
-  提交出库订单
-  """
-  submitOutOrder(outOrderId: Int!): Boolean
+  """前台类目管理:新增二级类目"""
+  addSecondLayerFrontEndCategory(input: AddSecondLayerFrontEndCategoryInput): Boolean
 
-  """
-  修改入库订单
-  """
-  modifyInOrder(inOrderUpdate: InOrderUpdate!): Boolean
+  """商城app:进货单-添加进货单"""
+  addShoppingCart(input: BatchShoppingCartInput): Boolean
 
-  """
-  取消入库订单
-  """
-  cancelInOrder(cancelInOrderInput: CancelInOrderInput!): Boolean
+  """客户: 申请加入企业"""
+  applyJoinEnterprise(id: ID!): ID!
 
-  """
-  入库订单提交库管
-  """
-  submitInOrder(inOrderId: Int!): Boolean
+  """商品相关接口:商品审核"""
+  auditCommodity(input: AuditCommodityInput): Boolean
 
-  """
-  创建生产计划
-  """
-  doInsertPlan(planInfoInput: PlanInfoInput): Int
+  """商家运营app: 售后-商家售后处理"""
+  businessAfterSalesOrderHandle(input: AfterSalesOrderHandleInput): Boolean!
 
-  """
-  取消生产计划
-  """
-  doCancelPlanStatus(cancelPlanInput: CancelPlanInput): Boolean
+  """商家运营app: 订单中心-快速修改价格【包括增加 减少】"""
+  businessCommodityOrderChangeAmount(input: OrderChangeAmountDetailInput): Boolean
 
-  """
-  发布生产计划
-  """
-  doPublishPlan(planId: Int): Boolean
+  """商家运营app: 订单中心-精细修改价格【包括增加 减少整单 + 修改单价】"""
+  businessCommodityOrderChangeAmountDetail(input: OrderChangeAmountDetailInput): Boolean
 
-  """
-  修改生产计划基础信息
-  """
-  doUpdatePlanBaseInfo(planBaseInfoInput: PlanBaseInfoInput): Int
+  """商家运营app: 订单中心-关闭订单"""
+  businessCommodityOrderClose(commodityOrderId: ID!): Boolean
 
-  """
-  修改生产计划任务信息
-  """
-  doUpdatePlanTaskInfo(planTaskInfoInput: PlanTaskInfoInput): Int
+  """商家运营app: 订单发货"""
+  businessCommodityOrderDelivery(input: CommodityOrderDeliveryInput): ID
 
-  """
-  创建生产计划任务
-  """
-  doInsertPlanTask(taskInput: TaskInput): Int
+  """商家运营app: 订单发货编辑"""
+  businessCommodityOrderDeliveryEdit(input: CommodityOrderDeliveryEditInput): ID
 
-  """
-  删除生产计划任务
-  """
-  doDeletePlanTask(taskId: Int): Boolean
-  login(loginInput: LoginInput): LoginPayload
-  sendSms(sendSmsInput: SendSmsInput): SendSmsPayload
+  """商家运营app: 扫码提货-核销商品订单"""
+  businessCommodityOrderVerify(commodityOrderId: ID!): Boolean
 
-  """
-   创建客户
-  """
-  createCustomer(customerInput: CustomerInput): Int
+  """渠道web-商家管理: (已删除) 新增"""
+  channelCreateMerchant(input: MerchantCreateInput): ID
 
-  """
-   更新客户
-  """
-  updateCustomer(customerInput: CustomerInput): Boolean
+  """渠道web-商家管理: (已删除) 编辑"""
+  channelEditeMerchant(input: MerchantEditInput): Boolean
 
-  """
-   删除客户
-  """
-  deleteCustomer(customerId: Int): Boolean
+  """渠道web-商家管理: (已删除) 发送验证码"""
+  channelSendCaptcha(phone: String!): Boolean
 
-  """
-   创建客户地址
-  """
-  createCustomerDistribution(customerDistributionInput: CustomerDistributionInput): Int
+  """渠道web-商家管理:(已删除)  校验手机验证码"""
+  channelValidCaptcha(input: ValidCaptchaInput): Boolean
 
-  """
-   更新客户地址
-  """
-  updateCustomerDistribution(customerDistributionInput: CustomerDistributionInput): Boolean
+  """用户: 选择商家、客户、渠道"""
+  chooseCurrentUse(input: ChooseCurrentUseInput!): Boolean!
 
-  """
-   删除客户地址
-  """
-  deleteCustomerDistribution(distributionId: Int): Boolean
+  """商品相关接口:商品更新"""
+  commodityRefresh(commodityId: ID!): Boolean
 
-  """
-   创建供应商
-  """
-  createSupplier(supplierInput: SupplierInput): Int
+  """商品相关接口:商品上架"""
+  commodityToOnline(input: CommodityToOnlineInput): CommodityToOnlinePayload
 
-  """
-   更新供应商
-  """
-  updateSupplier(supplierInput: SupplierInput): Int
+  """收银台: 确认支付"""
+  confirmPayment(input: ConfirmPaymentInput!): Boolean
 
-  """
-   删除供应商
-  """
-  deleteSupplier(supplierId: Int): Boolean
-  createUser(userInput: UserInput): Int
-  updateUser(userInput: UserInput): Int
-  deleteUser(userId: Int): Boolean
+  """员工管理: 新增员工 """
+  createAccount(input: AccountCreateInput): ID
+
+  """平台管理web-渠道管理: 创建渠道"""
+  createChannel(input: ChannelCreateInput): ID
+
+  """商品相关接口:新建商品"""
+  createCommodity(input: CreateCommodityInput): ID
+
+  """发货仓管理:新增发货仓"""
+  createDeliveryWarehouse(input: CreateDeliveryWarehouseInput): ID
+
+  """商家管理:新增"""
+  createMerchant(input: MerchantCreateInput): ID
+
+  """发货地址相关接口:新建发货地址"""
+  createPickUpAddress(input: CreateUpAddressInput): ID
+
+  """角色相关的操作:创建角色名称"""
+  createRole(input: CreateRoleInput): ID
+
+  """OBS: 生成临时安全凭证"""
+  createTemporaryAccessKey(input: TemporaryAccessKeyInput): TemporaryAccessKeyPayload
+
+  """代运营管理: 批量新增代运营商家"""
+  createThirdPartnerMerchantBatch(input: ThirdPartnerMerchantBatchInput): [ID]
+
+  """代运营管理: 添加代运营"""
+  createThirdPartnerUser(input: ThirdPartnerUserCreateInput): ID
+
+  """钱包相关接口:新建账户接口"""
+  createWallet(input: CreateWalletInput): Long
+
+  """商城app: 订单中心-提交订单"""
+  customerApplyCommodityOrder(input: CustomerCommodityOrderApplyInput): CustomerApplyCommodityOrderResultPayload
+
+  """商城app: 订单中心-申请请求id(幂等操作)"""
+  customerApplyReqId: ID
+
+  """商城app: 订单中心-取消订单"""
+  customerCancelCommodityOrder(input: CustomerCancelCommodityOrderInput): Boolean
+
+  """商城app: 订单中心-客户确认收货"""
+  customerConfirmReceipt(commodityOrderId: ID!): Boolean
+
+  """商城app: 售后-发起售后"""
+  customerCreateAfterSale(input: [CreateAfterSaleInput!]!): Boolean!
+
+  """前台类目管理:删除前台类目(一级、二级类目的启禁用状态变更都用此接口)"""
+  delFrontEndCategory(frontEndCategoryId: ID!): Boolean
+
+  """员工管理: 删除员工"""
+  deleteAccount(accountId: ID!): Boolean
+
+  """栏目: 删除"""
+  deleteColumn(id: ID): Boolean!
+
+  """内容管理: 删除"""
+  deleteContent(id: ID!): Boolean!
+
+  """页面配置详情: 删除"""
+  deletePageSetupDetail(id: ID!): Boolean!
+
+  """用户收货地址: 删除收货地址"""
+  deleteReceivingAddress(id: ID!): Boolean!
+
+  """角色相关的操作:删除角色"""
+  deleteRole(input: DeleteRoleInput): Boolean
+
+  """商城app:进货单-删除进货单多个sku"""
+  deleteShoppingCart(input: ShoppingCartDeleteInput): Boolean
+
+  """代运营管理: 删除代运营商家"""
+  deleteThirdPartnerMerchant(merchantId: ID): Boolean
+
+  """代运营管理: 删除代运营"""
+  deleteThirdPartnerUser(accountId: ID!): Boolean
+
+  """员工管理: 编辑员工"""
+  editAccount(input: AccountEditInput): Boolean
+
+  """员工管理: 编辑员工角色"""
+  editAccountRole(input: AccountRoleEditInput): Boolean
+
+  """平台管理web-渠道管理: 编辑渠道"""
+  editChannel(input: ChannelEditInput): Boolean
+
+  """栏目: 编辑"""
+  editColumn(input: OperationColumnInput!): Boolean!
+
+  """商品相关接口:编辑商品"""
+  editCommodity(input: EditCommodityInput): Boolean
+
+  """商品规格相关:编辑规格"""
+  editCommoditySku(input: EditSkuInput): Boolean
+
+  """内容管理: 编辑"""
+  editContent(input: OperationContentInput!): Boolean!
+
+  """发货仓管理:编辑发货仓"""
+  editDeliveryWarehouse(input: EditDeliveryWarehouseInput): Boolean
+
+  """前台类目管理:编辑前台类目"""
+  editFrontEndCategory(input: EditFrontEndCategoryInput): Boolean
+
+  """索引相关接口:编辑索引"""
+  editIndexMeta(input: EditIndexMetaInput): Boolean
+
+  """页面配置详情: 编辑配置"""
+  editPageSetupDetail(input: OperationPageSetupDetailInput!): Boolean!
+
+  """页面配置: 状态变更"""
+  editPageSetupStatus(input: BoolValueInput): Boolean!
+
+  """发货地址相关接口:编辑发货地址"""
+  editPickUpAddress(input: EditPickUpAddressInput): Boolean
+
+  """内容管理: 发布状态变更"""
+  editReleaseStatus(input: BoolValueInput!): Boolean!
+
+  """角色相关的操作:修改角色名"""
+  editRoleName(input: EditRoleNameInput): Boolean
+
+  """权限相关的操作接口:编辑角色权限"""
+  editRolePermission(input: EditRolePermissionInput): Boolean
+
+  """前台类目管理:编辑二级类目"""
+  editSecondLayerFrontEndCategory(input: EditSecondLayerFrontEndCategoryInput): Boolean
+
+  """栏目: 状态变更"""
+  editStatus(input: BoolValueInput!): Boolean!
+
+  """商家管理:编辑"""
+  editeMerchant(input: MerchantEditInput): Boolean
+
+  """员工管理: 启用禁用"""
+  enableAccount(input: AccountEnableInput): Boolean
+
+  """商品规格相关:启用/禁用规格"""
+  enableCommoditySku(input: EnableSkuInput): Boolean
+
+  """发货仓管理:启用/禁用发货仓"""
+  enableDeliveryWarehouse(input: EnableDeliveryWarehouseInput): Boolean
+
+  """前台类目管理:启用/禁用前台类目(一级、二级类目的启禁用状态变更都用此接口)"""
+  enableFrontEndCategory(input: EnableFrontEndCategoryInput): Boolean
+
+  """索引相关接口:启用禁用"""
+  enableIndex(input: IndexEnableInput): Boolean
+
+  """发货地址相关接口:更新发货地址状态"""
+  enablePickUpAddress(input: PickUpAddressEnableInput): Boolean
+
+  """角色相关的操作:更新角色状态"""
+  enableRole(input: RoleEnableInput): Boolean
+
+  """客户: 企业认证"""
+  enterpriseAuth(input: EnterpriseAuthInput!): ID!
+
+  """用户: 小程序登录"""
+  loginByMiniAccount(input: LoginByMiniAccountInput!): LoginByMiniAccountPayload!
+
+  """用户: web端使用手机号和密码登录"""
+  loginByPhone(input: LoginByPhoneInput!): LoginByPhonePayload!
+
+  """用户: 注销登录"""
+  logout: Boolean!
+
+  """客户: 个人认证"""
+  personalAuth(input: PersonalAuthInput!): Boolean!
+
+  """商品相关接口:商品上下架"""
+  publishCommodity(input: PublishCommodityInput): Boolean
+
+  """索引相关接口:重建索引"""
+  reIndexOn(indexType: String!): Boolean
+
+  """用户: 刷新token"""
+  refreshToken: RefreshTokenPayload!
+
+  """用户: 设置密码"""
+  resetPassword(input: ResetPasswordInput!): Boolean!
+
+  """栏目: 保存"""
+  saveColumn(input: OperationColumnInput!): ID!
+
+  """内容管理: 保存"""
+  saveContent(input: OperationContentInput!): ID!
+
+  """库存调整: 保存库存调整"""
+  saveInventoryAdjustment(input: SaveInventoryAdjustmentInput!): Boolean!
+
+  """OBS: 保存文件数据"""
+  saveObsFile(input: SaveFileInput): SaveFilePayload
+
+  """用户收货地址: 新增或修改收货地址"""
+  saveOrUpdateReceivingAddress(input: OperationReceivingAddressInput!): Boolean!
+
+  """页面配置详情: 添加配置"""
+  savePageSetupDetail(input: OperationPageSetupDetailInput!): ID!
+
+  """用户: 完善个人信息"""
+  saveUserInfo(input: SaveUserInfoInput!): Boolean!
+
+  """商家管理:发送验证码"""
+  sendCaptcha(phone: String!): Boolean
+
+  """用户: 设置密码获取验证码"""
+  sendResetPwdSms(input: SendResetPwdSmsInput!): Boolean!
+
+  """前台类目管理:调整一级前台类目排序"""
+  sortFrontEndCategory(frontEndCategoryIdList: [ID]!): Boolean
+
+  """商品相关接口:提交商品"""
+  submitCommodity(input: SubmitCommodityInput): Boolean
+
+  """内容管理: 提交内容"""
+  submitContent(id: ID!): Boolean!
+
+  """商城app:进货单-修改进货单sku数量"""
+  updateShoppingCartQuantity(input: ShoppingCartUpdateInput): Boolean
+
+  """商城app:进货单-修改配送方式"""
+  updateShoppingCartReceiptInfo(input: ShoppingCartUpdateReceiptInfoInput): Boolean
+
+  """商城app:进货单-修改规格"""
+  updateShoppingCartSpec(input: ShoppingCartUploadInput): Boolean
+
+  """员工管理: 校验员工手机号是否存在-true不存在，false存在"""
+  validAccountPhone(phone: String!): Boolean
+
+  """商家管理:校验手机验证码"""
+  validCaptcha(input: ValidCaptchaInput): Boolean
+
+  """钱包相关接口:钱包充值接口"""
+  walletRecharge(input: WalletRechargeInput): Boolean
+
+  """商品相关接口:商家撤回商品"""
+  withdrawCommodity(input: WithdrawCommodityInput): Boolean
 }
 
-type Option {
-  label: String
-  value: Int
+"""An object scalar"""
+scalar Object
+
+"""操作栏目请求"""
+input OperationColumnInput {
+  """子栏目新增：父栏目ID,编辑：当前编辑栏目ID"""
+  id: ID
+
+  """栏目名称"""
+  name: String!
+
+  """展现形式"""
+  revealShape: RevealShapeEnum!
+
+  """规则"""
+  ruleType: ColumnRuleTypeEnum
 }
 
-"""
-领料申请保存提交参数
-"""
-input OutOrder {
-  """
-  生产任务id
-  """
-  taskId: Int!
+input OperationContentInput {
+  """栏目ID"""
+  columnId: ID!
 
-  """
-  出库订单类型，10：原料领料、20：辅料领料
-  """
-  outOrderType: Int!
+  """商品品类ID（MDM）"""
+  commodityCategoryId: ID
 
-  """
-  商品类型id 3：辅料，6原料
-  """
-  commodityTypeId: Int!
+  """内容详情"""
+  details: String
 
-  """
-  商品类型名称
-  """
-  commodityTypeName: String!
+  """图片与视频文件资源"""
+  fileResources: [FileInput]
 
-  """
-  客户id
-  """
-  customerId: Int!
+  """内容ID，编辑时传"""
+  id: ID
 
-  """
-  客户名称
-  """
-  customerName: String!
+  """简介"""
+  introduction: String
 
-  """
-  客户分组id
-  """
-  customerGroupId: Int!
+  """关键字"""
+  keyWord: [String]
 
-  """
-  客户分组名称
-  """
-  customerGroupName: String!
+  """副标题"""
+  subhead: String
 
-  """
-  客户配送地址id
-  """
-  customerDistributionId: Int!
-
-  """
-  客户配送地址名称
-  """
-  customerDistributionName: String!
-
-  """
-  仓库id
-  """
-  warehouseId: Int!
-
-  """
-  仓库名称
-  """
-  warehouseName: String!
-
-  """
-  备注信息
-  """
-  outOrderDescription: String
-  outOrderItem: [OutOrderItem]!
+  """内容标题"""
+  title: String!
 }
 
-"""
-领料申请明细
-"""
-input OutOrderItem {
-  """
-  商品id
-  """
-  commodityId: Int!
+input OperationPageSetupDetailInput {
+  """对应栏目ID"""
+  columnId: ID!
 
-  """
-  商品名称
-  """
-  commodityName: String!
+  """对应模块项的字典Type"""
+  dictType: String!
 
-  """
-  商品sku id
-  """
-  commoditySkuId: Int!
+  """新增：页面配置ID，编辑：页面配置详情ID"""
+  id: ID!
 
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]!
+  """对应类型"""
+  pageSetupType: PageTypeEnum!
 
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]!
-
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitQuantity: String!
-
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int!
-
-  """
-  单位类型名称
-  """
-  unitTypeName: String!
-
-  """
-  总计类型数量（例：件）
-  """
-  totalQuantity: String
-
-  """
-  总计类型（例：件）
-  """
-  totalType: Int
-
-  """
-  总计类型名称
-  """
-  totalTypeName: String
+  """系统内置类型（模块）"""
+  systemContentType: String!
 }
 
-input OutOrderItemUpdate {
-  """
-  商品id
-  """
-  commodityId: Int!
+input OperationReceivingAddressInput {
+  """详细地址"""
+  address: String!
 
-  """
-  商品名称
-  """
-  commodityName: String!
+  """市"""
+  city: String!
 
-  """
-  商品sku id
-  """
-  commoditySkuId: Int!
+  """市Id"""
+  cityId: ID!
 
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]!
+  """区"""
+  district: String!
 
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]!
+  """区Id"""
+  districtId: ID!
 
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitQuantity: String!
+  """地址ID,为空新增，不为空则修改"""
+  id: ID
 
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int!
+  """维度"""
+  latitude: Float!
 
-  """
-  单位类型名称
-  """
-  unitTypeName: String!
+  """经度"""
+  longitude: Float!
 
-  """
-  总计类型数量（例：件）
-  """
-  totalQuantity: String
+  """姓名"""
+  name: String!
 
-  """
-  总计类型（例：件）
-  """
-  totalType: Int
+  """手机号"""
+  phone: String!
 
-  """
-  总计类型数量（例：件）
-  """
-  totalTypeName: String
+  """省"""
+  province: String!
+
+  """省ID"""
+  provinceId: ID!
+
+  """街道"""
+  street: String!
+
+  """街道Id"""
+  streetId: ID!
 }
 
-input OutOrderUpdate {
-  """
-  出库订单id
-  """
-  outOrderId: Int!
+input OrderChangeAmountDetailInput {
+  """订单价格变更类型"""
+  amountChangeType: AmountChangeTypeEnum
 
-  """
-  客户id
-  """
-  customerId: Int!
+  """商品变更列表"""
+  changeUnitPrice: [ChangeUnitPriceInput]
 
-  """
-  客户名称
-  """
-  customerName: String!
+  """商品订单ID"""
+  commodityOrderId: ID
 
-  """
-  仓库id
-  """
-  warehouseId: Int!
+  """附加服务变更金额"""
+  extraServiceAmount: BigDecimal
 
-  """
-  仓库名称
-  """
-  warehouseName: String!
+  """运杂费变更金额"""
+  freightAmount: BigDecimal
 
-  """
-  备注信息
-  """
-  outOrderDescription: String!
+  """备注"""
+  remark: String
 
-  """
-  商品信息
-  """
-  outOrderItem: [OutOrderItemUpdate]!
+  """整单优惠"""
+  totalAmount: BigDecimal
 }
 
-input Page {
-  """
-      offset:Int
-  """
+input OrderChangeAmountInput {
+  """skuId"""
+  skuIds: [ID]
+
+  """变更后单价"""
+  unitPrice: BigDecimal
+}
+
+input OrderCommodityAfterSaleDetailInput {
+  """商品订单id"""
+  commodityOrderId: ID!
+
+  """skuId"""
+  skuId: ID!
+}
+
+type OrderCommodityAfterSaleDetailPayload {
+  """售后记录"""
+  afterSaleApplyList: [AfterSalePayload]
+
+  """售后过期时间"""
+  afterSaleExpireTime: Long
+
+  """售后结果"""
+  afterSaleResult: AfterSaleResultDetailPayload
+
+  """售后SKU信息"""
+  afterSaleSku: CommodityOrderSkuDetailPayload
+
+  """是否有售后"""
+  hasAfterSale: Boolean
+}
+
+type OrderCommodityPayload {
+  """商品列表"""
+  list: [CommodityOrderSkuPayload]
+
+  """订单备注"""
+  note: String
+
+  """总数量"""
+  totalQuantity: Int
+}
+
+type OrderCustomerPayload {
+  """客户id"""
+  customerId: ID
+
+  """客户名称"""
+  customerName: String
+
+  """客户电话"""
+  customerPhone: String
+}
+
+enum OrderMarketingUnitEnum {
+  """箱"""
+  BIG_BOX
+
+  """盒"""
+  BOX
+
+  """千克"""
+  KG
+
+  """件"""
+  PIECE
+}
+
+input OrderPageListInput {
+  """订单号"""
+  orderNo: String
+
+  """当前页"""
+  pageCurrent: Int
+
+  """每页数量"""
+  pageSize: Int
+
+  """订单状态"""
+  status: CommodityOrderStatusEnum
+}
+
+type OrderPageListPayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """结果"""
+  records: [OrderPageListResultPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type OrderPageListResultPayload implements CommodityOrderCustomerInterface & CommodityOrderInterface & CommodityOrderPaymentInterface & CommodityOrderPriceInterface & CommodityOrderReceiptInterface & CommodityOrderSkuInterface {
+  """收货地址"""
+  address: CommodityOrderPickUpAddressPayload
+
+  """商品订单"""
+  commodityOrder: CommodityOrderPayload
+
+  """商品订单ID"""
+  commodityOrderId: ID
+
+  """订单客户信息"""
+  customer: CommodityOrderCustomerPayload
+
+  """商品支付信息"""
+  payment: CommodityOrderPaymentPayload
+
+  """商品金额明细"""
+  price: CommodityOrderPricePayload
+
+  """收货信息"""
+  receipt: CommodityReceiptPayload
+
+  """商品sku集合"""
+  skuList: [CommodityOrderSkuPayload]
+}
+
+type OrderRealPaymentPayload {
+  """商家修改金额"""
+  changeAmount: BigDecimal
+
+  """商品金额"""
+  commodityAmount: BigDecimal
+
+  """附加服务金额"""
+  extraServiceAmount: BigDecimal
+
+  """运费金额"""
+  freightAmount: BigDecimal
+}
+
+type OrderSkuChangeUnitPricePayload {
+  """改后价格"""
+  afterUnitPrice: BigDecimal
+
+  """改前价格"""
+  beforeUnitPrice: BigDecimal
+}
+
+type OrderSkuPricePayload {
+  """skuID"""
+  bulk: Int!
+
+  """sku价格"""
+  price: BigDecimal!
+}
+
+type OrderSkuUnitPricePayload {
+  """sku单价"""
+  unitPrice: BigDecimal
+
+  """sku修改后单价"""
+  unitPriceChange: BigDecimal
+}
+
+input PageColumInput {
+  """栏目名称"""
+  columnName: String
+}
+
+input PageContentByTypeInput {
+  """渠道ID"""
+  channelId: ID!
+
+  """品类ID"""
+  commodityCategoryId: ID
+
+  """系统内置类型（模块）"""
+  systemContentType: String!
+}
+
+"""分页获取内容列表响应对象"""
+type PageContentByTypePayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [ContentByTypePayload]!
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+input PageContentInput {
+  """审核状态"""
+  auditStatus: ContentAuditStatusEnum
+
+  """栏目名称"""
+  columnName: String
+
+  """内容标题"""
+  title: String
+}
+
+"""分页获取内容列表响应对象"""
+type PageContentPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [ContentPayload]!
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+input PageEnterpriseInfoInput {
+  """企业名称"""
+  name: String
+}
+
+type PageEnterpriseInfoPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [EnterpriseInfoPayload]
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+input PageInput {
+  pageCurrent: Int!
+  pageSize: Int!
+}
+
+input PagePageSetupInput {
+  """appType"""
+  appType: AppTypeEnum
+
+  """页面，dictKey: page_setup"""
+  pageSetup: String
+}
+
+"""分页获取内容列表响应对象"""
+type PagePageSetupPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [PageSetupPayload!]!
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+input PageReceivingAddressInput {
+  """姓名/地址"""
+  keyword: String
+}
+
+type PageReceivingAddressPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [ReceivingAddressPayload]
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+type PageSetupDetailPayload {
+  """对应栏目"""
+  column: [ColumnNamePayload]!
+
+  """Detail ID"""
+  id: ID!
+
+  """页面配置ID"""
+  pageSetupId: ID!
+
+  """对应类型"""
+  pageSetupType: PageTypeEnum!
+
+  """系统内置类型（模块）"""
+  systemContentType: DictKeyValuePayload!
+}
+
+type PageSetupPayload {
+  """appType"""
+  appType: AppTypeEnum!
+
+  """配置列表"""
+  detailList: [PageSetupDetailPayload]
+
+  """对应模块项的字典Type"""
+  dictType: String!
+
+  """状态： false=未启用  true=启用"""
+  enabled: Boolean!
+
+  """页面配置ID"""
+  id: ID!
+
+  """页面，dictKey: page_setup"""
+  pageSetup: DictKeyValuePayload!
+
+  """对应栏目规则类型"""
+  ruleType: ColumnRuleTypeEnum!
+}
+
+"""分页获取内容列表响应对象"""
+type PageStockLogPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [StockLogPayload]!
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+enum PageTypeEnum {
+  """内容"""
+  CONTENT
+}
+
+type PageUserMerchantPayload {
+  """当前页码"""
+  pageCurrent: Int!
+
+  """条数"""
+  pageSize: Int!
+
+  """结果"""
+  records: [UserMerchantPayload]
+
+  """总记录数"""
+  totalRecords: Int!
+}
+
+enum PayTypeEnum {
+  """先用后付"""
+  PAY_LATER
+
+  """钱包"""
+  WALLET
+}
+
+type PaymentCustomerPayload {
+  """客户ID"""
+  customerId: ID!
+
+  """客户类型"""
+  customerType: CustomerTypeEnum!
+
+  """手机号"""
+  mobileNo: String!
+}
+
+enum PaymentMethodEnum {
+  """先用后付"""
+  PAY_LATER
+
+  """钱包"""
+  WALLET
+}
+
+type PaymentMethodInfoPayload {
+  """余额（只有钱包有）"""
+  balance: BigDecimal
+
+  """支付方式"""
+  paymentMethod: PaymentMethodEnum!
+}
+
+type PersonalAuthInfoPayload {
+  """身份证号码"""
+  idCardNo: String!
+
+  """手机号码"""
+  mobileNo: String!
+
+  """姓名"""
+  name: String!
+}
+
+input PersonalAuthInput {
+  """身份证号码"""
+  idCardNo: String!
+
+  """姓名"""
+  name: String!
+}
+
+input PickUpAddressEnableInput {
+  """自提地址ID"""
+  pickUpAddressId: ID
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+input PickUpAddressInput {
+  addressType: AddressTypeEnum!
+
+  """分页信息"""
   pageCurrent: Int
   pageSize: Int
 }
 
-type Permission {
-  authId: Int
-  authKey: String
-  authPath: String
-  authName: String
-  leaf: Int
-}
-
-"""
-生产计划
-"""
-type Plan {
-  """
-      计划id
-  """
-  planId: Int
-
-  """
-      计划单号
-  """
-  planCode: String
-
-  """
-      计划状态【10：待发布、20：待生产、30：生产中、40：已完成、50：已取消】
-  """
-  planStatus: Int
-
-  """
-  客户id
-  """
-  customerId: Int
-
-  """
-      客户名称
-  """
-  customerName: String
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int
-
-  """
-      客户分组名称
-  """
-  customerGroupName: String
-
-  """
-      配送地址id
-  """
-  customerDistributionId: Int
-
-  """
-      配送地址名称
-  """
-  customerDistributionName: String
-
-  """
-      仓库id
-  """
-  warehouseId: Int
-
-  """
-      仓库名称
-  """
-  warehouseName: String
-
-  """
-  生产日期
-  """
-  planDate: String
-
-  """
-      计划开始时间
-  """
-  planStartTime: String
-
-  """
-      计划结束时间
-  """
-  planEndTime: String
-
-  """
-      备注
-  """
-  planDescription: String
-}
-
-input PlanBaseInfoInput {
-  """
-  计划id
-  """
-  planId: Int!
-
-  """
-  产品种类数量
-  """
-  categorySum: Int
-
-  """
-  客户id
-  """
-  customerId: Int!
-
-  """
-  客户名称
-  """
-  customerName: String!
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int!
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String!
-
-  """
-  配送地址id
-  """
-  customerDistributionId: Int!
-
-  """
-  配送地址名称
-  """
-  customerDistributionName: String!
-
-  """
-  仓库id
-  """
-  warehouseId: Int!
-
-  """
-  仓库名称
-  """
-  warehouseName: String!
-
-  """
-  生产日期
-  """
-  planDate: String!
-
-  """
-  计划开始时间
-  """
-  planStartTime: String!
-
-  """
-  计划结束时间
-  """
-  planEndTime: String!
-
-  """
-  备注
-  """
-  planDescription: String
-}
-
-"""
-创建生产计划信息入参
-"""
-input PlanInfoInput {
-  """
-  计划id
-  """
-  planId: Int
-
-  """
-  客户id
-  """
-  customerId: Int!
-
-  """
-  客户名称
-  """
-  customerName: String!
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int!
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String!
-
-  """
-  配送地址id
-  """
-  customerDistributionId: Int!
-
-  """
-  配送地址名称
-  """
-  customerDistributionName: String!
-
-  """
-  仓库id
-  """
-  warehouseId: Int!
-
-  """
-  仓库名称
-  """
-  warehouseName: String!
-
-  """
-  生产日期
-  """
-  planDate: String!
-
-  """
-  计划开始时间
-  """
-  planStartTime: String!
-
-  """
-  计划结束时间
-  """
-  planEndTime: String!
-
-  """
-  备注
-  """
-  planDescription: String
-
-  """
-  计划任务信息
-  """
-  task: [TaskInput]!
-}
-
-"""
-分页对象
-"""
-type PlanPageResult {
-  records: [ProductionPlanPayload]
+type PickUpAddressPagePayload {
+  """当前页码"""
   pageCurrent: Int
+
+  """条数"""
   pageSize: Int
-  totalRecords: Long
+
+  """角色列表"""
+  records: [PickUpAddressPayload]
+
+  """总记录数"""
+  totalRecords: Int
 }
 
-"""
-生产计划查询入参
-"""
-input PlanQueryInput {
-  """
-  模糊查询
-  """
-  param: String
+type PickUpAddressPayload {
+  """区域编码"""
+  adCode: String
 
-  """
-  列表头筛选
-  日期
-  """
-  planDate: String
+  """地址类型"""
+  addressType: AddressTypeEnum
 
-  """
-  状态
-  """
-  planStatus: Int
+  """市ID"""
+  cityId: ID
+
+  """市名称"""
+  cityName: String
+
+  """联系人"""
+  contact: String
+
+  """国家ID"""
+  countryId: ID
+
+  """国家名称"""
+  countryName: String
+
+  """详细地址"""
+  detailedAddress: String
+
+  """区ID"""
+  districtId: ID
+
+  """区名称"""
+  districtName: String
+
+  """纬度"""
+  latitude: Float
+
+  """经度"""
+  longitude: Float
+
+  """联系电话"""
+  mobileNo: String
+
+  """发货地址ID"""
+  pickUpAddressId: ID
+
+  """省份"""
+  provinceId: ID
+
+  """省份名称"""
+  provinceName: String
+
+  """状态"""
+  status: EnableEnum
 }
 
-input PlanTaskInfoInput {
-  """
-  生产任务id
-  """
-  taskId: Int!
-
-  """
-  生产计划id
-  """
-  planId: Int!
-
-  """
-  生产组长id
-  """
-  leaderId: Int!
-
-  """
-  生产组长名称
-  """
-  leaderName: String!
-
-  """
-  生产线
-  """
-  line: Int!
-
-  """
-  计划人数
-  """
-  numberPlan: Int!
-
-  """
-  商品信息
-  """
-  commodities: [CommodityInput]!
+type ProvincePayLoad {
+  countryId: ID!
+  id: ID!
+  name: String!
 }
 
-input PlanTaskInput {
-  planId: Int!
-
-  """
-  计划任务信息
-  """
-  task: [TaskInput]!
-}
-
-type ProductionInOrderItemPayload {
-  """
-  生产入库订单明细id
-  """
-  inOrderItemId: Int
-
-  """
-  生库订单id
-  """
-  inOrderId: Int
-
-  """
-  商品id
-  """
-  commodityId: Int
-
-  """
-  商品名称
-  """
-  commodityName: String
-
-  """
-  商品sku id
-  """
-  commoditySkuId: Int
-
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]
-
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]
-
-  """
-  单位类型数量(x个)
-  """
-  unitQuantity: String
-
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int
-
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitTypeName: String
-
-  """
-  总计类型数量(x箱)
-  """
-  totalQuantity: String
-
-  """
-  总计类型（例：件）
-  """
-  totalType: Int
-
-  """
-  总计类型数量（例：件）
-  """
-  totalTypeName: String
-  createTime: String
-  createBy: Int
-  updateTime: String
-}
-
-input ProductionInOrderListInput {
-  """
-  生产任务id
-  """
-  taskId: Int!
-
-  """
-  入库订单类型
-  """
-  inOrderType: Int!
-
-  """
-  任务状态
-  """
-  inOrderStatus: [Int]!
-}
-
-type ProductionInOrderLogPayload {
-  """
-  入库订单日志id
-  """
-  inOrderLogId: Int
-
-  """
-  入库订单id
-  """
-  inOrderId: Int
-
-  """
-  入库订单操作类型
-  10：创建时间
-  20：提交时间
-  30：入库时间
-  40：取消时间;
-  """
-  inOrderLogType: Int
-
-  """
-  入库订单操作枚举文字
-  """
-  inOrderLogTypeText: String
-
-  """
-  入库订单操作备注
-  """
-  inOrderLogDescription: String
-  createTime: String
-  createBy: Int
-
-  """
-  创建用户名称
-  """
-  createUserName: String
-}
-
-type ProductionInOrderPayload {
-  """
-  入库订单id
-  """
-  inOrderId: Int
-
-  """
-  生产任务id
-  """
-  taskId: Int
-
-  """
-  生产任务编号
-  """
-  taskCode: String
-
-  """
-  入库订单编号
-  """
-  inOrderCode: String
-
-  """
-  入库订单类型[10:生产入库]
-  """
-  inOrderType: Int
-
-  """
-  入库订单类型名称
-  """
-  inOrderTypeName: String
-
-  """
-  入库订单状态
-  10：待提交
-  20：待入库
-  30：部分入库
-  40：已完成
-  50：已取消';
-  """
-  inOrderStatus: Int
-
-  """
-  订单状态名称
-  """
-  inOrderStatusName: String
-
-  """
-  商品类型id
-  """
-  commodityTypeId: Int
-
-  """
-  商品类型名称
-  """
-  commodityTypeName: String
-
-  """
-  客户id
-  """
-  customerId: Int
-
-  """
-  客户名称
-  """
-  customerName: String
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String
-
-  """
-  客户配送地址id
-  """
-  customerDistributionId: Int
-
-  """
-  客户配送地址名称
-  """
-  customerDistributionName: String
-
-  """
-  分公司id
-  """
-  organizationId: Int
-
-  """
-  分公司名称
-  """
-  organizationName: String
-
-  """
-  仓库id
-  """
-  warehouseId: Int
-
-  """
-  仓库名称
-  """
-  warehouseName: String
-
-  """
-  备注信息
-  """
-  inOrderDescription: String
-
-  """
-  创建时间
-  """
-  createTime: String
-
-  """
-  创建人
-  """
-  createBy: Int
-
-  """
-  创建人名称
-  """
-  createUserName: String
-
-  """
-  更新时间
-  """
-  updateTime: String
-
-  """
-  更新人id
-  """
-  updateBy: Int
-
-  """
-  商品信息
-  """
-  commodities: [ProductionInOrderItemPayload]
-
-  """
-  取消订单备注
-  """
-  cancelDescription: String
-}
-
-type ProductionOutOrderDetailPayload {
-  """
-  生产出库订单明细id
-  """
-  outOrderItemId: Int
-
-  """
-  生库订单id
-  """
-  outOrderId: Int
-
-  """
-  商品id
-  """
-  commodityId: Int
-
-  """
-  商品名称
-  """
-  commodityName: String
-
-  """
-  商品sku id
-  """
-  commoditySkuId: Int
-
-  """
-  商品规格选项id
-  """
-  commoditySpecOptionId: [Int]
-
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]
-
-  """
-  单位类型数量
-  """
-  unitQuantity: String
-
-  """
-  单位类型（例：kg，个）
-  """
-  unitType: Int
-
-  """
-  单位类型数量（例：kg，个）
-  """
-  unitTypeName: String
-
-  """
-  总计类型数量
-  """
-  totalQuantity: String
-
-  """
-  总计类型（例：件）
-  """
-  totalType: Int
-
-  """
-  总计类型数量（例：件）
-  """
-  totalTypeName: String
-
-  """
-  库存单位类型数量(x箱)
-  """
-  stockUnitQuantity: String
-
-  """
-  库存总计类型数量(x箱)
-  """
-  stockTotalQuantity: String
-  createTime: String
-  createBy: Int
-  updateTime: String
-}
-
-input ProductionOutOrderListInput {
-  """
-  生产任务id
-  """
-  taskId: Int!
-
-  """
-  出库订单类型
-  """
-  outOrderType: Int!
-
-  """
-  任务状态
-  """
-  outOrderStatus: [Int]!
-}
-
-type ProductionOutOrderLogPayload {
-  """
-  出库订单日志id
-  """
-  outOrderLogId: Int
-
-  """
-  出库订单id
-  """
-  outOrderId: Int
-
-  """
-  出库订单操作类型
-  10：创建时间
-  20：提交时间
-  30：出库时间
-  40：取消时间;
-  """
-  outOrderLogType: Int
-
-  """
-  出库订单操作枚举文字
-  """
-  outOrderLogTypeText: String
-
-  """
-  出库订单操作备注
-  """
-  outOrderLogDescription: String
-  createTime: String
-  createBy: Int
-
-  """
-  创建用户名称
-  """
-  createUserName: String
-}
-
-type ProductionOutOrderPayload {
-  """
-  出库订单id
-  """
-  outOrderId: Int
-
-  """
-  生产任务id
-  """
-  taskId: Int
-
-  """
-  生产任务编号
-  """
-  taskCode: String
-
-  """
-  出库订单编号
-  """
-  outOrderCode: String
-
-  """
-  出库订单类型[10：原料领料出库、20：辅料领料出库]
-  """
-  outOrderType: Int
-
-  """
-  出库订单类型名称
-  """
-  outOrderTypeName: String
-
-  """
-  出库订单状态
-  10：待提交
-  20：待出库
-  30：部分出库
-  40：已完成
-  50：已取消';
-  """
-  outOrderStatus: Int
-
-  """
-  订单状态名称
-  """
-  outOrderStatusName: String
-
-  """
-  商品类型id
-  """
-  commodityTypeId: Int
-
-  """
-  商品类型名称
-  """
-  commodityTypeName: String
-
-  """
-  客户id
-  """
-  customerId: Int
-
-  """
-  客户名称
-  """
-  customerName: String
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String
-
-  """
-  客户配送地址id
-  """
-  customerDistributionId: Int
-
-  """
-  客户配送地址名称
-  """
-  customerDistributionName: String
-
-  """
-  分公司id
-  """
-  organizationId: Int
-
-  """
-  分公司名称
-  """
-  organizationName: String
-
-  """
-  仓库id
-  """
-  warehouseId: Int
-
-  """
-  仓库名称
-  """
-  warehouseName: String
-
-  """
-  备注信息
-  """
-  outOrderDescription: String
-
-  """
-  创建时间
-  """
-  createTime: String
-
-  """
-  创建人
-  """
-  createBy: Int
-
-  """
-  创建人名称
-  """
-  createUserName: String
-
-  """
-  更新时间
-  """
-  updateTime: String
-
-  """
-  更新人id
-  """
-  updateBy: Int
-
-  """
-  商品信息
-  """
-  commodities: [ProductionOutOrderDetailPayload]
-
-  """
-  取消订单备注
-  """
-  cancelDescription: String
-}
-
-"""
-生产计划详情
-"""
-type ProductionPlanDetailPayload {
-  """
-  计划id
-  """
-  planId: Int
-
-  """
-  订单号
-  """
-  planCode: String
-
-  """
-  任务状态ID
-  """
-  planStatus: Int
-
-  """
-  任务状态名称
-  """
-  planStatusName: String
-
-  """
-  客户id
-  """
-  customerId: Int
-
-  """
-  客户名称
-  """
-  customerName: String
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String
-
-  """
-  配送地址id
-  """
-  customerDistributionId: Int
-
-  """
-  配送地址名称
-  """
-  customerDistributionName: String
-
-  """
-  仓库id
-  """
-  warehouseId: Int
-
-  """
-  仓库名称
-  """
-  warehouseName: String
-
-  """
-  生产日期
-  """
-  planDate: String
-
-  """
-  计划开始时间
-  """
-  planStartTime: String
-
-  """
-  计划结束时间
-  """
-  planEndTime: String
-
-  """
-  备注
-  """
-  planDescription: String
-
-  """
-  生产计划日志备注
-  """
-  planLogDescription: String
-
-  """
-  计划任务信息
-  """
-  task: [TaskPayload]
-}
-
-"""
-生产计划操作日志
-"""
-type ProductionPlanLogPayLoad {
-  """
-  生产计划日志id
-  """
-  planLogId: Int
-
-  """
-  生产计划id
-  """
-  planId: Int
-
-  """
-  日志操作类型
-  """
-  planLogType: Int
-
-  """
-  日志操作类型枚举文字
-  """
-  planLogTypeText: String
-
-  """
-  日志备注
-  """
-  planLogDescription: String
-
-  """
-  创建时间
-  """
-  createTime: String
-
-  """
-  创建人id
-  """
-  createBy: Int
-
-  """
-  创建人名称
-  """
-  createUserName: String
-}
-
-"""
-生产计划实体
-"""
-type ProductionPlanPayload {
-  """
-  计划id
-  """
-  planId: Int
-
-  """
-  计划单号
-  """
-  planCode: String
-
-  """
-  计划状态
-  """
-  planStatus: Int
-
-  """
-  计划状态名称
-  """
-  planStatusName: String
-
-  """
-  产品种类数量
-  """
-  categorySum: Int
-
-  """
-  客户id
-  """
-  customerId: Int
-
-  """
-  客户名称
-  """
-  customerName: String
-
-  """
-  客户分组id
-  """
-  customerGroupId: Int
-
-  """
-  客户分组名称
-  """
-  customerGroupName: String
-
-  """
-  配送地址id
-  """
-  customerDistributionId: Int
-
-  """
-  配送地址名称
-  """
-  customerDistributionName: String
-
-  """
-  仓库id
-  """
-  warehouseId: Int
-
-  """
-  仓库名称
-  """
-  warehouseName: String
-
-  """
-  分公司id
-  """
-  organizationId: Int
-
-  """
-  分公司名称
-  """
-  organizationName: String
-
-  """
-  生产日期
-  """
-  planDate: String
-
-  """
-  计划开始时间
-  """
-  planStartTime: String
-
-  """
-  计划结束时间
-  """
-  planEndTime: String
-
-  """
-  备注
-  """
-  planDescription: String
-
-  """
-  创建时间
-  """
-  createTime: String
-
-  """
-  创建人id
-  """
-  createBy: Int
-
-  """
-  更新时间
-  """
-  updateTime: String
-
-  """
-  更新人id
-  """
-  updateBy: Int
-
-  """
-  总期望数
-  """
-  expectNumSum: Int
-
-  """
-  总完成数
-  """
-  completedNumSum: Int
-}
-
-"""
-生产计划状态下拉
-"""
-type ProductionPlanStatus {
-  """
-  待发布数量
-  """
-  toBeReleasedNum: Int
-
-  """
-  进行中数量
-  """
-  processingNum: Int
-
-  """
-  已完成数量
-  """
-  completedNum: Int
+input PublishCommodityInput {
+  """商品ID"""
+  commodityIds: [ID]!
+
+  """上下架"""
+  targetPublishStatus: CommodityPublishStatusEnum!
 }
 
 type Query {
-  """
-  生产任务列表
-  """
-  tasks(taskCondition: TaskCondition, page: Page): TaskPageResult
+  """员工管理:详情"""
+  accountDetail(accountId: ID): AccountPayload
 
-  """
-  查询生产任务列表
-  """
-  keywordTasks(
-    """
-        关键字
-    """
-    keyword: String
-    page: Page
-  ): TaskPageResult
+  """员工管理:分页"""
+  accountPage(input: AccountPageInput): AccountPagePayload
 
-  """
-      生产任务统计
-  """
-  taskStatistics(date: String): TaskStatistics
+  """员工管理:可用角色"""
+  accountRoleSelect(appType: AppTypeEnum!): [SelectTextOption]
 
-  """
-      生产任务详情
-  """
-  task(taskId: Int!): Task
+  """商城app-商家店铺: 商家月销"""
+  appMerchantMonthSales(merchantId: ID): Int
 
-  """
-      库存列表
-  """
-  stocks(stockCondition: StockCondition): [Stock]
+  """商城app-商家店铺: 商家店铺详情"""
+  appMerchantStoreDetail(merchantId: ID): MerchantStorePayload
 
-  """
-      任务明细列表
-  """
-  taskItems(taskId: Int!): [TaskItem]
+  """商家运营app: 售后-详情"""
+  businessAfterSalesOrderDetail(afterSalesId: ID): AfterSalesOrderPayload
 
-  """
-      生产任务操作记录
-  """
-  taskLogs(taskId: Int!): [TaskLog]
+  """商家运营app: 售后-售后单分页查询"""
+  businessAfterSalesOrderPage(input: AfterSalesOrderPageInput): AfterSalesOrderPagePayload
 
-  """
-  查询全部出库订单
-  """
-  outOrderList(productionOutOrderListInput: ProductionOutOrderListInput!): [ProductionOutOrderPayload]
+  """商家运营app: 售后-售后记录查询  是否需要排除？ 排除当前？ 那如果查看 历史的 售后记录， 那这是 展示的  售后记录又是？"""
+  businessAfterSalesOrderRecords(input: AfterSalesOrderRecordInput): [AfterSalesOrderPayload]
 
-  """
-  查询出库订单详情
-  """
-  outOrderDetail(outOrderId: Int!): ProductionOutOrderPayload
+  """商家运营app: 订单中心-订单详情"""
+  businessCommodityOrderDetail(subOrderId: ID!): BusinessOrderDetailPayLoad
 
-  """
-  查询出库订单记录
-  """
-  outOrderLog(outOrderId: Int!): [ProductionOutOrderLogPayload]
+  """商家运营app：首页-统计"""
+  businessHomePageStatistics: BusinessHomePageStatisticsPayload
 
-  """
-  查询全部入库订单
-  """
-  inOrderList(productionInOrderListInput: ProductionInOrderListInput!): [ProductionInOrderPayload]
+  """商家运营app：订单中心-订单分页列表"""
+  businessOrderPageList(input: OrderPageListInput): OrderPageListPayload
 
-  """
-  单个入库订单详情
-  """
-  inOrderDetail(inOrderId: Int!): ProductionInOrderPayload
+  """商家运营app: 扫码提货-提货码提货"""
+  businessRouteCommodityOrderByPickCode(pickCode: String!): ID
 
-  """
-  入库订单记录
-  """
-  inOrderLog(inOrderId: Int!): [ProductionInOrderLogPayload]
+  """渠道web-商家管理:(已删除) 详情"""
+  channelMerchantDetail(merchantId: ID!): MerchantPayload
 
-  """
-  查询订单数量（生产入库，原料领料，辅料领料）
-  """
-  countOrder(taskId: Int!): CountOrderPayload
+  """渠道web-商家管理:(已删除) 分页"""
+  channelMerchantPage(input: PageInput): MerchantPagePayload
 
-  """
-  计划列表
-  """
-  pageProductionPlan(planQueryInput: PlanQueryInput, page: Page): PlanPageResult
+  """商品相关接口:获取商品关联的发货仓信息"""
+  commodityDeliveryWarehouseInfo(commodityId: ID!): DeliveryInfo
 
-  """
-  生产计划详情
-  """
-  getProductionPlanDetail(planId: Int): ProductionPlanDetailPayload
+  """商品相关接口:管理后台中商品管理中获取商品详情"""
+  commodityDetail(commodityId: ID!): CommodityDetailPayload
 
-  """
-  操作日志列表
-  """
-  productionPlanLogs(planId: Int): [ProductionPlanLogPayLoad]
+  """商品相关接口:小程序在线商品详情"""
+  commodityOnlineDetail(commodityId: ID!): CommodityOnlineDetailPayload
 
-  """
-  生产计划状态下拉列表
-  """
-  productionPlanStatusOption(planDate: String): ProductionPlanStatus
+  """商品相关接口:小程序中的在线商品搜索列表接口（首页商品列表，搜索页商品列表，店铺商品列表页）"""
+  commodityOnlinePage(input: CommodityOnlinePageInput): CommodityOnlinePagePayload
 
-  """
-  商品品类列表信息
-  """
-  listCommodityCategoryOption: [CommodityCategoryPayload]
+  """商品相关接口:管理后台中商品管理中的商品列表"""
+  commodityPage(input: CommodityPageInput): CommodityPagePayload
 
-  """
-  品类id查询商品列表信息
-  """
-  listCommodityOptionByCategoryId(categoryId: Int): [CommodityPayload]
+  """栏目: 根据栏目ID统计关联的内容数量"""
+  countContentByColumnId(id: ID!): Int!
+  createUser(user: User): String
 
-  """
-  商品列表信息品类（商品名称查询）
-  """
-  listCommodities(commodityName: String): [CommodityPayload]
+  """商城app: 售后-获取订单下某个sku可申请售后信息"""
+  customerAfterSaleMaxInfo(input: AfterSaleMaxInput): AfterSaleMaxBatchPayload
 
-  """
-  商品规格和商品规格选项列表信息
-  """
-  listCommoditySpecAndOption(commodityId: Int): [CommoditySpecPayload]
+  """商城app-获取订单已发货，待发货数量"""
+  customerCommodityOrderDeliveryQuantity(input: CustomerCommodityDeliveryQuantityInput): [CustomerCommodityDeliveryQuantityPayload]
 
-  """
-  根据商品sku id和规格列表查询具体信息
-  """
-  getCommoditySkuAndUnitInfo(commoditySkuAndUnitInput: CommoditySkuAndUnitInput): CommoditySkuAndUnitPayload
+  """商城app: 订单中心-订单详情"""
+  customerCommodityOrderDetail(commodityOrderId: ID): CustomerCommodityOrderDetailPayload
 
-  """
-  商品规格选项id数据和文字描述映射关系列表信息
-  """
-  listCommoditySkuAndUnit(commodityId: Int): [CommoditySkuAndUnitPayload]
+  """商城app: 订单中心-订单关键字搜索记录"""
+  customerCommodityOrderKeySearchHistory: [String]
 
-  """
-   基础管理-商品分类-|商品类型接口|
-  """
-  commodityList: [Option]
-  supplierCommodityList: [Option]
-  permissions: [Permission]
-  loginUserInfo: UserPayload
+  """商城app: 订单中心-订单分页/搜索"""
+  customerCommodityOrderPage(input: CustomerCommodityOrderPageInput): CustomerCommodityOrderPagePayload
 
-  """
-   客户列表
-  """
-  customers(page: Page, keyword: String): CustomerPageResult
+  """商城app-获取订单价格"""
+  customerCommodityOrderPrice(commodityOrderId: ID): CustomerCommodityOrderPricePayload
 
-  """
-   客户详情
-  """
-  customer(customerId: Int): CustomerVO
+  """商城app: 订单中心-收货码查询"""
+  customerCommodityOrderReceiptCode(commodityOrderId: ID): CustomerCommodityOrderReceiptCodePayload
 
-  """
-   客户分组列表
-  """
-  customerGroups: [CustomerGroupResponse]
-  supplierPages(page: Page, supplierCondition: SupplierCondition): SupplierPageResult
-  supplier(supplierId: Int): SupplierResponse
-  listStorehouse: [StorehousePayload]
-  listProductLeader(storehouseId: Int!): [Option]
-  userInformation(userId: Int): UserPayload
-  userInformationList(page: Page): UserPageResult
-  mobileRepeat(mobileRepeatPayload: MobileRepeatPayload): Boolean
-  roles: [RolePayload]
-  _service: _Service
+  """商城app: 售后-获取当前售后详情"""
+  customerGetAfterSaleDetail(afterSaleId: ID!): AfterSalePayload
+
+  """商城app: 订单列表-退款售后type-订单售后分页列表"""
+  customerGetAfterSalesPageList(input: AfterSalesPageInput): AfterSalePageListPayload!
+
+  """商城app: 售后-订单商品维度下售后信息"""
+  customerOrderCommodityAfterSaleDetail(input: OrderCommodityAfterSaleDetailInput): OrderCommodityAfterSaleDetailPayload
+
+  """商城app: 订单中心-数量统计"""
+  customerOrderQuantity: CustomerOrderQuantityPayload
+
+  """商城app: 订单中心-服务器时间获取(用于订单过期时间校验计算)"""
+  customerServerTime: Long
+
+  """发货单: 发货单详情"""
+  deliveryOrderDetail(deliveryId: ID!): DeliveryDetailPayload
+
+  """发货仓管理:根据ID获取发货仓"""
+  deliveryWarehouseDetail(deliveryWarehouseId: ID!): DeliveryWarehouseDetailPayload
+
+  """发货仓管理:发货仓分页列表"""
+  deliveryWarehousePage(input: DeliveryWarehousePageInput): DeliveryWarehousePagePayload
+
+  """发货仓管理:可用发货仓列表"""
+  enabledDeliveryWarehouseList: [DeliveryWarehousePayload]
+
+  """平台管理web-渠道管理: 获取所有渠道"""
+  getAllChannels: [Channel]
+
+  """MDM: 获取所有城市【根据首字母分组】"""
+  getAllCitiesGroupByInitial: [InitialGroupPayLoad]
+
+  """MDM: 获取后端类目下品牌列表"""
+  getAllCommodityBrandByCategoryId(categoryId: ID!): [CommodityBrandListPayload]
+
+  """MDM: 获取商品品类下  属性列表"""
+  getAllCommodityCategoryProperty(categoryId: ID!): [CommodityCategoryPropertyListPayload]
+
+  """MDM: 获取商品品类产地列表"""
+  getAllCommodityPlaceOriginByCategoryId(categoryId: ID): [CommodityPlaceOriginListPayload]
+
+  """MDM: 获取所有商品-类型"""
+  getAllCommodityType: [CommodityTypeListPayload]
+
+  """MDM: 获取级联 [类型/品类/品种]"""
+  getAllCommodityTypeCascade: [CascadingCommodityTypeListPayload]
+
+  """MDM: 获取所有商品-品类[可根据 商品类型id 查询该类型下所有 品类，不传则查询所有品类]"""
+  getAllCommodityTypeCategory(commodityTypeId: ID): [CommodityTypeCategoryListPayload]
+
+  """MDM: 获取所有商品-品种"""
+  getAllCommodityTypeVariety(commodityCategoryId: ID): [CommodityTypeVarietyListPayload]
+
+  """MDM: 获取所有国家"""
+  getAllCountry: [CountryPayLoad]
+
+  """权限相关的操作接口:查询权限列表"""
+  getAppPermissionList(input: GetAppPermissionListInput): [AppPermissionPayload]
+
+  """配送方式:(已删除)查询渠道WEB/商家WEB可以添加的配送方式列表"""
+  getCanAddDeliveryMethod: [DeliveryMethodPayload]
+
+  """前台类目:获取类目树"""
+  getCategoryTree(channelId: ID!): [CategoryTreePayload]
+
+  """配送方式:查询渠道"""
+  getChannelCanAddDeliveryMethod(input: GetChannelCanAddDeliveryMethodInput): [ReceiptTypeEnum]
+
+  """销售方式:查询渠道可供添加的销售方式"""
+  getChannelCanAddSaleMethod(input: GetChannelCanAddSaleMethodInput): [SaleMethodEnum]
+
+  """配送方式:查询渠道的配送方式"""
+  getChannelDeliveryMethod: [ChannelDeliveryMethodPayload]
+
+  """销售方式:查询渠道销售方式"""
+  getChannelSaleMethod: [ChannelSaleMethodPayload]
+
+  """MDM: 根据查询条件查询【支持 省份id， 是否热门】"""
+  getCities(input: CityQueryInput): [CityPayLoad]
+
+  """栏目: 根据栏目ID获取子栏目列表"""
+  getColumnById(id: ID!): [SubColumnPayload]
+
+  """内容管理: 根据内容ID获取详情"""
+  getContentById(id: ID): ContentPayload
+
+  """配送方式:(已删除) 查询现有的配送方式（商家WEB，平台WEB，渠道WEB都用这个接口）"""
+  getDeliveryMethod: [DeliveryMethodPayload]
+
+  """数据字典: 根据字典类型批量获取字典数据项"""
+  getDictByTypeList(input: [String]!): [SystemDictPayload]!
+
+  """MDM: 根据城市获取区县【不传城市id则查所有区县】"""
+  getDistrictByCityId(cityId: ID): [DistrictPayLoad]
+
+  """前台类目管理:获取第一级级类目列表（前台类目的Id统一用变量名FrontEndCategoryId，后台类目使用变量名categoryId）"""
+  getFrontEndCategories: [FrontEndCategoryPayload]
+
+  """前台类目管理:获取第二级级类目列表"""
+  getFrontEndSecondLayerCategories(frontEndCategoryId: ID!): [FrontEndSecondLayerPayload]
+
+  """索引相关接口:根据索引名获取索引信息"""
+  getIndexMeta(indexType: String): IndexMetaPayload
+
+  """索引相关接口:获取索引分页列表"""
+  getIndexMetaPage(input: IndexMetaPageInput): IndexMetaPagePayload
+
+  """前台类目:获取金刚区类目(按类目排序展示，如存在类目禁用则自动顺延，商城端金刚区本期仅展示最多8个类目)"""
+  getKingKongCategories(channelId: ID!): [KingKongCategoryPayload]
+
+  """MDM: 根据经纬度信息查询位置"""
+  getLocationByLatAndLng(input: LocationQueryInput): LocationPayLoad
+
+  """发货仓管理:下拉框中获取当前商家在渠道支持的发货方式(下拉框只需返回二级配送方式，不需要返回树形结构)"""
+  getMerchantDeliveryMethod: [ReceiptTypePayload]
+
+  """销售方式:查询商家的销售方式"""
+  getMerchantSaleMethod(merchantId: ID!): [SaleMethodEnum]
+
+  """页面配置: 根据页面配置ID获取详情"""
+  getPageSetupById(id: ID!): PageSetupPayload!
+
+  """权限相关的操作接口:查询权限详情"""
+  getPermissionDetail(permissionId: ID!): AppPermissionPayload
+
+  """发货地址相关接口:根据ID获取发货地址"""
+  getPickUpAddressById(pickUpAddressId: ID!): PickUpAddressPayload
+
+  """发货地址相关接口:获取发货地址列表（新建发货仓中选择发货地址下拉框的内容从这里查询）"""
+  getPickupAddressList(input: GetPickupAddressListInput): [PickUpAddressPayload]
+
+  """配送方式:查询平台的配送方式"""
+  getPlatformDeliveryMethod: [ReceiptTypeEnum]
+
+  """销售方式:查询平台的销售方式"""
+  getPlatformSaleMethod: [SaleMethodEnum]
+
+  """MDM: 获取所有省份【不传国家id则查所有省份】"""
+  getProvinceByCountryId(countryId: ID): [ProvincePayLoad]
+
+  """用户收货地址: 根据收货地址ID查询"""
+  getReceivingAddressById(id: ID!): ReceivingAddressPayload
+
+  """权限相关的操作接口:查询一个角色拥有的权限"""
+  getRolePermissionList(roleId: ID!): [ID]
+
+  """商品规格相关:通过ID获取规格"""
+  getSku(skuId: ID): SkuPayload
+
+  """商品规格相关:获取在线规格列表"""
+  getSkuOnlineList(input: GetSkuOnlineListInput!): [SkuOnlinePayload]
+
+  """MDM: 根据区县ID获取街道"""
+  getStreetByDistrictId(districtId: ID!): [StreetPayLoad]
+
+  """用户: 获取已登录用户信息"""
+  getUserInfo: UserInfoPayload!
+
+  """权限相关的操作接口:查询一个用户拥有的权限列表"""
+  getUserPermissionList: [String]
+
+  """钱包相关接口:获取钱包信息"""
+  getWalletInfo(input: GetWalletInfoInput): WalletInfoPayload
+
+  """钱包相关接口:账户流水"""
+  getWalletLogList(input: WalletLogListInput): WalletLogListPayload
+
+  """发货仓管理:是否存在同名的发货仓"""
+  isExitSameDeliveryWarehouseName(deliveryWarehouseName: String): Boolean
+
+  """角色相关的操作:校验当前应用下是否有重名的角色"""
+  isExitSameRoleName(input: IsExitSameRoleNameInput): Boolean
+
+  """用户: 获取拥有的身份列表，供切换角色时使用"""
+  listAccount(channelId: ID!): [AccountCustomerPayload!]!
+
+  """用户: 获取当前用户可以选择的渠道"""
+  listChannel: [ChannelInfoPayload]
+
+  """栏目: 所属栏目下拉"""
+  listColumn(input: PageTypeEnum, ruleType: ColumnRuleTypeEnum): [SubColumnPayload!]!
+
+  """数据字典: 查询字典全量数据（管理界面开发前使用，供开发时前端查询全量数据）"""
+  listDict: [SystemDictPayload]!
+
+  """配送方式:分页获取商家的配送方式"""
+  merchantDeliveryMethodPage(input: MerchantDeliveryMethodPageInput): MerchantDeliveryMethodPagePayload
+
+  """商家管理:详情"""
+  merchantDetail(merchantId: ID!): MerchantPayload
+
+  """商家管理:分页"""
+  merchantPage(input: PageInput): MerchantPagePayload
+
+  """销售方式:分页获取商家的销售方式"""
+  merchantSaleMethodPage(input: MerchantSaleMethodPageInput): MerchantSaleMethodPagePayload
+
+  """商城app:进货单-我的进货单列表"""
+  myShoppingCart: [ShoppingCartListPayload]
+
+  """栏目: 分页获取栏目列表"""
+  pageColumn(input: PageInput, pageColumInput: PageColumInput): ColumnPagePayload!
+
+  """内容管理: 分页获取内容列表"""
+  pageContent(input: PageInput, pageContentInput: PageContentInput!): PageContentPayload
+
+  """内容管理: 根据模块类型获取内容项"""
+  pageContentByType(input: PageInput!, pageContentByTypeInput: [PageContentByTypeInput!]!): PageContentByTypePayload!
+
+  """客户: 分页查询企业列表"""
+  pageEnterpriseInfo(input: PageEnterpriseInfoInput!, page: PageInput!): PageEnterpriseInfoPayload!
+
+  """页面配置: 分页获取页面配置列表"""
+  pagePageSetup(input: PageInput!, pagePageSetupInput: PagePageSetupInput!): PagePageSetupPayload!
+
+  """用户收货地址: 分页查询收货地址列表"""
+  pageReceivingAddress(input: PageReceivingAddressInput!, page: PageInput): PageReceivingAddressPayload!
+
+  """库存: 库存流水"""
+  pageStockLog(input: PageInput!, skuId: ID!): PageStockLogPayload!
+
+  """用户: 获取当前用户可以选择的商家"""
+  pageUserMerchant(input: PageInput!): PageUserMerchantPayload!
+
+  """收银台: 支付方式列表"""
+  paymentMethod: [PaymentMethodInfoPayload!]!
+
+  """发货地址相关接口:分页获取发货地址"""
+  pickUpAddressPage(input: PickUpAddressInput): PickUpAddressPagePayload
+
+  """角色相关的操作:角色详情"""
+  roleDetail(roleId: ID!): RolePayload
+
+  """角色相关的操作:角色列表页"""
+  rolePage(input: RolePageInput): RolePagePayload
+
+  """商城app:进货单-进货单共计"""
+  shoppingCartAmountCalculation(input: AmountCalculationInput): AmountCalculationPayload
+
+  """商城app:进货单-确认订单-详情界面"""
+  shoppingCartConfirmOrderDetail(input: ConfirmOrderDetailInput): [ConfirmOrderDetailPayload]
+  shows(titleFilter: String): [Show]
+
+  """商品规格相关:获取规格列表"""
+  skuPage(input: SkuPageInput): SkuPagePayload
+
+  """库存调整: 调整类型下拉(只能手动选择的)"""
+  stockVariationTypeOption: [SelectTextOption]
+
+  """代运营管理: 代运营账号分页"""
+  thirdPartnerAccountPage(input: ThirdPartnerPageInput): ThirdPartnerAccountPagePayload
+
+  """代运营管理: 商家分页"""
+  thirdPartnerMerchantPage(input: ThirdPartnerMerchantPageInput): ThirdPartnerMerchantPagePayload
+
+  """代运营管理: 商家下拉"""
+  thirdPartnerMerchantSelect: [SelectTextOption]
+
+  """代运营管理: 可代运营角色下拉（商家角色）"""
+  thirdPartnerRoleSelect: [SelectTextOption]
+
+  """代运营管理: 可用代运营下拉（渠道员工）"""
+  thirdPartnerSelect(merchantId: ID!): [SelectTextOption]
+
+  """钱包相关接口:流水详情"""
+  walletLogDetail(walletLogId: ID!): WalletLogPayload
 }
 
-input RoleInput {
-  roleId: Int
-  roleName: String
+input ReceiptInfoInput {
+  """收货地址id"""
+  addressId: ID
+
+  """配送方式"""
+  receiptType: ReceiptTypeEnum!
+}
+
+"""二级的配送方式/收货类型"""
+enum ReceiptTypeEnum {
+  """空运"""
+  AIR_TRANSPORT
+
+  """自提"""
+  BY_SELF
+
+  """快递"""
+  EXPRESS
+
+  """不合法的配送方式(购物车特殊处理：配送方式被删除)"""
+  ILLEGAL
+
+  """零担"""
+  PART_LOAD
+
+  """铁运"""
+  RAILWAY_TRANSPORT
+
+  """船运"""
+  SHIPPING
+
+  """整车运输"""
+  TRUCK_LOAD
+}
+
+type ReceiptTypePayload {
+  """子配送方式枚举值"""
+  receiptType: ReceiptTypeEnum!
+
+  """子配送方式名称"""
+  receiptTypeName: String!
+}
+
+type ReceivingAddressPayload {
+  """详细地址"""
+  address: String!
+
+  """市"""
+  city: String!
+
+  """市Id"""
+  cityId: ID!
+
+  """是否默认地址"""
+  defaultAddress: Boolean!
+
+  """区"""
+  district: String!
+
+  """区Id"""
+  districtId: ID!
+
+  """完整的地址"""
+  fullAddress: String!
+
+  """地址ID"""
+  id: ID!
+
+  """维度"""
+  latitude: Float!
+
+  """经度"""
+  longitude: Float!
+
+  """姓名"""
+  name: String!
+
+  """手机号"""
+  phone: String!
+
+  """省"""
+  province: String!
+
+  """省ID"""
+  provinceId: ID!
+
+  """街道"""
+  street: String!
+
+  """街道Id"""
+  streetId: ID!
+}
+
+type RefreshTokenPayload {
+  """用户Token"""
+  token: String!
+}
+
+input ResetPasswordInput {
+  """来源端"""
+  appType: AppTypeEnum!
+
+  """验证码"""
+  captcha: String!
+
+  """密码"""
+  password: String!
+
+  """手机号"""
+  phone: String!
+}
+
+"""展现形式枚举"""
+enum RevealShapeEnum {
+  """图文"""
+  IMAGE_TEXT
+
+  """纯图"""
+  PURE_GRAPH
+}
+
+input RoleEnableInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """角色ID"""
+  roleId: ID!
+
+  """启禁用状态"""
+  targetState: EnableEnum!
+}
+
+interface RoleListInterface {
+  """角色id数组"""
+  roleIdList: [ID]
+
+  """角色数组"""
+  roleList: [RolePayload]
+}
+
+input RolePageInput {
+  """应用类型"""
+  appType: AppTypeEnum!
+
+  """分页信息"""
+  pageCurrent: Int
+  pageSize: Int
+}
+
+type RolePagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """角色列表"""
+  records: [RolePayload]
+
+  """总记录数"""
+  totalRecords: Int
 }
 
 type RolePayload {
-  roleId: Int
+  """应用类型"""
+  appType: AppTypeEnum
+
+  """角色ID"""
+  roleId: ID
+
+  """角色名称"""
   roleName: String
-  roleCode: String
+
+  """角色状态"""
+  roleStatus: EnableEnum
 }
 
-input SendSmsInput {
-  mobile: String
+type SKU {
+  """skuID"""
+  skuId: ID!
+
+  """sku名称"""
+  skuName: String
 }
 
-type SendSmsPayload {
-  success: Boolean!
+"""发货方式"""
+enum SaleMethodEnum {
+  """一件批发"""
+  DROP_SHIPPING
+
+  """批发"""
+  WHOLESALE
 }
 
-"""
-库存
-"""
-type Stock {
-  """
-      商品类型id
-  """
-  commodityTypeId: Int
+input SaveFileInput {
+  """访问文件类型"""
+  accessType: AccessType
 
-  """
-      商品类型名称
-  """
-  commodityTypeName: String
+  """文件类型"""
+  contentType: String
 
-  """
-      商品id
-  """
-  commodityId: Int
+  """文件Url地址"""
+  fileUrl: String
 
-  """
-      商品名称
-  """
-  commodityName: String
-
-  """
-      商品sku id
-  """
-  commoditySkuId: Int
-
-  """
-      商品规格选项id
-  """
-  commoditySpecOptionId: [Int]
-
-  """
-  sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]
-
-  """
-      客户id
-  """
-  customerId: Int
-
-  """
-      客户名称
-  """
-  customerName: String
-
-  """
-      客户分组id
-  """
-  customerGroupId: Int
-
-  """
-      客户分组名称
-  """
-  customerGroupName: String
-
-  """
-      单位类型数量
-  """
-  stockUnitQuantity: String
-
-  """
-  单位类型
-  """
-  stockUnitType: Int
-
-  """
-      单位类型名称
-  """
-  stockUnitTypeName: String
-
-  """
-      总计类型数量
-  """
-  stockTotalQuantity: String
-
-  """
-      总计类型
-  """
-  stockTotalType: Int
-
-  """
-      总计类型名称
-  """
-  stockTotalTypeName: String
+  """文件名称"""
+  name: String
 }
 
-"""
-库存列表请求参数
-"""
-input StockCondition {
-  """
-  任务id
-  """
-  taskId: Int!
+type SaveFilePayload {
+  errCode: Int
+  errMsg: String
 
-  """
-  商品类型 10原料，20辅料
-  """
-  commodityType: Int!
+  """fileID"""
+  fileId: String
 }
 
-"""
-仓库列表下拉
-"""
-type StorehousePayload {
-  storehouseId: Int
-  storehouseName: String
-}
+input SaveInventoryAdjustmentInput {
+  """调整数量"""
+  quantity: Int!
 
-input SupplierCondition {
-  keyword: String
-  commodityId: Int
-}
-
-input SupplierInput {
-  supplierId: Int
-  supplierName: String
-  supplierShortName: String
-  commodityTypeId: Int
-  commodityType: String
-  phoneNum: String
-  supplierAddress: String
-  houseNum: String
+  """调整备注"""
   remark: String
+
+  """skuId"""
+  skuId: ID!
+
+  """调整类型"""
+  stockVariationType: StockVariationTypeEnum!
 }
 
-"""
-客户分页实体
-"""
-type SupplierPageResult {
-  records: [SupplierResponse]
+input SaveUserInfoInput {
+  """头像url"""
+  avatar: [FileInput!]!
+
+  """用户名称"""
+  name: String!
+}
+
+type SelectTextOption {
+  label: String!
+  value: ID!
+}
+
+input SendResetPwdSmsInput {
+  """来源端"""
+  appType: AppTypeEnum!
+
+  """手机号"""
+  phone: String!
+}
+
+input ShoppingCartDeleteInput {
+  """删除的购物车skuID列表"""
+  skuIds: [ID]!
+}
+
+input ShoppingCartInput {
+  """商品ID"""
+  commodityId: ID!
+
+  """商户ID"""
+  merchantId: ID!
+
+  """数量"""
+  quantity: Int!
+
+  """配送信息"""
+  receiptInfo: ReceiptInfoInput!
+
+  """skuID"""
+  skuId: ID!
+}
+
+type ShoppingCartListPayload implements MerchantInfoInterface {
+  """商户信息"""
+  merchant: CommodityOrderMerchantPayload
+
+  """商户ID"""
+  merchantId: ID
+
+  """skuList"""
+  skuList: [ShoppingCartSkuListPayload]
+}
+
+type ShoppingCartSkuInfoPayload implements SkuInterface {
+  """购物车数量"""
+  quantity: Int!
+
+  """skuID"""
+  skuId: ID!
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+}
+
+interface ShoppingCartSkuInterface {
+  """skuID"""
+  skuId: ID!
+
+  """sku信息"""
+  skuInfo: ShoppingCartSkuInfoPayload
+}
+
+type ShoppingCartSkuListPayload implements SkuInterface {
+  """进货单ID"""
+  id: ID!
+
+  """数量"""
+  quantity: Int
+
+  """配送方式信息"""
+  receiptInfo: ConfirmOrderReceiptPayload
+
+  """skuID"""
+  skuId: ID!
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+}
+
+input ShoppingCartUpdateInput {
+  """数量"""
+  quantity: Int!
+
+  """skuID"""
+  skuId: ID!
+}
+
+input ShoppingCartUpdateReceiptInfoInput {
+  """购物车id"""
+  cartId: ID!
+
+  """配送信息"""
+  receiptInfo: ReceiptInfoInput!
+
+  """skuID"""
+  skuId: ID!
+}
+
+input ShoppingCartUploadInput {
+  """商品ID"""
+  newSkuId: ID!
+
+  """skuID"""
+  originSkuId: ID!
+}
+
+type Show {
+  releaseYear: Int
+  title: String
+}
+
+enum SkuAfterSaleStatusEnum {
+  """售后中"""
+  AFTER_SALE_PROCESSING
+
+  """全部售后"""
+  ALL_AFTER_SALE
+
+  """未售后"""
+  NO_AFTER_SALE
+
+  """部分售后"""
+  SECTION_AFTER_SALE
+}
+
+input SkuCategoryPropertyInput {
+  """商品属性ID"""
+  categoryPropertyId: ID
+
+  """商品属性值ID"""
+  categoryPropertyValueId: ID
+}
+
+type SkuCategoryPropertyPayload {
+  """商品属性ID"""
+  categoryPropertyId: ID
+
+  """属性名称"""
+  categoryPropertyName: String
+
+  """商品属性值ID"""
+  categoryPropertyValueId: ID
+
+  """商品属性值名称"""
+  categoryPropertyValueName: String
+}
+
+type SkuInfoPayload {
+  """商品id"""
+  commodityId: ID
+
+  """商品名称"""
+  commodityName: String
+
+  """商品缩略图"""
+  commodityPic: [FilePayload]
+
+  """最小起批量"""
+  minBulk: Int
+
+  """sku价格"""
+  priceList: [OrderSkuPricePayload]
+
+  """skuId"""
+  skuId: ID
+
+  """sku名称"""
+  skuName: String
+
+  """规格描述"""
+  spec: [SkuSpecPropertyPayload]
+
+  """sku状态"""
+  status: SkuStatus
+
+  """sku库存"""
+  stock: Int
+
+  """单位"""
+  unit: OrderMarketingUnitEnum
+}
+
+interface SkuInterface {
+  """skuID"""
+  skuId: ID
+
+  """sku信息"""
+  skuInfo: SkuInfoPayload
+}
+
+"""商城小程序的在线商品Online"""
+type SkuOnlinePayload {
+  """一件代发价格"""
+  dropShippingPrice: Float
+
+  """单位Enum"""
+  marketingUnit: MarketingUnitEnum
+
+  """ID"""
+  skuOnlineId: ID!
+
+  """sku名称"""
+  skuOnlineName: String
+
+  """阶梯价格"""
+  skuPricesOnline: [SkuPriceOnlinePayload]
+
+  """库存"""
+  stock: Long!
+}
+
+input SkuPageInput {
+  """商品ID"""
+  commodityId: ID!
+
+  """分页信息"""
   pageCurrent: Int
   pageSize: Int
-  totalRecords: Long
 }
 
-type SupplierResponse {
-  supplierId: Int
-  supplierName: String
-  supplierShortName: String
-  commodityTypeId: Int
-  commodityType: String
-  phoneNum: String
-  supplierAddress: String
-  houseNum: String
+type SkuPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+  records: [SkuPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+type SkuPayload {
+  """可用库存"""
+  availableStock: Long
+
+  """一件代发价格"""
+  dropShippingPrice: Float
+
+  """状态"""
+  enable: EnableEnum
+
+  """单位"""
+  marketingUnit: MarketingUnitEnum
+
+  """商家商品编码"""
+  merchantSkuCode: String
+
+  """净重"""
+  netWeight: Float
+
+  """毛重"""
+  roughWeight: Float
+
+  """销售方式"""
+  saleMethods: [SaleMethodEnum]
+
+  """规格ID"""
+  skuId: ID
+
+  """规格名称"""
+  skuName: String
+
+  """阶梯价格"""
+  skuPrices: [SkuPricePayload]
+
+  """规格属性"""
+  specProperty: [SkuCategoryPropertyPayload]
+
+  """销售库存"""
+  stock: Long
+}
+
+type SkuPriceOnlinePayload {
+  """起批量"""
+  bulk: Int
+
+  """价格"""
+  price: Float
+
+  """skuOnlineId"""
+  skuOnlineId: ID
+
+  """主键ID"""
+  skuPriceId: ID
+}
+
+type SkuPricePayload {
+  """起批量"""
+  bulk: Int
+
+  """价格"""
+  price: Float
+
+  """sku_price_id"""
+  skuPriceId: ID
+}
+
+"""
+type WarehousePayload {
+    \"""仓库ID\"""
+    deliveryWareHouseId: ID
+    \"""仓库名称\"""
+    deliveryWareHouseName: String
+    \"""仓库地址\"""
+    receiptInfo: ConfirmOrderReceiptPayload
+}
+"""
+type SkuSpecPropertyPayload {
+  """商品属性ID"""
+  categoryPropertyId: ID
+
+  """属性名称"""
+  categoryPropertyName: String
+
+  """商品属性值ID"""
+  categoryPropertyValueId: ID
+
+  """商品属性值名称"""
+  categoryPropertyValueName: String
+}
+
+enum SkuStatus {
+  """已失效【商品规格禁用】"""
+  INVALID_SKU_DIS
+
+  """已失效【发货仓禁用】"""
+  INVALID_WHS_DIS
+
+  """生效中"""
+  NORMAL
+
+  """下架"""
+  OFF_SHELF
+
+  """售罄"""
+  SELL_OUT
+}
+
+type StockLogPayload {
+  """调整后数量"""
+  afterQuantity: Int!
+
+  """调整前数量"""
+  beforeQuantity: Int!
+
+  """单据号"""
+  businessId: ID
+
+  """调整时间"""
+  createTime: Long!
+
+  """流水ID"""
+  id: ID!
+
+  """调整数量"""
+  quantity: Int!
+
+  """调整备注"""
   remark: String
-  createTime: Date
+
+  """sku信息"""
+  sku: SKU!
+
+  """调整类型"""
+  stockVariationType: StockVariationTypeEnum!
 }
 
-"""
-生产任务详情
-"""
-type Task {
-  """
-  生产计划id
-  """
-  planId: Int
+"""调整类型枚举"""
+enum StockVariationTypeEnum {
+  """减少（手动选择）"""
+  DECREASE
 
-  """
-  生产任务id
-  """
-  taskId: Int
+  """增加（手动选择）"""
+  INCREASE
 
-  """
-  任务单号
-  """
-  taskCode: String
+  """销售订单出库"""
+  ORDER_DELIVERY
 
-  """
-      任务状态【10：无状态，计划未发布时任务没有状态、20：待生产、30：生产中、40：已完成、50：已取消】
-  """
-  taskStatus: Int
+  """采购入库"""
+  PROCUREMENT
 
-  """
-      任务状态名称
-  """
-  taskStatusName: String
-
-  """
-      生产组长id
-  """
-  leaderId: Int
-
-  """
-      生产组长名称
-  """
-  leaderName: String
-
-  """
-  生产线
-  """
-  line: Int
-
-  """
-      计划人数
-  """
-  numberPlan: Int
-
-  """
-      实际生产人数
-  """
-  numberActual: Int
-
-  """
-       取消原因
-  """
-  cancelReason: String
-
-  """
-      生产计划
-  """
-  plan: Plan
-
-  """
-      生产任务明细
-  """
-  taskItems: [TaskItem]
+  """退货入库"""
+  SALES_RETURN
 }
 
-"""
-生产任务列表查询
-"""
-input TaskCondition {
-  """
-      时间 yyyy-MM-dd
-  """
-  date: String
+type StoreInfoPayload {
+  """商家ID"""
+  merchantId: ID!
 
-  """
-      任务状态
-  """
-  taskStatus: Int
+  """店铺Logo"""
+  storeLogo: [FilePayload]
+
+  """店铺名称"""
+  storeName: String!
 }
 
-"""
-生产任务添加入参
-"""
-input TaskInput {
-  """
-  生产组长id
-  """
-  leaderId: Int!
+type StreetPayLoad {
+  """区县id"""
+  districtId: ID!
 
-  """
-  生产组长名称
-  """
-  leaderName: String!
+  """街道id"""
+  id: ID!
 
-  """
-  生产线
-  """
-  line: Int!
+  """维度"""
+  lat: Float!
 
-  """
-  计划人数
-  """
-  numberPlan: Int!
+  """经度"""
+  lng: Float!
 
-  """
-  商品信息
-  """
-  commodities: [CommodityInput]!
+  """街道名称"""
+  name: String!
 }
 
-"""
-生产任务明细
-"""
-type TaskItem {
-  """
-      生产任务明细id
-  """
-  taskItemId: Int
+"""子栏目列表"""
+type SubColumnPayload {
+  """状态： false=未启用  true=启用"""
+  enabled: Boolean!
 
-  """
-  生产计划id
-  """
-  planId: Int
+  """主键"""
+  id: ID!
 
-  """
-      生产任务id
-  """
-  taskId: Int
+  """栏目名称"""
+  name: String!
 
-  """
-      商品id
-  """
-  commodityId: Int
+  """父ID"""
+  parentId: ID
 
-  """
-      商品名称
-  """
-  commodityName: String
+  """展现形式"""
+  revealShape: RevealShapeEnum!
 
-  """
-      bom id
-  """
-  commodityBomId: Int
-
-  """
-      商品sku id
-  """
-  commoditySkuId: Int
-
-  """
-      商品规格选项id
-  """
-  commoditySpecOptionId: [Int]
-
-  """
-      sku文字描述，规格选项文字数组
-  """
-  skuTextDescription: [String]
-
-  """
-      期望数量
-  """
-  expectNum: String
-
-  """
-      已生产数量，默认0
-  """
-  completedNum: String
-
-  """
-  单位数量
-  """
-  unitQuantity: String
-
-  """
-  单位类型
-  """
-  unitType: Int
-
-  """
-      单位类型名称
-  """
-  unitTypeName: String
-
-  """
-      总计类型
-  """
-  totalType: Int
-
-  """
-      总计类型名称
-  """
-  totalTypeName: String
+  """规则"""
+  ruleType: ColumnRuleTypeEnum
 }
 
-"""
-生产任务列表商品信息
-"""
-type TaskItems {
-  """
-      商品名称
-  """
-  commodityName: String
-
-  """
-      sku选项
-  """
-  skuTextDescription: [String]
-
-  """
-      总计类型名称
-  """
-  totalTypeName: String
-
-  """
-      期望数量
-  """
-  expectNum: String
+input SubmitCommodityInput {
+  """商品ID"""
+  commodityId: ID!
 }
 
-"""
-生产操作记录
-"""
-type TaskLog {
-  """
-  生产任务操作日志id
-  """
-  taskLogId: Int
+type SystemDictPayload {
+  """类型"""
+  dictType: String!
 
-  """
-  生产计划id
-  """
-  planId: Int
+  """中文描述"""
+  label: String!
 
-  """
-  生产任务id
-  """
-  taskId: Int
+  """备注"""
+  remark: String
 
-  """
-  生产任务操作日志类型【10：开始任务、20：原料领料、30：辅料领料、40：成品入库、50：结束任务】
-  """
-  taskLogType: Int
+  """排序"""
+  sort: Int!
 
-  """
-  生产任务操作类型枚举文字
-  """
-  taskLogTypeText: String
-
-  """
-  生产任务操作日志备注
-  """
-  taskLogDescription: String
-
-  """
-  创建时间
-  """
-  createTime: String
-
-  """
-  创建人id
-  """
-  createBy: Int
-
-  """
-  创建人名称
-  """
-  createUserName: String
+  """值"""
+  value: String!
 }
 
-"""
-分页对象
-"""
-type TaskPageResult {
-  records: [Tasks]
+input TemporaryAccessKeyInput {
+  """待上传/访问文件类型"""
+  accessType: AccessType
+
+  """上传的文件桶(指定bucket后不需要指定access_type"""
+  bucket: Bucket
+
+  """
+  临时访问密钥和securitytoken的有效期，时间单位为秒。取值范围：15分钟 ~ 24小时 (900s-86400s) ，默认为15分钟。
+  """
+  durationSeconds: Int
+}
+
+type TemporaryAccessKeyPayload {
+  ak: String
+  bucket: String
+  endpoint: String
+  errCode: String
+  errMsg: String
+  expiresAt: String
+  securityToken: String
+  sk: String
+}
+
+type ThirdPartnerAccountPagePayload {
+  """当前页码"""
+  pageCurrent: Int
+
+  """条数"""
+  pageSize: Int
+
+  """结果"""
+  records: [AccountPayload]
+
+  """总记录数"""
+  totalRecords: Int
+}
+
+input ThirdPartnerMerchantBatchInput {
+  """商家id"""
+  merchantIdList: [ID]
+}
+
+input ThirdPartnerMerchantPageInput {
+  """商家名称"""
+  name: String
   pageCurrent: Int
   pageSize: Int
-  totalRecords: Long
 }
 
-"""
-任务实体
-"""
-type TaskPayload {
-  """
-  生产任务id
-  """
-  taskId: Int
+type ThirdPartnerMerchantPagePayload {
+  """当前页码"""
+  pageCurrent: Int
 
-  """
-  生产组长id
-  """
-  leaderId: Int
+  """条数"""
+  pageSize: Int
 
-  """
-  生产组长名称
-  """
-  leaderName: String
+  """结果"""
+  records: [ThirdPartnerMerchantPayload]
 
-  """
-  任务状态ID
-  """
-  taskStatus: Int
-
-  """
-  任务状态名称
-  """
-  taskStatusName: String
-
-  """
-  任务单号名称
-  """
-  taskCode: String
-
-  """
-  生产线
-  """
-  line: Int
-
-  """
-  计划人数
-  """
-  numberPlan: Int
-
-  """
-  商品信息
-  """
-  commodities: [CommodityPayload]
+  """总记录数"""
+  totalRecords: Int
 }
 
-"""
-生产任务统计
-"""
-type TaskStatistics {
-  """
-      待生产数量
-  """
-  toBeProduced: Int
+type ThirdPartnerMerchantPayload implements ThirdPartnerUserInterface {
+  """商户id"""
+  merchantId: ID
 
-  """
-      生产中数量
-  """
-  inProduction: Int
+  """商户名称"""
+  merchantName: String
 
-  """
-  已完成数量
-  """
-  completed: Int
+  """代运营id"""
+  thirdId: ID
+
+  """代运营姓名集合"""
+  thirdPartnerNameList: [String]
 }
 
-"""
-生产任务列表
-"""
-type Tasks {
-  """
-      生产任务id
-  """
-  taskId: Int
-
-  """
-      任务状态【10：无状态、20：待生产、30：生产中、40：已完成、50：已取消】
-  """
-  taskStatus: Int
-
-  """
-      任务状态名称
-  """
-  taskStatusName: String
-
-  """
-      任务单号
-  """
-  taskCode: String
-
-  """
-  开始时间
-  """
-  startTime: String
-
-  """
-      结束时间
-  """
-  endTime: String
-
-  """
-      生产进度
-  """
-  schedule: String
-
-  """
-      总预期数量
-  """
-  totalExpectNum: String
-
-  """
-      总实际生产数量
-  """
-  totalCompletedNum: String
-
-  """
-      客户名称
-  """
-  customerName: String
-
-  """
-      仓库名称
-  """
-  warehouseName: String
-
-  """
-      任务明细
-  """
-  taskItems: [TaskItems]
-}
-
-input UserInput {
-  userId: Int
-
-  """
-   用户名称
-  """
-  userName: String
-
-  """
-   用户电话号码
-  """
-  userPhoneNum: String
-
-  """
-   座机号码
-  """
-  landlineNum: String
-
-  """
-   创建时间
-  """
-  createTime: String
-
-  """
-   组织名称
-  """
-  organizationName: String
-  roles: [RoleInput]
-  stores: [UserStoreInput]
-}
-
-type UserListPayload {
-  userId: Int
-
-  """
-   用户名称
-  """
-  userName: String
-
-  """
-   用户电话号码
-  """
-  userPhoneNum: String
-
-  """
-   座机号码
-  """
-  landlineNum: String
-
-  """
-   创建时间
-  """
-  createTime: String
-
-  """
-   组织名称
-  """
-  organizationName: String
-  roles: [String]
-  stores: [String]
-}
-
-"""
-用户账户密码返回
-"""
-type UserLoginResponse {
-  """
-  用户id
-  """
-  userId: Int
-
-  """
-  用户名称
-  """
-  userName: String
-  token: String
-
-  """
-  组织名称
-  """
-  organizationName: String
-
-  """
-  组织id
-  """
-  organizationId: Int
-}
-
-type UserPageResult {
-  records: [UserListPayload]
+input ThirdPartnerPageInput {
+  """代运营商家id"""
+  merchantId: ID!
   pageCurrent: Int
   pageSize: Int
-  totalRecords: Long
 }
 
-type UserPayload {
-  userId: Int
+input ThirdPartnerUserCreateInput {
+  """代运营商家id"""
+  merchantId: ID!
 
-  """
-   用户名称
-  """
+  """运营角色id数组"""
+  roleIdList: [ID]!
+
+  """代运营用户id"""
+  userId: ID!
+}
+
+interface ThirdPartnerUserInterface {
+  """商户id"""
+  merchantId: ID
+
+  """代运营姓名集合"""
+  thirdPartnerNameList: [String]
+}
+
+"""时间区间"""
+input TimeRange {
+  """结束时间"""
+  endTime: Long
+
+  """起始时间"""
+  startTime: Long
+}
+
+input User {
+  phoneNo: String
+  userId: String
   userName: String
-
-  """
-   用户电话号码
-  """
-  userPhoneNum: String
-
-  """
-   座机号码
-  """
-  landlineNum: String
-
-  """
-   创建时间
-  """
-  createTime: String
-
-  """
-   组织名称
-  """
-  organizationName: String
-  roles: [RolePayload]
-  stores: [UserStorePayload]
 }
 
-input UserStoreInput {
-  """
-   用户id
-  """
-  userId: Int
+interface UserCustomerInterface {
+  """客户ID"""
+  customerId: ID
 
-  """
-   仓库ID
-  """
-  storehouseId: Int
-
-  """
-   仓库名称
-  """
-  storehouseName: String
+  """客户信息"""
+  customerInfo: UserCustomerPayload
 }
 
-type UserStorePayload {
-  """
-   用户id
-  """
-  userId: Int
+type UserCustomerPayload {
+  """实名认证状态"""
+  authStatus: Boolean!
 
-  """
-   仓库ID
-  """
-  storehouseId: Int
+  """认证时间"""
+  authTime: Long
 
-  """
-   仓库名称
-  """
-  storehouseName: String
+  """注册时间"""
+  createTime: Long!
+
+  """企业认证信息"""
+  enterpriseAuthInfo: EnterpriseAuthInfoPayload
+
+  """客户ID"""
+  id: ID
+
+  """客户名称"""
+  name: String
+
+  """个人认证信息"""
+  personalAuthInfo: PersonalAuthInfoPayload
+
+  """客户手机号"""
+  phone: String
+
+  """客户类型 个人用户、企业用户"""
+  userType: CustomerTypeEnum!
 }
 
-scalar _FieldSet
+type UserInfoPayload {
+  """账户信息(选择后的)"""
+  accountInfo: AccountCustomerPayload
 
-type _Service {
-  sdl: String!
+  """头像url"""
+  avatar: [FilePayload!]!
+
+  """注册时间"""
+  createdTime: Long!
+
+  """商家信息(选择后的)"""
+  merchantInfo: UserMerchantPayload
+
+  """用户名称"""
+  nikeName: String!
+
+  """手机号码"""
+  phone: String!
+
+  """用户ID"""
+  userId: ID!
+}
+
+type UserMerchantPayload {
+  """账号ID"""
+  id: ID
+
+  """商户ID"""
+  merchantId: ID
+
+  """商户名称"""
+  name: String
+}
+
+input ValidCaptchaInput {
+  """验证码"""
+  captcha: String!
+
+  """手机号"""
+  phone: String!
+}
+
+enum WalletChangeReasonEnum {
+  """提现"""
+  DEPOSIT
+
+  """消费"""
+  PAY
+
+  """充值"""
+  RECHARGE
+}
+
+type WalletInfoPayload {
+  """余额"""
+  balance: Float!
+
+  """商家或者客户ID"""
+  businessId: ID!
+
+  """渠道ID"""
+  channelId: ID!
+
+  """钱包ID"""
+  walletId: ID!
+
+  """账户类型"""
+  walletType: WalletTypeEnum!
+}
+
+input WalletLogListInput {
+  """offset(第一次请求的时候不用传)"""
+  offset: ID
+
+  """每页大小"""
+  pageSize: Int!
+  walletId: ID!
+}
+
+type WalletLogListPayload {
+  """hasMore"""
+  hasMore: Boolean
+
+  """offset"""
+  offset: ID
+
+  """钱包流水列表"""
+  records: [WalletLogPayload]
+}
+
+type WalletLogPayload {
+  """商家或者客户ID"""
+  businessId: [ID]
+
+  """变动金额"""
+  changePrice: Float
+
+  """变更原因"""
+  changeReason: WalletChangeReasonEnum
+
+  """日期"""
+  date: Long
+
+  """流水log"""
+  walletLogId: ID
+}
+
+input WalletRechargeInput {
+  """充值金额"""
+  rechargeAmount: Float
+
+  """钱包ID"""
+  walletId: ID!
+}
+
+enum WalletTypeEnum {
+  """客户"""
+  CUSTOMER
+
+  """商家"""
+  MERCHANT
+}
+
+input WithdrawCommodityInput {
+  """商品ID"""
+  commodityId: ID!
+}
+
+enum propertyTypeEnum {
+  """属性类型"""
+  COMMODITY_PROPERTY
+
+  """关键属性"""
+  KEY_PROPERTY
+
+  """非关键属性"""
+  NON_KEY_PROPERTY
+
+  """规格属性"""
+  SPEC_PROPERTY
 }

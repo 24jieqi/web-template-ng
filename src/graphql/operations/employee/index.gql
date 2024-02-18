@@ -1,0 +1,21 @@
+# 员工管理:分页
+query accountPage($input: AccountPageInput) {
+  accountPage(input: $input) {
+    pageCurrent
+    pageSize
+    records {
+      roleIdList
+      roleList {
+        appType
+        roleId
+        roleName
+        roleStatus
+      }
+      accountName
+      id
+      phone
+      status
+    }
+    totalRecords
+  }
+}

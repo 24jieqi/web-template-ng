@@ -1,47 +1,59 @@
 import path from 'path'
-import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react-refresh'
-import styleImport from 'vite-plugin-style-import'
-import { envConfig } from './src/config'
+
+import DesignTokensBailuLessGlobal from '@fruits-chain/design-tokens-bailu/lib/less-global.js'
+import react from '@vitejs/plugin-react'
+import { defineConfig, loadEnv } from 'vite'
+import topLevelAwait from 'vite-plugin-top-level-await'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-        modifyVars: { '@primary-color': '#0065FE' },
-        // additionalData: `@import '@/assets/styles/variables.less';`,
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  return {
+    plugins: [
+      react(),
+      topLevelAwait({
+        promiseExportName: '__tla',
+        promiseImportName: i => `__tla_${i}`,
+      }),
+    ],
+    server: {
+      proxy: {
+        [`${env.REACT_APP_BASE_URL}${env.REACT_APP_GRAPHQL_PATH}`]: {
+          target: env.REACT_APP_API_HOST,
+          changeOrigin: true,
+          ws: false,
+          secure: false,
+        },
+        [`${env.REACT_APP_BASE_URL}esi`]: {
+          target: env.REACT_APP_API_HOST,
+          changeOrigin: true,
+          ws: false,
+          secure: false,
+        },
       },
     },
-  },
-  plugins: [
-    styleImport({
-      libs: [
-        {
-          libraryName: 'antd',
-          esModule: true,
-          resolveStyle: (name) => {
-            return `antd/es/${name}/style/index`
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
+    logLevel: 'info',
+    define: {
+      'process.env': {
+        REACT_APP_GRAPHQL_PATH: env.REACT_APP_GRAPHQL_PATH,
+        REACT_APP_BASE_URL: env.REACT_APP_BASE_URL,
+        REACT_APP_API_HOST: env.REACT_APP_API_HOST,
+        RSA_PUBLIC_KEY: env.RSA_PUBLIC_KEY,
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            ...DesignTokensBailuLessGlobal,
           },
         },
-      ],
-    }),
-    reactRefresh(),
-  ],
-  server: {
-    https: false,
-    proxy: {
-      [`/graphql`]: {
-        target: envConfig.dev.apiHost,
-        changeOrigin: true,
       },
     },
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
-  base: '/', // 设置公共基础路径，如果构建时有这个必要的话
+  }
 })

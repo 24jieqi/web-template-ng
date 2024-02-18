@@ -1,77 +1,97 @@
-import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, concat } from '@apollo/client'
-import { onError } from '@apollo/client/link/error'
-import { message as antdMessage, Modal } from 'antd'
-import { debounce } from 'lodash'
-import { LOGIN_PATH } from '@/router/config/basePath'
-import { history } from '@/router'
-import storage from '@/utils/storage'
-import config from '@/config'
+import type { DefaultContext } from '@apollo/client'
+import debounce from 'lodash/debounce'
 
-const httpLink = new HttpLink({
-  uri: `${config.baseUrl}graphql`,
-})
-// 请求处理
-const requestMiddleware = new ApolloLink((operation, forward) => {
-  operation.setContext(({ headers = {} }) => {
-    const token = storage.getItem(config.authKey)
-    if (token) {
-      Object.assign(headers, { Authorization: token })
-    }
-    return {
-      headers,
-    }
-  })
-  return forward(operation)
-})
-// 响应处理
-const responseMiddleware = new ApolloLink((operation, forward) => {
-  return forward(operation).map((response) => {
-    return response
-  })
-})
-// 错误处理
+import { History } from '@/app/components/navigate-setter'
+import { getAccess } from '@/chunfen'
+import { modal, message } from '@/constants/global'
+import { LOGIN } from '@/pages/auth/route'
+import useUser from '@/stores/user'
+import makeApolloClient from '@/utils/graphql/client'
+
+let isTrigger = false
+
+const messageKey = 'permission_change_message'
 let loginModalIsShown = false
-const errorTip = debounce(antdMessage.error, 500)
-const errorMiddleware = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, extensions, path }) => {
-      // eslint-disable-next-line no-console
-      console.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`)
-      if (extensions) {
-        const { message, code } = extensions
-        if (code === '401') {
-          if (!loginModalIsShown) {
-            loginModalIsShown = true
-            Modal.warning({
-              title: '系统提示',
-              content: '登录状态已失效，请重新登录',
-              onOk() {
-                loginModalIsShown = false
-                history.replace(LOGIN_PATH)
-              },
-              okText: '确定',
-            })
-          }
-        } else {
-          errorTip(message)
-        }
-      }
+
+const errorTip = debounce(message.error, 500, {
+  leading: true,
+  trailing: false,
+})
+
+/**
+ * 处理有token但token失效的情形
+ * @param token
+ */
+const noAuthHandlers = (token: string) => {
+  const hasToken = !!token
+  // 过滤掉无 token 导致的鉴权失败（由路由拦截处理）
+  if (!loginModalIsShown && hasToken) {
+    loginModalIsShown = true
+    modal.warning({
+      title: '系统提示',
+      content: '登录状态已失效，请重新登录',
+      onOk() {
+        sessionStorage.setItem(
+          'REDIRECT_URL',
+          `${location.pathname}${location.search}`,
+        )
+        loginModalIsShown = false
+        useUser.getState().clear()
+        History.navigate(LOGIN)
+      },
+      okText: '确定',
     })
-  if (networkError) {
-    // eslint-disable-next-line no-console
-    console.error(`[Network error]: ${networkError.stack}`)
   }
+}
+
+/**
+ * 处理权限变更
+ */
+const permissionChangeHandler = async () => {
+  if (!isTrigger) {
+    isTrigger = true
+    message.open({
+      type: 'loading',
+      content: '检测到权限变更，更新中...',
+      duration: 0,
+      key: messageKey,
+    })
+    const access = getAccess()
+    await access.updateAccess(true)
+    message.destroy(messageKey)
+    isTrigger = false
+  }
+}
+/**
+ * graphql异常处理
+ * @param code
+ * @param msg
+ * @param context
+ */
+function handleGraphqlError(
+  code: string,
+  msg: string,
+  context: DefaultContext,
+) {
+  switch (code) {
+    case '401':
+      noAuthHandlers(context.token)
+      break
+    case '602':
+      permissionChangeHandler()
+      break
+    default:
+      errorTip(msg)
+  }
+}
+
+const client = makeApolloClient({
+  onGraphqlError: handleGraphqlError,
+  getToken: () => ({
+    accessToken: useUser.getState().token,
+    refreshToken: useUser.getState().token,
+  }),
+  setToken: (newToken: string) => useUser.getState().setToken(newToken),
 })
-export default new ApolloClient({
-  link: concat(errorMiddleware, concat(responseMiddleware, concat(requestMiddleware, httpLink))),
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    // 禁用缓存
-    watchQuery: {
-      fetchPolicy: 'network-only',
-    },
-    query: {
-      fetchPolicy: 'network-only',
-    },
-  },
-})
+
+export default client
