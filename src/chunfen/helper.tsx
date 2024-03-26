@@ -72,11 +72,17 @@ export const filterRoute = (
       }
 
       if (route.children?.length) {
-        _route.originalChildren = route.children
-        _route.children = filterRoute(route.children, access)
+        const filteredChildren = filterRoute(route.children, access)
+        if (filteredChildren.length) {
+          nodes.push({
+            ...route,
+            children: filteredChildren,
+            originalChildren: route.children,
+          })
+        }
+      } else {
+        nodes.push(_route)
       }
-
-      nodes.push(_route)
     }
   })
 
