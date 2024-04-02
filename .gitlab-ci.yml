@@ -1,4 +1,0 @@
-include:
-  - project: 'devops/runner-ci'
-    ref: 'main'
-    file: 'template/front-yarn-node20-k8s-auto-template.yml'
