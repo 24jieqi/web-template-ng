@@ -15,7 +15,7 @@
     "lint:ts": "tsc --noEmit && node_modules/.bin/eslint src --ext .ts,.tsx",
     "lint:style": "stylelint 'src/**/*.less'",
     "lint-staged": "lint-staged --allow-empty",
-    "commit": "npx git-cz",
+    "commit": "yarn dlx git-cz",
     "gen": "fruits-chain-gc https://java-orange-graphql-dev.k8s-dev.hjfruit.cn/graphql",
     "gen:w": "fruits-chain-gc https://java-orange-graphql-dev.k8s-dev.hjfruit.cn/graphql -w",
     "test": "vitest"
@@ -92,5 +92,5 @@
       "@commitlint/config-conventional"
     ]
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.1.1"
 }
