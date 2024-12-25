@@ -1,5 +1,4 @@
 import { Skeleton, ErrorBoundary } from '@fruits-chain/react-bailu'
-import type { AgnosticNonIndexRouteObject } from '@remix-run/router/dist/utils'
 import { useMemoizedFn } from 'ahooks'
 import { Layout } from 'antd'
 import isBoolean from 'lodash/isBoolean'
@@ -38,7 +37,7 @@ const AdminLayout: React.FC<Omit<AdminLayoutProps, 'requestAccess'>> = ({
   const { routes } = useAdminRouteContext()
   const location = useLocation()
   const currentMatchRoutes = useMemo(
-    () => matchRoutes(routes as AgnosticNonIndexRouteObject[], location) || [],
+    () => matchRoutes(routes as any[], location) || [],
     [location, routes],
   )
   const didMountMemo = useMemoizedFn(didMount || noop)

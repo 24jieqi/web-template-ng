@@ -5,26 +5,36 @@ import React from 'react'
 
 import Layout from '@/components/layout'
 import {
+  AppTypeEnum,
   type AccountPayload,
   type RolePayload,
 } from '@/graphql/generated/types'
-import { sleep } from '@/utils'
+import { useAccountPageLazyQuery } from '@/graphql/operations/employee/__generated__/index.generated'
 
 const EmployeeListPage: React.FC = () => {
-  async function requestAccountList(): Promise<{
+  const [request] = useAccountPageLazyQuery()
+  async function requestAccountList({
+    current,
+    pageSize,
+  }: {
+    current: number
+    pageSize: number
+  }): Promise<{
     total: number
     list: AccountPayload[]
   }> {
-    const payload = await sleep<{ totalRecords: number; records: unknown[] }>(
-      500,
-      {
-        totalRecords: 0,
-        records: [],
+    const res = await request({
+      variables: {
+        input: {
+          pageCurrent: current,
+          pageSize: pageSize,
+          type: AppTypeEnum.MerchantWeb,
+        },
       },
-    )
+    })
     return {
-      total: payload.totalRecords,
-      list: payload.records,
+      total: res.data?.accountPage?.totalRecords || 0,
+      list: res.data?.accountPage?.records || [],
     }
   }
   const { data, loading, pagination } = usePagination(requestAccountList)
@@ -67,11 +77,11 @@ const EmployeeListPage: React.FC = () => {
     <Layout.Container>
       <Layout.Table
         actions={<Button type="primary">新增员工</Button>}
-        pagination={pagination}
         loading={loading}
         columns={columns}
-        dataSource={data?.list}
+        dataSource={data?.list || []}
         rowKey="id"
+        pagination={pagination}
       />
     </Layout.Container>
   )

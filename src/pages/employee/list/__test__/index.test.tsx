@@ -79,6 +79,6 @@ describe('employee management list page', () => {
   it('initial render correct', async () => {
     setup(<MockedRouter Compoent={EmployeeListPage} customMock={mockData} />)
     expect(screen.getByText('新增员工')).toBeInTheDocument()
-    expect(await screen.findByText('暂无数据')).toBeInTheDocument()
+    expect(await screen.findByText('18812345678')).toBeInTheDocument()
   })
 })

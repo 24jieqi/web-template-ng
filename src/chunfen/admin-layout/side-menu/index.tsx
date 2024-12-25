@@ -1,4 +1,3 @@
-import type { AgnosticNonIndexRouteObject } from '@remix-run/router/dist/utils'
 import { Menu, Layout } from 'antd'
 import omit from 'lodash/omit'
 import React, { memo, useEffect, useMemo, useState } from 'react'
@@ -39,10 +38,7 @@ const SideMenu: React.FC<{ width: number }> = ({ width }) => {
     return menuDatas.map(replaceLabel)
   }, [menuDatas])
   useEffect(() => {
-    const links = matchRoutes(
-      routes as AgnosticNonIndexRouteObject[],
-      location,
-    )!
+    const links = matchRoutes(routes as any[], location)!
     const _openKeys: string[] = []
     const _selectedKeys: string[] = []
     /**

@@ -1,10 +1,10 @@
 import { Observable } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
-import type { GraphQLError } from 'graphql'
+import type { GraphQLFormattedError } from 'graphql'
 
 type FetchAction = (refreshToken: string) => Promise<string | undefined>
 
-type IsUnauthenticatedError = (graphQLError: GraphQLError) => boolean
+type IsUnauthenticatedError = (graphQLError: GraphQLFormattedError) => boolean
 
 export type Token = string | undefined | null
 

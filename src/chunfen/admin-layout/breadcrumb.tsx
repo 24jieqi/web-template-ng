@@ -1,5 +1,4 @@
 import { Layout } from '@fruits-chain/react-bailu'
-import type { AgnosticNonIndexRouteObject } from '@remix-run/router/dist/utils'
 import { Breadcrumb as BreadcrumbAntd } from 'antd'
 import type { ItemType } from 'antd/es/breadcrumb/Breadcrumb'
 import React, { memo, useMemo } from 'react'
@@ -13,7 +12,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, ...props }) => {
   const location = useLocation()
   const { routes } = useAdminRouteContext()
   const links: ItemType[] = useMemo(() => {
-    const menu = matchRoutes(routes as AgnosticNonIndexRouteObject[], location)!
+    const menu = matchRoutes(routes as any[], location)!
       .map(item => {
         const { name, path, hideInBreadcrumb } =
           item.route as ChunfenRouterConfig
