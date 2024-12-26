@@ -18,12 +18,10 @@ test.beforeAll(async ({ browser }) => {
   )
 })
 
-test.afterAll(async () => {
-  page.close()
-})
-
 test.describe('employee management list page', () => {
   test('employee list', async () => {
+    const btn = page.getByText('新增员工')
+    await btn.click()
     // 1. 新增按钮
     await expect(page.getByText('新增员工')).toBeAttached()
     // 2. 表头
