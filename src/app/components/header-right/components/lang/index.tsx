@@ -1,5 +1,5 @@
 import { GlobalOutlined } from '@ant-design/icons'
-import { Dropdown } from 'antd'
+import { Dropdown, Tooltip } from 'antd'
 import React, { memo } from 'react'
 
 import { IconBox } from '@/chunfen'
@@ -15,19 +15,22 @@ const Lang: React.FC<IProps> = () => {
   }
 
   return (
-    <Dropdown
-      menu={{
-        onClick: langsChange,
-        items: I18N.langs.map(v => ({
-          key: v.value,
-          label: v.label,
-        })),
-      }}
-      trigger={['click']}>
-      <IconBox>
-        <GlobalOutlined />
-      </IconBox>
-    </Dropdown>
+    <Tooltip title="切换语言">
+      <Dropdown
+        placement="bottom"
+        menu={{
+          onClick: langsChange,
+          items: I18N.langs.map(v => ({
+            key: v.value,
+            label: v.label,
+          })),
+        }}
+        trigger={['click']}>
+        <IconBox>
+          <GlobalOutlined />
+        </IconBox>
+      </Dropdown>
+    </Tooltip>
   )
 }
 

@@ -10,6 +10,7 @@ import {
   type RolePayload,
 } from '@/graphql/generated/types'
 import { useAccountPageLazyQuery } from '@/graphql/operations/employee/__generated__/index.generated'
+// import { sleep } from '@/utils'
 
 const EmployeeListPage: React.FC = () => {
   const [request] = useAccountPageLazyQuery()
@@ -23,6 +24,13 @@ const EmployeeListPage: React.FC = () => {
     total: number
     list: AccountPayload[]
   }> {
+    // const payload = await sleep<{ totalRecords: number; records: unknown[] }>(
+    //   500,
+    //   {
+    //     totalRecords: 0,
+    //     records: [],
+    //   },
+    // )
     const res = await request({
       variables: {
         input: {
